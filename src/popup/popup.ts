@@ -7,10 +7,15 @@ import {
   queryAllSnapshots,
 } from '@/lib/tabs';
 import { normalizeReadUrl } from '@/lib/reading';
-import { get, getMany, set } from '@/lib/storage';
-import type { Settings, TabSnapshot, UndoSnapshot } from '@/types/storage';
-
-const UNDO_WINDOW_MS = 30_000;
+import { getMany } from '@/lib/storage';
+import {
+  clearIfExpired,
+  clearUndoSnapshot,
+  createUndoSnapshot,
+  loadUndoSnapshot,
+  saveUndoSnapshot,
+} from '@/lib/snapshot';
+import type { Settings, TabSnapshot } from '@/types/storage';
 
 const FALLBACK_FAVICON =
   'data:image/svg+xml;utf8,' +
@@ -146,10 +151,7 @@ function renderUndoBar(closedCount: number, expiresAt: number): void {
 
 async function clearExpiredUndoSnapshot(): Promise<void> {
   try {
-    const current = await get('undoSnapshot');
-    if (current !== null && current.expiresAt <= Date.now()) {
-      await set('undoSnapshot', null);
-    }
+    await clearIfExpired();
   } catch (err) {
     logger.error('clearExpiredUndoSnapshot failed', err);
   }
@@ -159,10 +161,9 @@ async function runUndo(): Promise<void> {
   const undoBtn = document.getElementById('undo-button');
   if (undoBtn instanceof HTMLButtonElement) undoBtn.disabled = true;
   try {
-    const snapshot = await get('undoSnapshot');
-    if (snapshot === null || snapshot.expiresAt <= Date.now()) {
+    const snapshot = await loadUndoSnapshot();
+    if (snapshot === null) {
       hideUndoBar();
-      await set('undoSnapshot', null);
       return;
     }
     for (const tab of snapshot.tabs) {
@@ -181,7 +182,7 @@ async function runUndo(): Promise<void> {
         logger.error('undo create failed', err, tab.url);
       }
     }
-    await set('undoSnapshot', null);
+    await clearUndoSnapshot();
   } catch (err) {
     logger.error('runUndo failed', err);
   }
@@ -201,14 +202,9 @@ async function runCleanup(): Promise<void> {
   const removedIds = new Set<number>(ids);
   const button = document.getElementById('cleanup-button');
   if (button instanceof HTMLButtonElement) button.disabled = true;
-  const now = Date.now();
-  const undoSnapshot: UndoSnapshot = {
-    at: now,
-    tabs: targets.map((s) => ({ ...s })),
-    expiresAt: now + UNDO_WINDOW_MS,
-  };
+  const undoSnapshot = createUndoSnapshot(targets);
   try {
-    await set('undoSnapshot', undoSnapshot);
+    await saveUndoSnapshot(undoSnapshot);
   } catch (err) {
     logger.error('save undoSnapshot failed', err);
   }
@@ -224,7 +220,7 @@ async function runCleanup(): Promise<void> {
     renderUndoBar(targets.length, undoSnapshot.expiresAt);
   } else {
     try {
-      await set('undoSnapshot', null);
+      await clearUndoSnapshot();
     } catch (err) {
       logger.error('rollback undoSnapshot failed', err);
     }
@@ -400,12 +396,8 @@ function bindUndoButton(): void {
 
 async function restoreUndoBarFromStorage(): Promise<void> {
   try {
-    const snapshot = await get('undoSnapshot');
+    const snapshot = await loadUndoSnapshot();
     if (snapshot === null) return;
-    if (snapshot.expiresAt <= Date.now()) {
-      await set('undoSnapshot', null);
-      return;
-    }
     renderUndoBar(snapshot.tabs.length, snapshot.expiresAt);
   } catch (err) {
     logger.error('restoreUndoBarFromStorage failed', err);
