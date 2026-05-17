@@ -616,5 +616,13 @@
   "highcontrast_save_error_notice": {
     "message": "Failed to save the high contrast preference.",
     "description": "Status text shown when saving the high-contrast preference fails."
+  },
+  "command_open_popup_description": {
+    "message": "Open the tab-coach popup",
+    "description": "Description for the _execute_action command in manifest commands. Shown on the chrome://extensions/shortcuts settings page."
+  },
+  "command_cleanup_tabs_description": {
+    "message": "Clean up inactive / duplicate / read tabs in one click",
+    "description": "Description for the cleanup-tabs command in manifest commands. Shown on the chrome://extensions/shortcuts settings page."
   }
 }
