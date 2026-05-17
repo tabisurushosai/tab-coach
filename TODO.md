@@ -21,7 +21,7 @@
 - [x] T016: _locales/ja/messages.json (extension_name, extension_description のみ)
 - [x] T017: _locales/en/messages.json (同上)
 - [x] T018: src/lib/storage.ts (型安全 chrome.storage.local ラッパー、get/set/remove/clear)
-- [ ] T019: src/lib/i18n.ts (chrome.i18n.getMessage ラッパー、型安全)
+- [x] T019: src/lib/i18n.ts (chrome.i18n.getMessage ラッパー、型安全)
 - [ ] T020: src/lib/logger.ts (NODE_ENV === 'development' のみ console.log)
 - [ ] T021: src/background/index.ts (空 service worker、onInstalled でログのみ)
 - [ ] T022: src/popup/index.html + src/popup/popup.ts (Hello World 表示)
