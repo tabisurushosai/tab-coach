@@ -11,16 +11,24 @@ import { refreshBadge } from '@/lib/badge';
 import { applyI18nToDom, getUILocale, t, type MessageKey } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
 import {
+  isDarkModeValue,
   loadSettings,
   resetInactiveMinutes,
   resetThresholds,
+  saveDarkMode,
   saveInactiveMinutes,
   saveThresholds,
   validateInactiveMinutes,
   validateThresholds,
+  type DarkModeValue,
   type InactiveMinutesValidationError,
   type ThresholdValidationError,
 } from '@/lib/settings';
+import {
+  applyTheme,
+  getCurrentResolvedTheme,
+  installSystemThemeListener,
+} from '@/lib/theme';
 import {
   addWhitelistEntry,
   loadWhitelist,
@@ -292,6 +300,7 @@ async function loadAndRenderThresholds(): Promise<void> {
     const settings = await loadSettings();
     applyThresholdValuesToInputs(settings);
     applyInactiveValueToInput(settings);
+    applyDarkModeFromSettings(settings.darkMode);
   } catch (err) {
     logger.error('threshold load failed', err);
   }
@@ -682,10 +691,7 @@ function getChartColors(): {
   bar: string;
   barCurrent: string;
 } {
-  const isDark =
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = getCurrentResolvedTheme() === 'dark';
   if (isDark) {
     return {
       axis: 'rgba(255, 255, 255, 0.32)',
@@ -825,16 +831,88 @@ function bindReportStorageListener(): void {
 }
 
 function bindReportColorSchemeListener(): void {
-  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
-  const mq = window.matchMedia('(prefers-color-scheme: dark)');
-  const listener = (): void => {
+  installSystemThemeListener(() => {
     void renderReport();
-  };
-  if (typeof mq.addEventListener === 'function') {
-    mq.addEventListener('change', listener);
-  } else if (typeof mq.addListener === 'function') {
-    mq.addListener(listener);
+  });
+}
+
+let currentDarkMode: DarkModeValue = 'auto';
+
+function setDarkModeStatus(message: string, isError: boolean): void {
+  const el = document.getElementById('darkmode-status');
+  if (!(el instanceof HTMLElement)) return;
+  el.textContent = message;
+  el.classList.toggle('is-error', isError);
+}
+
+function getDarkModeRadios(): HTMLInputElement[] {
+  const nodes = document.querySelectorAll<HTMLInputElement>('input[name="darkmode"]');
+  return Array.from(nodes);
+}
+
+function applyDarkModeRadioState(value: DarkModeValue): void {
+  for (const input of getDarkModeRadios()) {
+    input.checked = input.value === value;
   }
+}
+
+function applyDarkModeFromSettings(value: DarkModeValue): void {
+  currentDarkMode = value;
+  applyDarkModeRadioState(value);
+  applyTheme(value);
+  void renderReport();
+}
+
+async function handleDarkModeChange(value: string): Promise<void> {
+  if (!isDarkModeValue(value)) return;
+  if (value === currentDarkMode) return;
+  const previous = currentDarkMode;
+  currentDarkMode = value;
+  applyTheme(value);
+  void renderReport();
+  try {
+    await saveDarkMode(value);
+    setDarkModeStatus(t('darkmode_saved_notice'), false);
+  } catch (err) {
+    logger.error('dark mode save failed', err);
+    currentDarkMode = previous;
+    applyDarkModeRadioState(previous);
+    applyTheme(previous);
+    void renderReport();
+    setDarkModeStatus(t('darkmode_save_error_notice'), true);
+  }
+}
+
+function bindDarkModeRadios(): void {
+  for (const input of getDarkModeRadios()) {
+    input.addEventListener('change', () => {
+      if (input.checked) {
+        void handleDarkModeChange(input.value);
+      }
+    });
+  }
+}
+
+function bindDarkModeSystemListener(): void {
+  installSystemThemeListener(() => {
+    if (currentDarkMode === 'auto') {
+      applyTheme('auto');
+      void renderReport();
+    }
+  });
+}
+
+function bindDarkModeStorageListener(): void {
+  if (typeof chrome === 'undefined' || !chrome.storage?.onChanged) return;
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== 'local') return;
+    const settingsChange = changes['settings'];
+    if (!settingsChange) return;
+    const next = (settingsChange.newValue ?? null) as { darkMode?: unknown } | null;
+    if (next && isDarkModeValue(next.darkMode) && next.darkMode !== currentDarkMode) {
+      applyDarkModeFromSettings(next.darkMode);
+    }
+  });
 }
 
 const GROUPING_ERROR_KEY: Record<GroupingError, MessageKey> = {
@@ -883,6 +961,7 @@ function bindGroupingButton(): void {
 }
 
 function init(): void {
+  applyTheme(currentDarkMode);
   applyI18nToDom(document);
   bindForm();
   bindThresholdForm();
@@ -893,6 +972,9 @@ function init(): void {
   bindReportStorageListener();
   bindReportColorSchemeListener();
   bindGroupingButton();
+  bindDarkModeRadios();
+  bindDarkModeSystemListener();
+  bindDarkModeStorageListener();
   void loadAndRender();
   void loadAndRenderThresholds();
   void loadAndRenderArchive();

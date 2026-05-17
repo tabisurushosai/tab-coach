@@ -1,6 +1,21 @@
 import { get, update } from '@/lib/storage';
 import { DEFAULT_SETTINGS, type Settings } from '@/types/storage';
 
+const DARK_MODE_VALUES: readonly Settings['darkMode'][] = ['auto', 'light', 'dark'];
+
+export type DarkModeValue = Settings['darkMode'];
+
+export function isDarkModeValue(value: unknown): value is DarkModeValue {
+  return typeof value === 'string' && (DARK_MODE_VALUES as readonly string[]).includes(value);
+}
+
+export async function saveDarkMode(value: DarkModeValue): Promise<Settings> {
+  return update('settings', (current) => ({
+    ...current,
+    darkMode: value,
+  }));
+}
+
 export const MIN_TAB_LIMIT = 1;
 export const MAX_TAB_LIMIT = 999;
 export const MIN_INACTIVE_MINUTES = 1;

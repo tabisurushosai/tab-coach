@@ -1,5 +1,7 @@
 import { applyI18nToDom, t } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
+import { applyTheme, installSystemThemeListener } from '@/lib/theme';
+import { isDarkModeValue } from '@/lib/settings';
 import {
   filterDuplicateHostnames,
   filterInactive,
@@ -190,7 +192,7 @@ function renderUndoBar(
       return;
     }
     const seconds = Math.ceil(remainingMs / 1000);
-    countdownEl.textContent = ` (${seconds}s)`;
+    countdownEl.textContent = t('popup_undo_countdown_format', [String(seconds)]);
   };
   tick();
   clearUndoTimer();
@@ -413,11 +415,11 @@ function createTabItem(snapshot: TabSnapshot): HTMLLIElement {
   return li;
 }
 
-function renderEmpty(list: HTMLElement, message = '—'): void {
+function renderEmpty(list: HTMLElement, message?: string): void {
   const li = document.createElement('li');
   li.className = 'empty';
   li.setAttribute('role', 'listitem');
-  li.textContent = message;
+  li.textContent = message ?? t('list_empty_placeholder');
   list.appendChild(li);
 }
 
@@ -436,7 +438,10 @@ function renderList(): void {
 
   list.replaceChildren();
   if (filtered.length === 0) {
-    const empty = state.searchQuery !== '' && byCategory.length > 0 ? t('search_no_match') : '—';
+    const empty =
+      state.searchQuery !== '' && byCategory.length > 0
+        ? t('search_no_match')
+        : t('list_empty_placeholder');
     renderEmpty(list, empty);
     return;
   }
@@ -595,6 +600,7 @@ async function loadAndRender(): Promise<void> {
     state.settings = stored.settings;
     state.readCompleted = stored.readCompleted;
     state.whitelist = stored.whitelist;
+    applyTheme(stored.settings.darkMode);
   } catch (err) {
     logger.error('popup load failed', err);
   }
@@ -603,13 +609,34 @@ async function loadAndRender(): Promise<void> {
   updateCleanupButton();
 }
 
+function bindThemeListeners(): void {
+  installSystemThemeListener(() => {
+    if (state.settings.darkMode === 'auto') {
+      applyTheme('auto');
+    }
+  });
+  if (typeof chrome === 'undefined' || !chrome.storage?.onChanged) return;
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== 'local') return;
+    const settingsChange = changes['settings'];
+    if (!settingsChange) return;
+    const next = (settingsChange.newValue ?? null) as { darkMode?: unknown } | null;
+    if (next && isDarkModeValue(next.darkMode)) {
+      state.settings = { ...state.settings, darkMode: next.darkMode };
+      applyTheme(next.darkMode);
+    }
+  });
+}
+
 function init(): void {
+  applyTheme(state.settings.darkMode);
   applyI18nToDom(document);
   bindSearchInput();
   bindCategoryTabs();
   bindCleanupButton();
   bindArchiveButton();
   bindUndoButton();
+  bindThemeListeners();
   void loadAndRender();
   void restoreUndoBarFromStorage();
   logger.info('popup loaded');

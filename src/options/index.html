@@ -468,93 +468,169 @@
       .grouping-status.is-error {
         color: #b91c1c;
       }
-      @media (prefers-color-scheme: dark) {
-        .grouping-badge {
-          background: rgba(253, 230, 138, 0.18);
-          color: #fde68a;
-        }
-        .grouping-status {
-          color: #86efac;
-        }
-        .grouping-status.is-error {
-          color: #fca5a5;
-        }
+      html[data-theme='dark'] .grouping-badge {
+        background: rgba(253, 230, 138, 0.18);
+        color: #fde68a;
       }
-      @media (prefers-color-scheme: dark) {
-        .hint,
-        .whitelist-form label,
-        .whitelist-item-meta,
-        .whitelist-empty,
-        .thresholds-form label,
-        .archive-count,
-        .archive-item-url,
-        .archive-item-meta,
-        .archive-empty {
-          color: #9ca3af;
-        }
-        .whitelist-form input,
-        .thresholds-form input {
-          border-color: rgba(255, 255, 255, 0.16);
-        }
-        .whitelist-list,
-        .archive-list {
-          border-color: rgba(255, 255, 255, 0.12);
-        }
-        .whitelist-item,
-        .archive-item {
-          border-bottom-color: rgba(255, 255, 255, 0.08);
-        }
-        .archive-item-favicon {
-          background: rgba(255, 255, 255, 0.08);
-        }
-        .whitelist-remove-button,
-        .thresholds-reset-button,
-        .archive-open-button,
-        .archive-restore-button,
-        .archive-export-button,
-        .archive-import-button {
-          border-color: rgba(255, 255, 255, 0.16);
-        }
-        .whitelist-remove-button:hover,
-        .whitelist-remove-button:focus-visible,
-        .thresholds-reset-button:hover,
-        .thresholds-reset-button:focus-visible,
-        .archive-open-button:hover,
-        .archive-open-button:focus-visible,
-        .archive-restore-button:hover,
-        .archive-restore-button:focus-visible,
-        .archive-export-button:hover,
-        .archive-export-button:focus-visible,
-        .archive-import-button:hover,
-        .archive-import-button:focus-visible {
-          background: rgba(255, 255, 255, 0.06);
-        }
-        .whitelist-error,
-        .thresholds-status.is-error,
-        .archive-status.is-error {
-          color: #fca5a5;
-        }
-        .thresholds-status,
-        .archive-status {
-          color: #86efac;
-        }
-        .report-summary-card {
-          border-color: rgba(255, 255, 255, 0.12);
-          background: rgba(255, 255, 255, 0.03);
-        }
-        .report-summary-card-label,
-        .report-chart-empty {
-          color: #9ca3af;
-        }
-        .report-chart-wrapper {
-          border-color: rgba(255, 255, 255, 0.12);
-          background: rgba(255, 255, 255, 0.02);
-        }
+      html[data-theme='dark'] .grouping-status {
+        color: #86efac;
+      }
+      html[data-theme='dark'] .grouping-status.is-error {
+        color: #fca5a5;
+      }
+      html[data-theme='dark'] .hint,
+      html[data-theme='dark'] .whitelist-form label,
+      html[data-theme='dark'] .whitelist-item-meta,
+      html[data-theme='dark'] .whitelist-empty,
+      html[data-theme='dark'] .thresholds-form label,
+      html[data-theme='dark'] .archive-count,
+      html[data-theme='dark'] .archive-item-url,
+      html[data-theme='dark'] .archive-item-meta,
+      html[data-theme='dark'] .archive-empty {
+        color: #9ca3af;
+      }
+      html[data-theme='dark'] .whitelist-form input,
+      html[data-theme='dark'] .thresholds-form input {
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+      html[data-theme='dark'] .whitelist-list,
+      html[data-theme='dark'] .archive-list {
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+      html[data-theme='dark'] .whitelist-item,
+      html[data-theme='dark'] .archive-item {
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+      }
+      html[data-theme='dark'] .archive-item-favicon {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      html[data-theme='dark'] .whitelist-remove-button,
+      html[data-theme='dark'] .thresholds-reset-button,
+      html[data-theme='dark'] .archive-open-button,
+      html[data-theme='dark'] .archive-restore-button,
+      html[data-theme='dark'] .archive-export-button,
+      html[data-theme='dark'] .archive-import-button {
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+      html[data-theme='dark'] .whitelist-remove-button:hover,
+      html[data-theme='dark'] .whitelist-remove-button:focus-visible,
+      html[data-theme='dark'] .thresholds-reset-button:hover,
+      html[data-theme='dark'] .thresholds-reset-button:focus-visible,
+      html[data-theme='dark'] .archive-open-button:hover,
+      html[data-theme='dark'] .archive-open-button:focus-visible,
+      html[data-theme='dark'] .archive-restore-button:hover,
+      html[data-theme='dark'] .archive-restore-button:focus-visible,
+      html[data-theme='dark'] .archive-export-button:hover,
+      html[data-theme='dark'] .archive-export-button:focus-visible,
+      html[data-theme='dark'] .archive-import-button:hover,
+      html[data-theme='dark'] .archive-import-button:focus-visible {
+        background: rgba(255, 255, 255, 0.06);
+      }
+      html[data-theme='dark'] .whitelist-error,
+      html[data-theme='dark'] .thresholds-status.is-error,
+      html[data-theme='dark'] .archive-status.is-error {
+        color: #fca5a5;
+      }
+      html[data-theme='dark'] .thresholds-status,
+      html[data-theme='dark'] .archive-status {
+        color: #86efac;
+      }
+      html[data-theme='dark'] .report-summary-card {
+        border-color: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      html[data-theme='dark'] .report-summary-card-label,
+      html[data-theme='dark'] .report-chart-empty {
+        color: #9ca3af;
+      }
+      html[data-theme='dark'] .report-chart-wrapper {
+        border-color: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .darkmode-section {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .darkmode-options {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .darkmode-option {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        border-radius: 999px;
+        font-size: 13px;
+        cursor: pointer;
+        background: transparent;
+      }
+      .darkmode-option:focus-within {
+        outline: 2px solid #2563eb;
+        outline-offset: 1px;
+      }
+      .darkmode-option input[type='radio'] {
+        margin: 0;
+        accent-color: #2563eb;
+      }
+      .darkmode-status {
+        min-height: 18px;
+        margin: 0;
+        font-size: 12px;
+        color: #15803d;
+      }
+      .darkmode-status.is-error {
+        color: #b91c1c;
+      }
+      html[data-theme='dark'] .darkmode-option {
+        border-color: rgba(255, 255, 255, 0.18);
+      }
+      html[data-theme='dark'] .darkmode-status {
+        color: #86efac;
+      }
+      html[data-theme='dark'] .darkmode-status.is-error {
+        color: #fca5a5;
       }
     </style>
   </head>
   <body>
     <h1 id="title" data-i18n="extension_name">tab-coach</h1>
+
+    <section class="darkmode-section" aria-labelledby="darkmode-title">
+      <h2 id="darkmode-title" data-i18n="darkmode_section_title">Theme</h2>
+      <p class="hint" data-i18n="darkmode_section_hint"></p>
+      <ul
+        class="darkmode-options"
+        role="radiogroup"
+        data-i18n-attr="aria-label:darkmode_section_title"
+      >
+        <li>
+          <label class="darkmode-option">
+            <input type="radio" name="darkmode" value="auto" />
+            <span data-i18n="darkmode_option_auto">Auto</span>
+          </label>
+        </li>
+        <li>
+          <label class="darkmode-option">
+            <input type="radio" name="darkmode" value="light" />
+            <span data-i18n="darkmode_option_light">Light</span>
+          </label>
+        </li>
+        <li>
+          <label class="darkmode-option">
+            <input type="radio" name="darkmode" value="dark" />
+            <span data-i18n="darkmode_option_dark">Dark</span>
+          </label>
+        </li>
+      </ul>
+      <p id="darkmode-status" class="darkmode-status" role="status" aria-live="polite"></p>
+    </section>
 
     <section aria-labelledby="thresholds-title">
       <h2 id="thresholds-title" data-i18n="thresholds_section_title">Badge thresholds</h2>

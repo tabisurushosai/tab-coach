@@ -213,6 +213,16 @@
     "message": "—",
     "description": "リストが空のときに表示するプレースホルダ記号。"
   },
+  "popup_undo_countdown_format": {
+    "message": " ($SECONDS$ 秒)",
+    "description": "アンドゥバーのカウントダウン表示。$SECONDS$ には残り秒数 (整数) が入る。先頭の半角スペースで undo メッセージ本文と分離する。",
+    "placeholders": {
+      "seconds": {
+        "content": "$1",
+        "example": "12"
+      }
+    }
+  },
   "whitelist_list_aria_label": {
     "message": "ホワイトリスト一覧",
     "description": "options のホワイトリストエントリ群を包む UL の aria-label。"
@@ -460,5 +470,33 @@
   "grouping_error_notice": {
     "message": "グループ化に失敗しました。",
     "description": "グループ化処理中に予期せぬエラーが発生したときのステータス文言。"
+  },
+  "darkmode_section_title": {
+    "message": "テーマ",
+    "description": "options のダークモード設定セクションのタイトル。"
+  },
+  "darkmode_section_hint": {
+    "message": "popup と options の配色を選択します。「自動」はブラウザ/OS の設定に従います。",
+    "description": "options のダークモード設定セクションの説明文。auto/light/dark の選択肢について案内する。"
+  },
+  "darkmode_option_auto": {
+    "message": "自動",
+    "description": "ダークモード設定の選択肢「自動」(OSの prefers-color-scheme に従う)。"
+  },
+  "darkmode_option_light": {
+    "message": "ライト",
+    "description": "ダークモード設定の選択肢「ライト固定」。"
+  },
+  "darkmode_option_dark": {
+    "message": "ダーク",
+    "description": "ダークモード設定の選択肢「ダーク固定」。"
+  },
+  "darkmode_saved_notice": {
+    "message": "テーマ設定を保存しました。",
+    "description": "ダークモード設定保存成功時のステータス文言。"
+  },
+  "darkmode_save_error_notice": {
+    "message": "テーマ設定の保存に失敗しました。",
+    "description": "ダークモード設定保存失敗時のステータス文言。"
   }
 }

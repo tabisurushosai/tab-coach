@@ -7,6 +7,8 @@ export type MessageKey =
   | 'popup_category_duplicate_label'
   | 'popup_category_read_label'
   | 'popup_close_tab_label'
+  | 'popup_undo_countdown_format'
+  | 'list_empty_placeholder'
   | 'cleanup_button'
   | 'undo_button'
   | 'undo_notice'
@@ -86,7 +88,14 @@ export type MessageKey =
   | 'grouping_success_notice'
   | 'grouping_no_candidates_notice'
   | 'grouping_unavailable_notice'
-  | 'grouping_error_notice';
+  | 'grouping_error_notice'
+  | 'darkmode_section_title'
+  | 'darkmode_section_hint'
+  | 'darkmode_option_auto'
+  | 'darkmode_option_light'
+  | 'darkmode_option_dark'
+  | 'darkmode_saved_notice'
+  | 'darkmode_save_error_notice';
 
 export type Locale = 'ja' | 'en';
 

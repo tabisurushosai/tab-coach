@@ -213,6 +213,16 @@
     "message": "—",
     "description": "Placeholder glyph shown when a list is empty."
   },
+  "popup_undo_countdown_format": {
+    "message": " ($SECONDS$s)",
+    "description": "Countdown text for the undo bar. $SECONDS$ is the remaining whole seconds. The leading space separates it from the undo message body.",
+    "placeholders": {
+      "seconds": {
+        "content": "$1",
+        "example": "12"
+      }
+    }
+  },
   "search_placeholder": {
     "message": "Search title / URL",
     "description": "Placeholder for the popup search box. Filters tabs by partial match against title and URL."
@@ -444,5 +454,33 @@
   "grouping_error_notice": {
     "message": "Failed to group tabs.",
     "description": "Status shown when an unexpected error occurs during a grouping pass."
+  },
+  "darkmode_section_title": {
+    "message": "Theme",
+    "description": "Title of the theme/dark-mode section in the options page."
+  },
+  "darkmode_section_hint": {
+    "message": "Choose how popup and options should be colored. Auto follows your browser/OS preference.",
+    "description": "Helper text shown under the theme section heading on the options page."
+  },
+  "darkmode_option_auto": {
+    "message": "Auto",
+    "description": "Theme option labeled 'Auto' (follows the OS prefers-color-scheme setting)."
+  },
+  "darkmode_option_light": {
+    "message": "Light",
+    "description": "Theme option that forces the light color scheme regardless of OS preference."
+  },
+  "darkmode_option_dark": {
+    "message": "Dark",
+    "description": "Theme option that forces the dark color scheme regardless of OS preference."
+  },
+  "darkmode_saved_notice": {
+    "message": "Theme preference saved.",
+    "description": "Status text shown after the dark-mode preference is successfully saved."
+  },
+  "darkmode_save_error_notice": {
+    "message": "Failed to save the theme preference.",
+    "description": "Status text shown when saving the dark-mode preference fails."
   }
 }
