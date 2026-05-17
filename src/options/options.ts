@@ -1,4 +1,9 @@
-import { loadArchive, removeArchivedTab } from '@/lib/archive';
+import {
+  buildArchiveExportFilename,
+  loadArchive,
+  removeArchivedTab,
+  serializeArchiveExport,
+} from '@/lib/archive';
 import { refreshBadge } from '@/lib/badge';
 import { applyI18nToDom, getUILocale, t, type MessageKey } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
@@ -505,12 +510,66 @@ function bindArchiveStorageListener(): void {
   });
 }
 
+function setArchiveStatus(message: string, isError: boolean): void {
+  const el = document.getElementById('archive-status');
+  if (!(el instanceof HTMLElement)) return;
+  el.textContent = message;
+  el.classList.toggle('is-error', isError);
+}
+
+function triggerJsonDownload(filename: string, json: string): void {
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  try {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } finally {
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+  }
+}
+
+async function handleArchiveExport(): Promise<void> {
+  const btn = document.getElementById('archive-export-button');
+  if (btn instanceof HTMLButtonElement) btn.disabled = true;
+  try {
+    const entries = await loadArchive();
+    if (entries.length === 0) {
+      setArchiveStatus(t('archive_export_empty_notice'), true);
+      return;
+    }
+    const exportedAt = Date.now();
+    const json = serializeArchiveExport(entries, exportedAt);
+    const filename = buildArchiveExportFilename(exportedAt);
+    triggerJsonDownload(filename, json);
+    setArchiveStatus(t('archive_export_success_notice', [String(entries.length)]), false);
+  } catch (err) {
+    logger.error('archive export failed', err);
+    setArchiveStatus(t('archive_export_error_notice'), true);
+  } finally {
+    if (btn instanceof HTMLButtonElement) btn.disabled = false;
+  }
+}
+
+function bindArchiveExportButton(): void {
+  const btn = document.getElementById('archive-export-button');
+  if (!(btn instanceof HTMLButtonElement)) return;
+  btn.addEventListener('click', () => {
+    void handleArchiveExport();
+  });
+}
+
 function init(): void {
   applyI18nToDom(document);
   bindForm();
   bindThresholdForm();
   bindInactiveForm();
   bindArchiveStorageListener();
+  bindArchiveExportButton();
   void loadAndRender();
   void loadAndRenderThresholds();
   void loadAndRenderArchive();

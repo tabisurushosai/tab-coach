@@ -45,7 +45,11 @@ export type MessageKey =
   | 'archive_count_label'
   | 'archive_open_link_label'
   | 'archive_restore_button'
-  | 'archive_restore_label';
+  | 'archive_restore_label'
+  | 'archive_export_button'
+  | 'archive_export_empty_notice'
+  | 'archive_export_success_notice'
+  | 'archive_export_error_notice';
 
 export type Locale = 'ja' | 'en';
 

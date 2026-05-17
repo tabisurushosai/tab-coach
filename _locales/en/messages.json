@@ -204,5 +204,27 @@
   "archive_restore_label": {
     "message": "Restore and remove from archive",
     "description": "Aria-label for the restore button: opens the URL in a new tab and removes the entry from the archive list."
+  },
+  "archive_export_button": {
+    "message": "Export JSON",
+    "description": "Label for the button that downloads the archive list as a JSON file."
+  },
+  "archive_export_empty_notice": {
+    "message": "There is no archive to export.",
+    "description": "Status message shown when an export is attempted while the archive is empty."
+  },
+  "archive_export_success_notice": {
+    "message": "Exported $COUNT$ items.",
+    "description": "Status message shown after the archive JSON download succeeds. $COUNT$ is the number of exported entries.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "12"
+      }
+    }
+  },
+  "archive_export_error_notice": {
+    "message": "Export failed.",
+    "description": "Status message shown when the archive JSON download fails."
   }
 }

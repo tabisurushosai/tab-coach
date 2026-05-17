@@ -218,13 +218,47 @@
         justify-content: space-between;
         gap: 8px;
         margin: 24px 0 8px;
+        flex-wrap: wrap;
       }
       .archive-header h2 {
         margin: 0;
       }
+      .archive-header-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
       .archive-count {
         font-size: 12px;
         color: #6b7280;
+      }
+      .archive-export-button {
+        padding: 5px 12px;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        border-radius: 4px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .archive-export-button:hover,
+      .archive-export-button:focus-visible {
+        background: rgba(0, 0, 0, 0.04);
+        outline: none;
+      }
+      .archive-export-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .archive-status {
+        min-height: 18px;
+        margin: 0 0 8px;
+        font-size: 12px;
+        color: #15803d;
+      }
+      .archive-status.is-error {
+        color: #b91c1c;
       }
       .archive-list {
         list-style: none;
@@ -345,7 +379,8 @@
         .whitelist-remove-button,
         .thresholds-reset-button,
         .archive-open-button,
-        .archive-restore-button {
+        .archive-restore-button,
+        .archive-export-button {
           border-color: rgba(255, 255, 255, 0.16);
         }
         .whitelist-remove-button:hover,
@@ -355,14 +390,18 @@
         .archive-open-button:hover,
         .archive-open-button:focus-visible,
         .archive-restore-button:hover,
-        .archive-restore-button:focus-visible {
+        .archive-restore-button:focus-visible,
+        .archive-export-button:hover,
+        .archive-export-button:focus-visible {
           background: rgba(255, 255, 255, 0.06);
         }
         .whitelist-error,
-        .thresholds-status.is-error {
+        .thresholds-status.is-error,
+        .archive-status.is-error {
           color: #fca5a5;
         }
-        .thresholds-status {
+        .thresholds-status,
+        .archive-status {
           color: #86efac;
         }
       }
@@ -509,9 +548,20 @@
     <section aria-labelledby="archive-title">
       <div class="archive-header">
         <h2 id="archive-title" data-i18n="archive_section_title">Archive</h2>
-        <span id="archive-count" class="archive-count" aria-live="polite"></span>
+        <div class="archive-header-meta">
+          <span id="archive-count" class="archive-count" aria-live="polite"></span>
+          <button
+            type="button"
+            id="archive-export-button"
+            class="archive-export-button"
+            data-i18n="archive_export_button"
+          >
+            Export JSON
+          </button>
+        </div>
       </div>
       <p class="hint" data-i18n="archive_section_hint"></p>
+      <p id="archive-status" class="archive-status" role="status" aria-live="polite"></p>
       <ul
         id="archive-list"
         class="archive-list"

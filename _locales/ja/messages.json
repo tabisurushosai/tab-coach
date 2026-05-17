@@ -204,5 +204,27 @@
   "archive_restore_label": {
     "message": "復元してアーカイブから削除",
     "description": "復元ボタンの aria-label。URL を新規タブで開いたうえでアーカイブ一覧から取り除く操作。"
+  },
+  "archive_export_button": {
+    "message": "JSON エクスポート",
+    "description": "アーカイブ一覧を JSON ファイルとしてダウンロードするボタンのラベル。"
+  },
+  "archive_export_empty_notice": {
+    "message": "エクスポートできるアーカイブがありません。",
+    "description": "アーカイブが空のときにエクスポートを試みた場合のステータス文言。"
+  },
+  "archive_export_success_notice": {
+    "message": "$COUNT$ 件をエクスポートしました。",
+    "description": "アーカイブの JSON ダウンロードに成功したときのステータス文言。$COUNT$ にはエントリ件数が入る。",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "12"
+      }
+    }
+  },
+  "archive_export_error_notice": {
+    "message": "エクスポートに失敗しました。",
+    "description": "アーカイブの JSON ダウンロードに失敗したときのステータス文言。"
   }
 }

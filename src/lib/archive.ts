@@ -2,6 +2,46 @@ import { get, set } from '@/lib/storage';
 import type { ArchivedTab, TabSnapshot } from '@/types/storage';
 
 export const MAX_ARCHIVE_ENTRIES = 500;
+export const ARCHIVE_EXPORT_VERSION = 1;
+
+export type ArchiveExportPayload = {
+  version: number;
+  exportedAt: number;
+  entries: ArchivedTab[];
+};
+
+export function buildArchiveExportPayload(
+  entries: readonly ArchivedTab[],
+  exportedAt: number = Date.now(),
+): ArchiveExportPayload {
+  return {
+    version: ARCHIVE_EXPORT_VERSION,
+    exportedAt,
+    entries: [...entries],
+  };
+}
+
+export function serializeArchiveExport(
+  entries: readonly ArchivedTab[],
+  exportedAt: number = Date.now(),
+): string {
+  return JSON.stringify(buildArchiveExportPayload(entries, exportedAt), null, 2);
+}
+
+function pad2(n: number): string {
+  return n < 10 ? `0${n}` : String(n);
+}
+
+export function buildArchiveExportFilename(exportedAt: number = Date.now()): string {
+  const d = new Date(exportedAt);
+  if (Number.isNaN(d.getTime())) {
+    return 'tab-coach-archive.json';
+  }
+  const stamp =
+    `${d.getFullYear()}${pad2(d.getMonth() + 1)}${pad2(d.getDate())}` +
+    `-${pad2(d.getHours())}${pad2(d.getMinutes())}${pad2(d.getSeconds())}`;
+  return `tab-coach-archive-${stamp}.json`;
+}
 
 export function toArchivedTab(
   snapshot: TabSnapshot,
