@@ -1,7 +1,7 @@
 # tab-coach TODO (100 tasks)
 
 ## Phase 0: 仕様確定・初期化 (T001-T010)
-- [ ] T001: gh repo create tabisurushosai/tab-coach --public --source=. --remote=origin --push (初回push)
+- [x] T001: gh repo create tabisurushosai/tab-coach --public --source=. --remote=origin --push (初回push)
 - [ ] T002: SPEC.md を拡充 (型詳細・データフロー Mermaid 図追加)
 - [ ] T003: TODO.md を確認 (100 行存在チェック、本タスクで [x])
 - [ ] T004: LICENSES.md (MIT、依存ライブラリのライセンス雛形)
