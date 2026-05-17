@@ -64,3 +64,38 @@ export function filterInactive<T extends Pick<TabSnapshot, 'lastAccessed'>>(
 ): T[] {
   return snapshots.filter((s) => isInactive(s, thresholdMinutes, now));
 }
+
+export function getHostname(url: string): string | null {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname;
+    return host ? host.toLowerCase() : null;
+  } catch {
+    return null;
+  }
+}
+
+export function groupByHostname<T extends Pick<TabSnapshot, 'url'>>(
+  snapshots: readonly T[],
+): Map<string, T[]> {
+  const groups = new Map<string, T[]>();
+  for (const snapshot of snapshots) {
+    const host = getHostname(snapshot.url);
+    if (!host) continue;
+    const bucket = groups.get(host);
+    if (bucket) bucket.push(snapshot);
+    else groups.set(host, [snapshot]);
+  }
+  return groups;
+}
+
+export function filterDuplicateHostnames<T extends Pick<TabSnapshot, 'url'>>(
+  snapshots: readonly T[],
+): T[] {
+  const result: T[] = [];
+  for (const group of groupByHostname(snapshots).values()) {
+    if (group.length >= 2) result.push(...group);
+  }
+  return result;
+}

@@ -39,7 +39,7 @@
 - [x] T032: popup × ボタンで chrome.tabs.remove
 - [x] T033: 未アクティブ時間計算 (Date.now() - lastAccessed)
 - [x] T034: 30分以上未アクティブフィルタ
-- [ ] T035: 同ドメイン重複検出 (new URL(url).hostname 比較)
+- [x] T035: 同ドメイン重複検出 (new URL(url).hostname 比較)
 - [ ] T036: content script で document.scrollingElement の scrollTop + window 滞在時間記録
 - [ ] T037: content → background へ chrome.runtime.sendMessage
 - [ ] T038: background で read-completion 判定 (scrollPercent ≥ 90% + 滞在 ≥ 60s) → storage 保存
