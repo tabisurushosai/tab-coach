@@ -170,5 +170,31 @@
         "example": "5"
       }
     }
+  },
+  "archive_section_title": {
+    "message": "アーカイブ",
+    "description": "options のアーカイブ一覧セクションの見出し。過去にアーカイブしたタブを表示する。"
+  },
+  "archive_section_hint": {
+    "message": "アーカイブしたタブの履歴です。最新の 500 件まで保持されます。",
+    "description": "アーカイブセクションの説明文。保持上限の目安を案内する。"
+  },
+  "archive_empty": {
+    "message": "アーカイブはまだありません。",
+    "description": "アーカイブが 1 件もないときに表示する文言。"
+  },
+  "archive_count_label": {
+    "message": "$COUNT$ 件",
+    "description": "アーカイブ件数の表示。$COUNT$ には現在のアーカイブ件数が入る。",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "12"
+      }
+    }
+  },
+  "archive_open_link_label": {
+    "message": "リンクを開く",
+    "description": "アーカイブ一覧の各エントリにある外部リンク (URL を新規タブで開く) の aria-label。"
   }
 }

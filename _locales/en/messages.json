@@ -170,5 +170,31 @@
         "example": "5"
       }
     }
+  },
+  "archive_section_title": {
+    "message": "Archive",
+    "description": "Heading of the options archive list section. Shows tabs previously archived."
+  },
+  "archive_section_hint": {
+    "message": "History of archived tabs. Up to the most recent 500 entries are kept.",
+    "description": "Description text for the archive section explaining the retention cap."
+  },
+  "archive_empty": {
+    "message": "No archived tabs yet.",
+    "description": "Shown when there are no archived tabs."
+  },
+  "archive_count_label": {
+    "message": "$COUNT$ items",
+    "description": "Shows the number of archived tabs. $COUNT$ is the current archive count.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "12"
+      }
+    }
+  },
+  "archive_open_link_label": {
+    "message": "Open link",
+    "description": "Aria-label for the open-link button on each archive entry that opens the URL in a new tab."
   }
 }

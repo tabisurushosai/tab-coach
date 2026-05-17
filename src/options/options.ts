@@ -1,3 +1,4 @@
+import { loadArchive } from '@/lib/archive';
 import { refreshBadge } from '@/lib/badge';
 import { applyI18nToDom, getUILocale, t, type MessageKey } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
@@ -17,7 +18,7 @@ import {
   loadWhitelist,
   removeWhitelistEntry,
 } from '@/lib/whitelist';
-import type { Settings, WhitelistEntry } from '@/types/storage';
+import type { ArchivedTab, Settings, WhitelistEntry } from '@/types/storage';
 
 const THRESHOLD_ERROR_KEY: Record<ThresholdValidationError, MessageKey> = {
   yellow_invalid: 'thresholds_error_yellow_invalid',
@@ -351,13 +352,135 @@ function bindInactiveForm(): void {
   }
 }
 
+const ARCHIVE_FALLBACK_FAVICON =
+  'data:image/svg+xml;utf8,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">' +
+      '<rect width="16" height="16" rx="3" fill="%23d1d5db"/>' +
+      '</svg>',
+  );
+
+function getArchiveListEl(): HTMLUListElement | null {
+  const el = document.getElementById('archive-list');
+  return el instanceof HTMLUListElement ? el : null;
+}
+
+function isSafeUrl(url: string): boolean {
+  return /^https?:\/\//i.test(url);
+}
+
+function createArchiveItem(entry: ArchivedTab): HTMLLIElement {
+  const li = document.createElement('li');
+  li.className = 'archive-item';
+  li.setAttribute('role', 'listitem');
+
+  const favicon = document.createElement('img');
+  favicon.className = 'archive-item-favicon';
+  favicon.alt = '';
+  favicon.referrerPolicy = 'no-referrer';
+  favicon.src = entry.favIconUrl && entry.favIconUrl.length > 0
+    ? entry.favIconUrl
+    : ARCHIVE_FALLBACK_FAVICON;
+  favicon.addEventListener('error', () => {
+    favicon.src = ARCHIVE_FALLBACK_FAVICON;
+  });
+
+  const body = document.createElement('div');
+  body.className = 'archive-item-body';
+
+  const title = document.createElement('div');
+  title.className = 'archive-item-title';
+  title.textContent = entry.title || entry.url;
+  title.title = entry.title || entry.url;
+  body.appendChild(title);
+
+  const urlEl = document.createElement('div');
+  urlEl.className = 'archive-item-url';
+  urlEl.textContent = entry.url;
+  urlEl.title = entry.url;
+  body.appendChild(urlEl);
+
+  const meta = document.createElement('div');
+  meta.className = 'archive-item-meta';
+  meta.textContent = formatCreatedAt(entry.archivedAt);
+  body.appendChild(meta);
+
+  li.appendChild(favicon);
+  li.appendChild(body);
+
+  if (isSafeUrl(entry.url)) {
+    const openLink = document.createElement('a');
+    openLink.className = 'archive-open-button';
+    openLink.href = entry.url;
+    openLink.target = '_blank';
+    openLink.rel = 'noopener noreferrer';
+    openLink.textContent = '↗';
+    openLink.setAttribute('aria-label', `${t('archive_open_link_label')}: ${entry.url}`);
+    li.appendChild(openLink);
+  }
+
+  return li;
+}
+
+function renderArchiveEmpty(list: HTMLUListElement): void {
+  const li = document.createElement('li');
+  li.className = 'archive-empty';
+  li.setAttribute('role', 'listitem');
+  li.textContent = t('archive_empty');
+  list.appendChild(li);
+}
+
+function setArchiveCount(count: number): void {
+  const el = document.getElementById('archive-count');
+  if (!(el instanceof HTMLElement)) return;
+  el.textContent = count > 0 ? t('archive_count_label', [String(count)]) : '';
+}
+
+function renderArchive(entries: readonly ArchivedTab[]): void {
+  const list = getArchiveListEl();
+  if (!list) return;
+  list.replaceChildren();
+  setArchiveCount(entries.length);
+  if (entries.length === 0) {
+    renderArchiveEmpty(list);
+    return;
+  }
+  const sorted = [...entries].sort((a, b) => b.archivedAt - a.archivedAt);
+  const frag = document.createDocumentFragment();
+  for (const entry of sorted) {
+    frag.appendChild(createArchiveItem(entry));
+  }
+  list.appendChild(frag);
+}
+
+async function loadAndRenderArchive(): Promise<void> {
+  try {
+    const entries = await loadArchive();
+    renderArchive(entries);
+  } catch (err) {
+    logger.error('archive load failed', err);
+    renderArchive([]);
+  }
+}
+
+function bindArchiveStorageListener(): void {
+  if (typeof chrome === 'undefined' || !chrome.storage?.onChanged) return;
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== 'local') return;
+    if (!Object.prototype.hasOwnProperty.call(changes, 'archive')) return;
+    void loadAndRenderArchive();
+  });
+}
+
 function init(): void {
   applyI18nToDom(document);
   bindForm();
   bindThresholdForm();
   bindInactiveForm();
+  bindArchiveStorageListener();
   void loadAndRender();
   void loadAndRenderThresholds();
+  void loadAndRenderArchive();
   logger.info('options loaded');
 }
 

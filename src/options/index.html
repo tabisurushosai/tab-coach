@@ -212,32 +212,134 @@
       .thresholds-status.is-error {
         color: #b91c1c;
       }
+      .archive-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px;
+        margin: 24px 0 8px;
+      }
+      .archive-header h2 {
+        margin: 0;
+      }
+      .archive-count {
+        font-size: 12px;
+        color: #6b7280;
+      }
+      .archive-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 4px;
+        max-height: 360px;
+        overflow-y: auto;
+      }
+      .archive-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 8px 12px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .archive-item:last-child {
+        border-bottom: 0;
+      }
+      .archive-item-favicon {
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        margin-top: 2px;
+        border-radius: 2px;
+        background: rgba(0, 0, 0, 0.06);
+        object-fit: contain;
+      }
+      .archive-item-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .archive-item-title {
+        font-size: 13px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .archive-item-url {
+        margin-top: 2px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 11px;
+        color: #6b7280;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .archive-item-meta {
+        margin-top: 2px;
+        font-size: 11px;
+        color: #6b7280;
+      }
+      .archive-open-button {
+        flex-shrink: 0;
+        padding: 4px 8px;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        border-radius: 4px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        font-size: 12px;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .archive-open-button:hover,
+      .archive-open-button:focus-visible {
+        background: rgba(0, 0, 0, 0.04);
+        outline: none;
+      }
+      .archive-empty {
+        padding: 12px;
+        color: #6b7280;
+        text-align: center;
+        font-size: 13px;
+      }
       @media (prefers-color-scheme: dark) {
         .hint,
         .whitelist-form label,
         .whitelist-item-meta,
         .whitelist-empty,
-        .thresholds-form label {
+        .thresholds-form label,
+        .archive-count,
+        .archive-item-url,
+        .archive-item-meta,
+        .archive-empty {
           color: #9ca3af;
         }
         .whitelist-form input,
         .thresholds-form input {
           border-color: rgba(255, 255, 255, 0.16);
         }
-        .whitelist-list {
+        .whitelist-list,
+        .archive-list {
           border-color: rgba(255, 255, 255, 0.12);
         }
-        .whitelist-item {
+        .whitelist-item,
+        .archive-item {
           border-bottom-color: rgba(255, 255, 255, 0.08);
         }
+        .archive-item-favicon {
+          background: rgba(255, 255, 255, 0.08);
+        }
         .whitelist-remove-button,
-        .thresholds-reset-button {
+        .thresholds-reset-button,
+        .archive-open-button {
           border-color: rgba(255, 255, 255, 0.16);
         }
         .whitelist-remove-button:hover,
         .whitelist-remove-button:focus-visible,
         .thresholds-reset-button:hover,
-        .thresholds-reset-button:focus-visible {
+        .thresholds-reset-button:focus-visible,
+        .archive-open-button:hover,
+        .archive-open-button:focus-visible {
           background: rgba(255, 255, 255, 0.06);
         }
         .whitelist-error,
@@ -385,6 +487,20 @@
         class="whitelist-list"
         role="list"
         aria-label="Whitelist entries"
+      ></ul>
+    </section>
+
+    <section aria-labelledby="archive-title">
+      <div class="archive-header">
+        <h2 id="archive-title" data-i18n="archive_section_title">Archive</h2>
+        <span id="archive-count" class="archive-count" aria-live="polite"></span>
+      </div>
+      <p class="hint" data-i18n="archive_section_hint"></p>
+      <ul
+        id="archive-list"
+        class="archive-list"
+        role="list"
+        aria-label="Archived tabs"
       ></ul>
     </section>
 
