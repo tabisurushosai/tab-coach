@@ -39,6 +39,15 @@ export function applyFontScale(scale: number): void {
   document.documentElement.style.setProperty('--font-scale', String(scale));
 }
 
+export function applyHighContrast(enabled: boolean): void {
+  if (typeof document === 'undefined' || !document.documentElement) return;
+  if (enabled) {
+    document.documentElement.dataset['contrast'] = 'high';
+  } else {
+    delete document.documentElement.dataset['contrast'];
+  }
+}
+
 export function getCurrentResolvedTheme(): ResolvedTheme {
   if (typeof document !== 'undefined' && document.documentElement) {
     const v = document.documentElement.dataset['theme'];

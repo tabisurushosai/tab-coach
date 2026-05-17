@@ -118,7 +118,13 @@ export type MessageKey =
   | 'fontscale_saved_notice'
   | 'fontscale_save_error_notice'
   | 'fontscale_preview_label'
-  | 'fontscale_preview_text';
+  | 'fontscale_preview_text'
+  | 'highcontrast_section_title'
+  | 'highcontrast_section_hint'
+  | 'highcontrast_toggle_label'
+  | 'highcontrast_toggle_aria_label'
+  | 'highcontrast_saved_notice'
+  | 'highcontrast_save_error_notice';
 
 export type Locale = 'ja' | 'en';
 

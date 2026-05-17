@@ -360,6 +360,92 @@
         color: #6b7280;
         cursor: not-allowed;
       }
+      html[data-contrast='high'] body {
+        color: #000;
+        background: #fff;
+      }
+      html[data-contrast='high'][data-theme='dark'] body {
+        color: #fff;
+        background: #000;
+      }
+      html[data-contrast='high'] .count,
+      html[data-contrast='high'] .category-tab,
+      html[data-contrast='high'] .category-tab-count,
+      html[data-contrast='high'] .tab-close,
+      html[data-contrast='high'] .empty {
+        color: #000;
+      }
+      html[data-contrast='high'][data-theme='dark'] .count,
+      html[data-contrast='high'][data-theme='dark'] .category-tab,
+      html[data-contrast='high'][data-theme='dark'] .category-tab-count,
+      html[data-contrast='high'][data-theme='dark'] .tab-close,
+      html[data-contrast='high'][data-theme='dark'] .empty {
+        color: #fff;
+      }
+      html[data-contrast='high'] .search-input,
+      html[data-contrast='high'] .archive-button {
+        border: 2px solid #000;
+        background: #fff;
+        color: #000;
+      }
+      html[data-contrast='high'][data-theme='dark'] .search-input,
+      html[data-contrast='high'][data-theme='dark'] .archive-button {
+        border: 2px solid #fff;
+        background: #000;
+        color: #fff;
+      }
+      html[data-contrast='high'] .category-tabs {
+        border-bottom: 2px solid #000;
+      }
+      html[data-contrast='high'][data-theme='dark'] .category-tabs {
+        border-bottom: 2px solid #fff;
+      }
+      html[data-contrast='high'] .category-tab[aria-selected='true'] {
+        border-bottom: 3px solid #000;
+      }
+      html[data-contrast='high'][data-theme='dark'] .category-tab[aria-selected='true'] {
+        border-bottom: 3px solid #fff;
+      }
+      html[data-contrast='high'] .cleanup-button {
+        background: #000;
+        color: #fff;
+        border: 2px solid #000;
+      }
+      html[data-contrast='high'][data-theme='dark'] .cleanup-button {
+        background: #fff;
+        color: #000;
+        border: 2px solid #fff;
+      }
+      html[data-contrast='high'] .tab-close {
+        opacity: 1;
+      }
+      html[data-contrast='high'] .undo-bar {
+        background: #000;
+        color: #fff;
+        border: 2px solid #fff;
+      }
+      html[data-contrast='high'][data-theme='dark'] .undo-bar {
+        background: #fff;
+        color: #000;
+        border: 2px solid #000;
+      }
+      html[data-contrast='high'] .undo-button {
+        background: #fff;
+        color: #000;
+        border: 2px solid #fff;
+      }
+      html[data-contrast='high'][data-theme='dark'] .undo-button {
+        background: #000;
+        color: #fff;
+        border: 2px solid #000;
+      }
+      html[data-contrast='high'] :focus-visible {
+        outline: 3px solid #000 !important;
+        outline-offset: 2px;
+      }
+      html[data-contrast='high'][data-theme='dark'] :focus-visible {
+        outline-color: #fff !important;
+      }
     </style>
   </head>
   <body>

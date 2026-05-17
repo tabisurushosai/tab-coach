@@ -691,6 +691,149 @@
       html[data-theme='dark'] .fontscale-preview-label {
         color: #9ca3af;
       }
+      .highcontrast-section {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .highcontrast-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+        align-self: flex-start;
+      }
+      .highcontrast-toggle:focus-within {
+        outline: 2px solid #2563eb;
+        outline-offset: 1px;
+      }
+      .highcontrast-toggle input[type='checkbox'] {
+        margin: 0;
+        accent-color: #2563eb;
+      }
+      .highcontrast-status {
+        min-height: 18px;
+        margin: 0;
+        font-size: 12px;
+        color: #15803d;
+      }
+      .highcontrast-status.is-error {
+        color: #b91c1c;
+      }
+      html[data-theme='dark'] .highcontrast-toggle {
+        border-color: rgba(255, 255, 255, 0.18);
+      }
+      html[data-theme='dark'] .highcontrast-status {
+        color: #86efac;
+      }
+      html[data-theme='dark'] .highcontrast-status.is-error {
+        color: #fca5a5;
+      }
+      html[data-contrast='high'] body {
+        color: #000;
+        background: #fff;
+      }
+      html[data-contrast='high'][data-theme='dark'] body {
+        color: #fff;
+        background: #000;
+      }
+      html[data-contrast='high'] .hint,
+      html[data-contrast='high'] .whitelist-form label,
+      html[data-contrast='high'] .whitelist-item-meta,
+      html[data-contrast='high'] .whitelist-empty,
+      html[data-contrast='high'] .thresholds-form label,
+      html[data-contrast='high'] .archive-count,
+      html[data-contrast='high'] .archive-item-url,
+      html[data-contrast='high'] .archive-item-meta,
+      html[data-contrast='high'] .archive-empty,
+      html[data-contrast='high'] .report-summary-card-label,
+      html[data-contrast='high'] .report-chart-empty,
+      html[data-contrast='high'] .fontscale-value,
+      html[data-contrast='high'] .fontscale-preview-label {
+        color: #000;
+      }
+      html[data-contrast='high'][data-theme='dark'] .hint,
+      html[data-contrast='high'][data-theme='dark'] .whitelist-form label,
+      html[data-contrast='high'][data-theme='dark'] .whitelist-item-meta,
+      html[data-contrast='high'][data-theme='dark'] .whitelist-empty,
+      html[data-contrast='high'][data-theme='dark'] .thresholds-form label,
+      html[data-contrast='high'][data-theme='dark'] .archive-count,
+      html[data-contrast='high'][data-theme='dark'] .archive-item-url,
+      html[data-contrast='high'][data-theme='dark'] .archive-item-meta,
+      html[data-contrast='high'][data-theme='dark'] .archive-empty,
+      html[data-contrast='high'][data-theme='dark'] .report-summary-card-label,
+      html[data-contrast='high'][data-theme='dark'] .report-chart-empty,
+      html[data-contrast='high'][data-theme='dark'] .fontscale-value,
+      html[data-contrast='high'][data-theme='dark'] .fontscale-preview-label {
+        color: #fff;
+      }
+      html[data-contrast='high'] .whitelist-form input,
+      html[data-contrast='high'] .thresholds-form input,
+      html[data-contrast='high'] .whitelist-list,
+      html[data-contrast='high'] .archive-list,
+      html[data-contrast='high'] .whitelist-remove-button,
+      html[data-contrast='high'] .thresholds-reset-button,
+      html[data-contrast='high'] .archive-open-button,
+      html[data-contrast='high'] .archive-restore-button,
+      html[data-contrast='high'] .archive-export-button,
+      html[data-contrast='high'] .archive-import-button,
+      html[data-contrast='high'] .darkmode-option,
+      html[data-contrast='high'] .highcontrast-toggle,
+      html[data-contrast='high'] .fontscale-reset-button,
+      html[data-contrast='high'] .report-summary-card,
+      html[data-contrast='high'] .report-chart-wrapper,
+      html[data-contrast='high'] .fontscale-preview {
+        border-color: #000;
+        border-width: 2px;
+        border-style: solid;
+        background: #fff;
+        color: #000;
+      }
+      html[data-contrast='high'][data-theme='dark'] .whitelist-form input,
+      html[data-contrast='high'][data-theme='dark'] .thresholds-form input,
+      html[data-contrast='high'][data-theme='dark'] .whitelist-list,
+      html[data-contrast='high'][data-theme='dark'] .archive-list,
+      html[data-contrast='high'][data-theme='dark'] .whitelist-remove-button,
+      html[data-contrast='high'][data-theme='dark'] .thresholds-reset-button,
+      html[data-contrast='high'][data-theme='dark'] .archive-open-button,
+      html[data-contrast='high'][data-theme='dark'] .archive-restore-button,
+      html[data-contrast='high'][data-theme='dark'] .archive-export-button,
+      html[data-contrast='high'][data-theme='dark'] .archive-import-button,
+      html[data-contrast='high'][data-theme='dark'] .darkmode-option,
+      html[data-contrast='high'][data-theme='dark'] .highcontrast-toggle,
+      html[data-contrast='high'][data-theme='dark'] .fontscale-reset-button,
+      html[data-contrast='high'][data-theme='dark'] .report-summary-card,
+      html[data-contrast='high'][data-theme='dark'] .report-chart-wrapper,
+      html[data-contrast='high'][data-theme='dark'] .fontscale-preview {
+        border-color: #fff;
+        background: #000;
+        color: #fff;
+      }
+      html[data-contrast='high'] .whitelist-add-button,
+      html[data-contrast='high'] .thresholds-save-button,
+      html[data-contrast='high'] .grouping-run-button {
+        background: #000;
+        color: #fff;
+        border: 2px solid #000;
+      }
+      html[data-contrast='high'][data-theme='dark'] .whitelist-add-button,
+      html[data-contrast='high'][data-theme='dark'] .thresholds-save-button,
+      html[data-contrast='high'][data-theme='dark'] .grouping-run-button {
+        background: #fff;
+        color: #000;
+        border: 2px solid #fff;
+      }
+      html[data-contrast='high'] :focus-visible {
+        outline: 3px solid #000 !important;
+        outline-offset: 2px;
+      }
+      html[data-contrast='high'][data-theme='dark'] :focus-visible {
+        outline-color: #fff !important;
+      }
     </style>
   </head>
   <body>
@@ -762,6 +905,25 @@
         </p>
       </div>
       <p id="fontscale-status" class="fontscale-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="highcontrast-section" aria-labelledby="highcontrast-title">
+      <h2 id="highcontrast-title" data-i18n="highcontrast_section_title">High contrast</h2>
+      <p class="hint" data-i18n="highcontrast_section_hint"></p>
+      <label class="highcontrast-toggle">
+        <input
+          type="checkbox"
+          id="highcontrast-toggle"
+          data-i18n-attr="aria-label:highcontrast_toggle_aria_label"
+        />
+        <span data-i18n="highcontrast_toggle_label">Enable high contrast</span>
+      </label>
+      <p
+        id="highcontrast-status"
+        class="highcontrast-status"
+        role="status"
+        aria-live="polite"
+      ></p>
     </section>
 
     <section aria-labelledby="thresholds-title">

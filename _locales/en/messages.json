@@ -592,5 +592,29 @@
   "fontscale_preview_text": {
     "message": "Aa — Save time by tidying your tabs.",
     "description": "Sample text shown in the font-size preview area. Updates immediately as the slider moves."
+  },
+  "highcontrast_section_title": {
+    "message": "High contrast",
+    "description": "Heading of the high-contrast section in the options page. Toggles a high-contrast palette for popup and options."
+  },
+  "highcontrast_section_hint": {
+    "message": "Force a high-contrast palette with stronger borders and bolder text colors. Applies to both popup and options.",
+    "description": "Helper text for the high contrast section explaining the effect and scope."
+  },
+  "highcontrast_toggle_label": {
+    "message": "Enable high contrast",
+    "description": "Label for the high-contrast on/off checkbox."
+  },
+  "highcontrast_toggle_aria_label": {
+    "message": "Toggle high contrast mode",
+    "description": "Aria-label for the high-contrast checkbox. Disambiguates the visible toggle label."
+  },
+  "highcontrast_saved_notice": {
+    "message": "High contrast preference saved.",
+    "description": "Status text shown after the high-contrast preference is successfully saved."
+  },
+  "highcontrast_save_error_notice": {
+    "message": "Failed to save the high contrast preference.",
+    "description": "Status text shown when saving the high-contrast preference fails."
   }
 }

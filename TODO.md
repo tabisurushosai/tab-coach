@@ -73,7 +73,7 @@
 - [x] T064: ARIA: ボタンに aria-label
 - [x] T065: ARIA: aria-live="polite" (フィルタ済リスト)
 - [x] T066: フォントサイズ調整 (options スライダー、CSS variable)
-- [ ] T067: ハイコントラストモード
+- [x] T067: ハイコントラストモード
 - [ ] T068: キーボードショートカット定義 (manifest commands)
 - [ ] T069: Ctrl+Shift+T で popup
 - [ ] T070: Ctrl+Shift+R で整理実行

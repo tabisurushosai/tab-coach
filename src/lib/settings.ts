@@ -147,3 +147,10 @@ export async function saveFontScale(value: number): Promise<Settings> {
 export async function resetFontScale(): Promise<Settings> {
   return saveFontScale(DEFAULT_SETTINGS.fontScale);
 }
+
+export async function saveHighContrast(enabled: boolean): Promise<Settings> {
+  return update('settings', (current) => ({
+    ...current,
+    highContrast: enabled,
+  }));
+}

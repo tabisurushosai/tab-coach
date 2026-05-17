@@ -18,6 +18,7 @@ import {
   resetThresholds,
   saveDarkMode,
   saveFontScale,
+  saveHighContrast,
   saveInactiveMinutes,
   saveThresholds,
   validateFontScale,
@@ -31,6 +32,7 @@ import {
 } from '@/lib/settings';
 import {
   applyFontScale,
+  applyHighContrast,
   applyTheme,
   getCurrentResolvedTheme,
   installSystemThemeListener,
@@ -309,6 +311,7 @@ async function loadAndRenderThresholds(): Promise<void> {
     applyInactiveValueToInput(settings);
     applyDarkModeFromSettings(settings.darkMode);
     applyFontScaleFromSettings(settings.fontScale);
+    applyHighContrastFromSettings(settings.highContrast);
   } catch (err) {
     logger.error('threshold load failed', err);
   }
@@ -1090,9 +1093,71 @@ function bindFontScaleStorageListener(): void {
   });
 }
 
+let currentHighContrast: boolean = DEFAULT_SETTINGS.highContrast;
+
+function getHighContrastToggle(): HTMLInputElement | null {
+  const el = document.getElementById('highcontrast-toggle');
+  return el instanceof HTMLInputElement ? el : null;
+}
+
+function setHighContrastStatus(message: string, isError: boolean): void {
+  const el = document.getElementById('highcontrast-status');
+  if (!(el instanceof HTMLElement)) return;
+  el.textContent = message;
+  el.classList.toggle('is-error', isError);
+}
+
+function applyHighContrastFromSettings(value: boolean): void {
+  currentHighContrast = value === true;
+  applyHighContrast(currentHighContrast);
+  const toggle = getHighContrastToggle();
+  if (toggle) toggle.checked = currentHighContrast;
+}
+
+async function handleHighContrastChange(enabled: boolean): Promise<void> {
+  if (enabled === currentHighContrast) return;
+  const previous = currentHighContrast;
+  currentHighContrast = enabled;
+  applyHighContrast(enabled);
+  try {
+    await saveHighContrast(enabled);
+    setHighContrastStatus(t('highcontrast_saved_notice'), false);
+  } catch (err) {
+    logger.error('high contrast save failed', err);
+    currentHighContrast = previous;
+    applyHighContrast(previous);
+    const toggle = getHighContrastToggle();
+    if (toggle) toggle.checked = previous;
+    setHighContrastStatus(t('highcontrast_save_error_notice'), true);
+  }
+}
+
+function bindHighContrastToggle(): void {
+  const toggle = getHighContrastToggle();
+  if (!toggle) return;
+  toggle.addEventListener('change', () => {
+    void handleHighContrastChange(toggle.checked);
+  });
+}
+
+function bindHighContrastStorageListener(): void {
+  if (typeof chrome === 'undefined' || !chrome.storage?.onChanged) return;
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== 'local') return;
+    const settingsChange = changes['settings'];
+    if (!settingsChange) return;
+    const next = (settingsChange.newValue ?? null) as { highContrast?: unknown } | null;
+    if (!next) return;
+    const value = next.highContrast === true;
+    if (value === currentHighContrast) return;
+    applyHighContrastFromSettings(value);
+  });
+}
+
 function init(): void {
   applyTheme(currentDarkMode);
   applyFontScaleFromSettings(currentFontScale);
+  applyHighContrast(currentHighContrast);
   applyI18nToDom(document);
   setFontScaleValueLabel(currentFontScale);
   bindForm();
@@ -1109,6 +1174,8 @@ function init(): void {
   bindDarkModeStorageListener();
   bindFontScaleControls();
   bindFontScaleStorageListener();
+  bindHighContrastToggle();
+  bindHighContrastStorageListener();
   void loadAndRender();
   void loadAndRenderThresholds();
   void loadAndRenderArchive();

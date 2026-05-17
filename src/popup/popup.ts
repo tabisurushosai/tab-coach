@@ -1,6 +1,11 @@
 import { applyI18nToDom, t } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
-import { applyFontScale, applyTheme, installSystemThemeListener } from '@/lib/theme';
+import {
+  applyFontScale,
+  applyHighContrast,
+  applyTheme,
+  installSystemThemeListener,
+} from '@/lib/theme';
 import { isDarkModeValue } from '@/lib/settings';
 import {
   filterDuplicateHostnames,
@@ -607,6 +612,7 @@ async function loadAndRender(): Promise<void> {
     state.whitelist = stored.whitelist;
     applyTheme(stored.settings.darkMode);
     applyFontScale(stored.settings.fontScale);
+    applyHighContrast(stored.settings.highContrast === true);
   } catch (err) {
     logger.error('popup load failed', err);
   }
@@ -629,6 +635,7 @@ function bindThemeListeners(): void {
     const next = (settingsChange.newValue ?? null) as {
       darkMode?: unknown;
       fontScale?: unknown;
+      highContrast?: unknown;
     } | null;
     if (next && isDarkModeValue(next.darkMode)) {
       state.settings = { ...state.settings, darkMode: next.darkMode };
@@ -637,6 +644,10 @@ function bindThemeListeners(): void {
     if (next && typeof next.fontScale === 'number' && Number.isFinite(next.fontScale)) {
       state.settings = { ...state.settings, fontScale: next.fontScale };
       applyFontScale(next.fontScale);
+    }
+    if (next && typeof next.highContrast === 'boolean') {
+      state.settings = { ...state.settings, highContrast: next.highContrast };
+      applyHighContrast(next.highContrast);
     }
   });
 }
