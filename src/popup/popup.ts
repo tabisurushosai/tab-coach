@@ -374,6 +374,7 @@ function createTabItem(snapshot: TabSnapshot): HTMLLIElement {
   button.type = 'button';
   button.className = 'tab-button';
   button.title = snapshot.url;
+  button.setAttribute('aria-label', t('popup_activate_tab_label', [snapshot.title || snapshot.url]));
   button.addEventListener('click', () => {
     void activateTab(snapshot);
   });

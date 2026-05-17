@@ -95,7 +95,13 @@ export type MessageKey =
   | 'darkmode_option_light'
   | 'darkmode_option_dark'
   | 'darkmode_saved_notice'
-  | 'darkmode_save_error_notice';
+  | 'darkmode_save_error_notice'
+  | 'popup_activate_tab_label'
+  | 'whitelist_add_button_aria_label'
+  | 'thresholds_save_button_aria_label'
+  | 'thresholds_reset_button_aria_label'
+  | 'inactive_save_button_aria_label'
+  | 'inactive_reset_button_aria_label';
 
 export type Locale = 'ja' | 'en';
 

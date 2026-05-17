@@ -482,5 +482,35 @@
   "darkmode_save_error_notice": {
     "message": "Failed to save the theme preference.",
     "description": "Status text shown when saving the dark-mode preference fails."
+  },
+  "popup_activate_tab_label": {
+    "message": "Open $TITLE$",
+    "description": "Aria-label for each popup tab row (the button that activates the tab). $TITLE$ is replaced with the target tab's title.",
+    "placeholders": {
+      "title": {
+        "content": "$1",
+        "example": "GitHub - tabisurushosai/tab-coach"
+      }
+    }
+  },
+  "whitelist_add_button_aria_label": {
+    "message": "Add to whitelist",
+    "description": "Aria-label for the whitelist add button on the options page. Contains the visible label \"Add\"."
+  },
+  "thresholds_save_button_aria_label": {
+    "message": "Save badge thresholds",
+    "description": "Aria-label for the badge threshold save button on the options page. Contains the visible label \"Save\"."
+  },
+  "thresholds_reset_button_aria_label": {
+    "message": "Reset badge thresholds to defaults",
+    "description": "Aria-label for the badge threshold reset button on the options page. Contains the visible label \"Reset to defaults\"."
+  },
+  "inactive_save_button_aria_label": {
+    "message": "Save inactive minutes",
+    "description": "Aria-label for the inactive-minutes save button on the options page. Contains the visible label \"Save\"."
+  },
+  "inactive_reset_button_aria_label": {
+    "message": "Reset inactive minutes to default",
+    "description": "Aria-label for the inactive-minutes reset button on the options page. Contains the visible label \"Reset to default\"."
   }
 }

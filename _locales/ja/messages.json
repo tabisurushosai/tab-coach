@@ -498,5 +498,35 @@
   "darkmode_save_error_notice": {
     "message": "テーマ設定の保存に失敗しました。",
     "description": "ダークモード設定保存失敗時のステータス文言。"
+  },
+  "popup_activate_tab_label": {
+    "message": "$TITLE$ を開く",
+    "description": "popup の各タブ行 (タブをアクティブ化するボタン) の aria-label。$TITLE$ には対象タブのタイトルが入る。",
+    "placeholders": {
+      "title": {
+        "content": "$1",
+        "example": "GitHub - tabisurushosai/tab-coach"
+      }
+    }
+  },
+  "whitelist_add_button_aria_label": {
+    "message": "ホワイトリストに追加",
+    "description": "options のホワイトリスト追加ボタンの aria-label。視覚ラベル「追加」を内包する。"
+  },
+  "thresholds_save_button_aria_label": {
+    "message": "バッジ閾値を保存",
+    "description": "options のバッジ閾値保存ボタンの aria-label。視覚ラベル「保存」を内包する。"
+  },
+  "thresholds_reset_button_aria_label": {
+    "message": "バッジ閾値をデフォルトに戻す",
+    "description": "options のバッジ閾値リセットボタンの aria-label。視覚ラベル「デフォルトに戻す」を内包する。"
+  },
+  "inactive_save_button_aria_label": {
+    "message": "未アクティブ判定分数を保存",
+    "description": "options の未アクティブ判定分数保存ボタンの aria-label。視覚ラベル「保存」を内包する。"
+  },
+  "inactive_reset_button_aria_label": {
+    "message": "未アクティブ判定分数をデフォルトに戻す",
+    "description": "options の未アクティブ判定分数リセットボタンの aria-label。視覚ラベル「デフォルトに戻す」を内包する。"
   }
 }
