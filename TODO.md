@@ -67,7 +67,7 @@
 - [x] T058: popup の全文字列を chrome.i18n.getMessage に置換
 - [x] T059: options の全文字列を i18n 化
 - [x] T060: manifest.json name/description を __MSG_*__ 形式
-- [ ] T061: ダークモード自動 (prefers-color-scheme)
+- [x] T061: ダークモード自動 (prefers-color-scheme)
 - [ ] T062: ダークモード手動切替 (options で固定可)
 - [ ] T063: ARIA: popup UL に role="list"、LI に role="listitem"
 - [ ] T064: ARIA: ボタンに aria-label
