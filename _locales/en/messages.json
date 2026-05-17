@@ -7,6 +7,46 @@
     "message": "Visualize tab overload and tidy up with one click. Fully offline, ad-free, minimal permissions.",
     "description": "Short description of the extension (within 132 chars). Shown in the Chrome Web Store and browser extensions list."
   },
+  "popup_category_tabs_aria_label": {
+    "message": "Tab category filter",
+    "description": "Aria-label of the container wrapping the popup category tabs (All / Inactive / Duplicate / Read)."
+  },
+  "popup_category_all_label": {
+    "message": "All",
+    "description": "Label of the popup category tab \"All\". Shows every tab without filtering."
+  },
+  "popup_category_inactive_label": {
+    "message": "Inactive",
+    "description": "Label of the popup category tab \"Inactive\". Shows tabs not accessed for at least the configured minutes."
+  },
+  "popup_category_duplicate_label": {
+    "message": "Duplicate",
+    "description": "Label of the popup category tab \"Duplicate\". Groups tabs that share the same domain."
+  },
+  "popup_category_read_label": {
+    "message": "Read",
+    "description": "Label of the popup category tab \"Read\". Shows tabs marked as read (scroll 90% + 60s dwell)."
+  },
+  "popup_close_tab_label": {
+    "message": "Close this tab",
+    "description": "Aria-label / title for the × button on each popup tab row. Closes the single target tab via chrome.tabs.remove."
+  },
+  "whitelist_list_aria_label": {
+    "message": "Whitelist",
+    "description": "Aria-label of the UL wrapping the whitelist entries on the options page."
+  },
+  "archive_list_aria_label": {
+    "message": "Archive list",
+    "description": "Aria-label of the UL wrapping the archive entries on the options page."
+  },
+  "report_summary_cleanups_label": {
+    "message": "Cleanups this month",
+    "description": "Label for the monthly report summary card \"cleanup runs\". Value is shown with report_summary_cleanups (e.g. 3 cleanups)."
+  },
+  "report_summary_closed_label": {
+    "message": "Tabs closed this month",
+    "description": "Label for the monthly report summary card \"closed tab count\". Value is shown with report_summary_closed (e.g. 42 tabs)."
+  },
   "cleanup_button": {
     "message": "Cleanup",
     "description": "Label for the popup bulk cleanup button. Closes all tabs that match the current category filter."
@@ -144,6 +184,34 @@
   "inactive_error_invalid": {
     "message": "Inactive minutes must be a number between 1 and 1440.",
     "description": "Error shown when the inactive minutes input is empty or out of range."
+  },
+  "popup_category_filter_label": {
+    "message": "Filter tabs by category",
+    "description": "Aria-label of the tablist wrapping the popup category tabs (All / Inactive / Duplicate / Read)."
+  },
+  "popup_category_all": {
+    "message": "All",
+    "description": "Popup category tab label. Shows every tab without filtering."
+  },
+  "popup_category_inactive": {
+    "message": "Inactive",
+    "description": "Popup category tab label. Shows only tabs that exceed the inactive minutes threshold."
+  },
+  "popup_category_duplicate": {
+    "message": "Duplicate",
+    "description": "Popup category tab label. Shows only same-domain duplicate tabs."
+  },
+  "popup_category_read": {
+    "message": "Read",
+    "description": "Popup category tab label. Shows only tabs that satisfy the read heuristic (scroll 90% + 60s dwell)."
+  },
+  "tab_close_label": {
+    "message": "Close tab",
+    "description": "Aria-label and title of the × button on each popup tab row. Closes only that tab on click."
+  },
+  "list_empty_placeholder": {
+    "message": "—",
+    "description": "Placeholder glyph shown when a list is empty."
   },
   "search_placeholder": {
     "message": "Search title / URL",
