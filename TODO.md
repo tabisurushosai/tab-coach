@@ -33,7 +33,7 @@
 - [x] T026: chrome.tabs.query() で全タブ取得 (src/lib/tabs.ts)
 - [x] T027: chrome.tabs.onCreated / onRemoved リスナー (background)
 - [x] T028: chrome.action.setBadgeText でタブ数表示
-- [ ] T029: バッジ色 (灰/黄/赤、setBadgeBackgroundColor)
+- [x] T029: バッジ色 (灰/黄/赤、setBadgeBackgroundColor)
 - [ ] T030: popup でタブ一覧表示 (UL + favicon img + title)
 - [ ] T031: popup タブクリックで chrome.tabs.update active=true
 - [ ] T032: popup × ボタンで chrome.tabs.remove
