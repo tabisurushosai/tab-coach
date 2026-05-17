@@ -33,6 +33,56 @@
         font-size: 12px;
         color: #6b7280;
       }
+      .category-tabs {
+        display: flex;
+        gap: 4px;
+        padding: 0 12px 8px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        margin-bottom: 4px;
+      }
+      .category-tab {
+        flex: 1;
+        padding: 6px 4px;
+        margin: 0;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        background: transparent;
+        color: #6b7280;
+        font: inherit;
+        font-size: 12px;
+        cursor: pointer;
+        border-radius: 4px 4px 0 0;
+      }
+      .category-tab:hover,
+      .category-tab:focus-visible {
+        background: rgba(0, 0, 0, 0.04);
+        outline: none;
+      }
+      .category-tab[aria-selected='true'] {
+        color: inherit;
+        font-weight: 600;
+        border-bottom-color: #2563eb;
+      }
+      .category-tab-count {
+        margin-left: 4px;
+        font-size: 11px;
+        color: #9ca3af;
+      }
+      @media (prefers-color-scheme: dark) {
+        .category-tabs {
+          border-bottom-color: rgba(255, 255, 255, 0.12);
+        }
+        .category-tab {
+          color: #9ca3af;
+        }
+        .category-tab:hover,
+        .category-tab:focus-visible {
+          background: rgba(255, 255, 255, 0.06);
+        }
+        .category-tab[aria-selected='true'] {
+          border-bottom-color: #60a5fa;
+        }
+      }
       .tab-list {
         list-style: none;
         margin: 0;
@@ -132,6 +182,20 @@
       <h1 id="title" data-i18n="extension_name">tab-coach</h1>
       <span id="count" class="count"></span>
     </header>
+    <div id="category-tabs" class="category-tabs" role="tablist" aria-label="Tab category filter">
+      <button type="button" class="category-tab" role="tab" data-category="all" aria-selected="true">
+        All<span class="category-tab-count" data-count-for="all"></span>
+      </button>
+      <button type="button" class="category-tab" role="tab" data-category="inactive" aria-selected="false">
+        Inactive<span class="category-tab-count" data-count-for="inactive"></span>
+      </button>
+      <button type="button" class="category-tab" role="tab" data-category="duplicate" aria-selected="false">
+        Duplicate<span class="category-tab-count" data-count-for="duplicate"></span>
+      </button>
+      <button type="button" class="category-tab" role="tab" data-category="read" aria-selected="false">
+        Read<span class="category-tab-count" data-count-for="read"></span>
+      </button>
+    </div>
     <ul id="tab-list" class="tab-list" role="list"></ul>
     <script type="module" src="./popup.ts"></script>
   </body>

@@ -1,7 +1,13 @@
 import { applyI18nToDom } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
-import { queryAllSnapshots } from '@/lib/tabs';
-import type { TabSnapshot } from '@/types/storage';
+import {
+  filterDuplicateHostnames,
+  filterInactive,
+  queryAllSnapshots,
+} from '@/lib/tabs';
+import { normalizeReadUrl } from '@/lib/reading';
+import { getMany } from '@/lib/storage';
+import type { Settings, TabSnapshot } from '@/types/storage';
 
 const FALLBACK_FAVICON =
   'data:image/svg+xml;utf8,' +
@@ -10,6 +16,49 @@ const FALLBACK_FAVICON =
       '<rect width="16" height="16" rx="3" fill="%23d1d5db"/>' +
       '</svg>',
   );
+
+type Category = 'all' | 'inactive' | 'duplicate' | 'read';
+const CATEGORIES: readonly Category[] = ['all', 'inactive', 'duplicate', 'read'];
+
+type PopupState = {
+  category: Category;
+  snapshots: TabSnapshot[];
+  settings: Settings;
+  readCompleted: Record<string, number>;
+};
+
+const state: PopupState = {
+  category: 'all',
+  snapshots: [],
+  settings: {
+    tabLimitYellow: 10,
+    tabLimitRed: 20,
+    inactiveMinutes: 30,
+    darkMode: 'auto',
+    fontScale: 1.0,
+    highContrast: false,
+  },
+  readCompleted: {},
+};
+
+function filterByCategory(
+  snapshots: readonly TabSnapshot[],
+  category: Category,
+  settings: Settings,
+  readCompleted: Record<string, number>,
+): TabSnapshot[] {
+  if (category === 'all') return [...snapshots];
+  if (category === 'inactive') {
+    return filterInactive(snapshots, settings.inactiveMinutes);
+  }
+  if (category === 'duplicate') {
+    return filterDuplicateHostnames(snapshots);
+  }
+  return snapshots.filter((s) => {
+    const key = normalizeReadUrl(s.url);
+    return key !== null && readCompleted[key] !== undefined;
+  });
+}
 
 async function activateTab(snapshot: TabSnapshot): Promise<void> {
   if (snapshot.id < 0) return;
@@ -28,12 +77,9 @@ async function closeTab(snapshot: TabSnapshot, li: HTMLLIElement): Promise<void>
   if (snapshot.id < 0) return;
   try {
     await chrome.tabs.remove(snapshot.id);
+    state.snapshots = state.snapshots.filter((s) => s.id !== snapshot.id);
     li.remove();
-    const countEl = document.getElementById('count');
-    if (countEl) {
-      const next = Math.max(0, Number(countEl.textContent ?? '0') - 1);
-      countEl.textContent = String(next);
-    }
+    updateCounts();
     const list = document.getElementById('tab-list');
     if (list instanceof HTMLElement && list.childElementCount === 0) {
       renderEmpty(list);
@@ -101,37 +147,84 @@ function renderEmpty(list: HTMLElement): void {
   list.appendChild(li);
 }
 
-async function renderTabList(): Promise<void> {
+function renderList(): void {
   const list = document.getElementById('tab-list');
-  const countEl = document.getElementById('count');
   if (!(list instanceof HTMLElement)) return;
 
+  const filtered = filterByCategory(
+    state.snapshots,
+    state.category,
+    state.settings,
+    state.readCompleted,
+  );
+
   list.replaceChildren();
-
-  let snapshots: TabSnapshot[] = [];
-  try {
-    snapshots = await queryAllSnapshots();
-  } catch (err) {
-    logger.error('popup queryAllSnapshots failed', err);
-  }
-
-  if (countEl) countEl.textContent = String(snapshots.length);
-
-  if (snapshots.length === 0) {
+  if (filtered.length === 0) {
     renderEmpty(list);
     return;
   }
-
   const frag = document.createDocumentFragment();
-  for (const snap of snapshots) {
+  for (const snap of filtered) {
     frag.appendChild(createTabItem(snap));
   }
   list.appendChild(frag);
 }
 
+function updateCounts(): void {
+  const totalEl = document.getElementById('count');
+  if (totalEl) totalEl.textContent = String(state.snapshots.length);
+
+  for (const cat of CATEGORIES) {
+    const span = document.querySelector<HTMLElement>(`[data-count-for="${cat}"]`);
+    if (!span) continue;
+    const count = filterByCategory(state.snapshots, cat, state.settings, state.readCompleted).length;
+    span.textContent = count > 0 ? ` (${count})` : '';
+  }
+}
+
+function selectCategory(category: Category): void {
+  if (state.category === category) return;
+  state.category = category;
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.category-tab');
+  buttons.forEach((btn) => {
+    const isMatch = btn.dataset['category'] === category;
+    btn.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+  });
+  renderList();
+}
+
+function bindCategoryTabs(): void {
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.category-tab');
+  tabs.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset['category'];
+      if (cat && (CATEGORIES as readonly string[]).includes(cat)) {
+        selectCategory(cat as Category);
+      }
+    });
+  });
+}
+
+async function loadAndRender(): Promise<void> {
+  try {
+    const [snapshots, stored] = await Promise.all([
+      queryAllSnapshots(),
+      getMany(['settings', 'readCompleted'] as const),
+    ]);
+    state.snapshots = snapshots;
+    state.settings = stored.settings;
+    state.readCompleted = stored.readCompleted;
+  } catch (err) {
+    logger.error('popup load failed', err);
+  }
+  updateCounts();
+  renderList();
+}
+
 function init(): void {
   applyI18nToDom(document);
-  void renderTabList();
+  bindCategoryTabs();
+  void loadAndRender();
   logger.info('popup loaded');
 }
 
