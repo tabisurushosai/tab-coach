@@ -1,6 +1,12 @@
 export type MessageKey =
   | 'extension_name'
   | 'extension_description'
+  | 'popup_category_tabs_aria_label'
+  | 'popup_category_all_label'
+  | 'popup_category_inactive_label'
+  | 'popup_category_duplicate_label'
+  | 'popup_category_read_label'
+  | 'popup_close_tab_label'
   | 'cleanup_button'
   | 'undo_button'
   | 'undo_notice'

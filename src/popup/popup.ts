@@ -399,8 +399,9 @@ function createTabItem(snapshot: TabSnapshot): HTMLLIElement {
   const closeBtn = document.createElement('button');
   closeBtn.type = 'button';
   closeBtn.className = 'tab-close';
-  closeBtn.setAttribute('aria-label', 'Close tab');
-  closeBtn.title = 'Close tab';
+  const closeLabel = t('popup_close_tab_label');
+  closeBtn.setAttribute('aria-label', closeLabel);
+  closeBtn.title = closeLabel;
   closeBtn.textContent = '×';
   closeBtn.addEventListener('click', (ev) => {
     ev.stopPropagation();

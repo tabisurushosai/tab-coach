@@ -391,18 +391,23 @@
         data-i18n-attr="aria-label:search_clear_label,title:search_clear_label"
       >×</button>
     </div>
-    <div id="category-tabs" class="category-tabs" role="tablist" aria-label="Tab category filter">
+    <div
+      id="category-tabs"
+      class="category-tabs"
+      role="tablist"
+      data-i18n-attr="aria-label:popup_category_tabs_aria_label"
+    >
       <button type="button" class="category-tab" role="tab" data-category="all" aria-selected="true">
-        All<span class="category-tab-count" data-count-for="all"></span>
+        <span data-i18n="popup_category_all_label">All</span><span class="category-tab-count" data-count-for="all"></span>
       </button>
       <button type="button" class="category-tab" role="tab" data-category="inactive" aria-selected="false">
-        Inactive<span class="category-tab-count" data-count-for="inactive"></span>
+        <span data-i18n="popup_category_inactive_label">Inactive</span><span class="category-tab-count" data-count-for="inactive"></span>
       </button>
       <button type="button" class="category-tab" role="tab" data-category="duplicate" aria-selected="false">
-        Duplicate<span class="category-tab-count" data-count-for="duplicate"></span>
+        <span data-i18n="popup_category_duplicate_label">Duplicate</span><span class="category-tab-count" data-count-for="duplicate"></span>
       </button>
       <button type="button" class="category-tab" role="tab" data-category="read" aria-selected="false">
-        Read<span class="category-tab-count" data-count-for="read"></span>
+        <span data-i18n="popup_category_read_label">Read</span><span class="category-tab-count" data-count-for="read"></span>
       </button>
     </div>
     <div class="cleanup-bar">
