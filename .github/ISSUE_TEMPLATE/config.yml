@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: プライバシーに関する問い合わせ
+    url: https://github.com/tabisurushosai/tab-coach/blob/main/legal/PRIVACY_ja.md
+    about: プライバシーポリシーをご確認ください。

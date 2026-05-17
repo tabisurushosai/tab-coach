@@ -10,7 +10,7 @@
 - [x] T007: .editorconfig / .prettierrc.json / .eslintrc.json
 - [x] T008: docs/architecture.md (Mermaid 構成図)
 - [x] T009: docs/release.md (リリース手順)
-- [ ] T010: .github/ISSUE_TEMPLATE/ + pull_request_template.md
+- [x] T010: .github/ISSUE_TEMPLATE/ + pull_request_template.md
 
 ## Phase 1: 基盤構築 (T011-T025)
 - [ ] T011: package.json (TS5.6+ + Vite5+ + @types/chrome + vitest + jsdom + eslint + prettier)
