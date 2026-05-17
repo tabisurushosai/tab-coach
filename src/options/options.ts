@@ -3,9 +3,13 @@ import { applyI18nToDom, getUILocale, t, type MessageKey } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
 import {
   loadSettings,
+  resetInactiveMinutes,
   resetThresholds,
+  saveInactiveMinutes,
   saveThresholds,
+  validateInactiveMinutes,
   validateThresholds,
+  type InactiveMinutesValidationError,
   type ThresholdValidationError,
 } from '@/lib/settings';
 import {
@@ -19,6 +23,10 @@ const THRESHOLD_ERROR_KEY: Record<ThresholdValidationError, MessageKey> = {
   yellow_invalid: 'thresholds_error_yellow_invalid',
   red_invalid: 'thresholds_error_red_invalid',
   red_not_greater: 'thresholds_error_red_not_greater',
+};
+
+const INACTIVE_ERROR_KEY: Record<InactiveMinutesValidationError, MessageKey> = {
+  inactive_invalid: 'inactive_error_invalid',
 };
 
 const ERROR_MESSAGE_KEY: Record<string, MessageKey> = {
@@ -267,8 +275,79 @@ async function loadAndRenderThresholds(): Promise<void> {
   try {
     const settings = await loadSettings();
     applyThresholdValuesToInputs(settings);
+    applyInactiveValueToInput(settings);
   } catch (err) {
     logger.error('threshold load failed', err);
+  }
+}
+
+function getInactiveInput(): HTMLInputElement | null {
+  const el = document.getElementById('inactive-minutes');
+  return el instanceof HTMLInputElement ? el : null;
+}
+
+function setInactiveStatus(message: string, isError: boolean): void {
+  const el = document.getElementById('inactive-status');
+  if (!(el instanceof HTMLElement)) return;
+  el.textContent = message;
+  el.classList.toggle('is-error', isError);
+}
+
+function applyInactiveValueToInput(settings: Settings): void {
+  const input = getInactiveInput();
+  if (input) input.value = String(settings.inactiveMinutes);
+}
+
+async function handleInactiveSubmit(event: SubmitEvent): Promise<void> {
+  event.preventDefault();
+  const input = getInactiveInput();
+  if (!input) return;
+  const saveBtn = document.getElementById('inactive-save-button');
+
+  const result = validateInactiveMinutes(input.value);
+  if (!result.ok) {
+    setInactiveStatus(t(INACTIVE_ERROR_KEY[result.reason]), true);
+    return;
+  }
+
+  if (saveBtn instanceof HTMLButtonElement) saveBtn.disabled = true;
+  try {
+    const next = await saveInactiveMinutes(result.value);
+    applyInactiveValueToInput(next);
+    setInactiveStatus(t('inactive_saved_notice'), false);
+  } catch (err) {
+    logger.error('inactive minutes save failed', err);
+  } finally {
+    if (saveBtn instanceof HTMLButtonElement) saveBtn.disabled = false;
+  }
+}
+
+async function handleInactiveReset(): Promise<void> {
+  const resetBtn = document.getElementById('inactive-reset-button');
+  if (resetBtn instanceof HTMLButtonElement) resetBtn.disabled = true;
+  try {
+    const next = await resetInactiveMinutes();
+    applyInactiveValueToInput(next);
+    setInactiveStatus(t('inactive_saved_notice'), false);
+  } catch (err) {
+    logger.error('inactive minutes reset failed', err);
+  } finally {
+    if (resetBtn instanceof HTMLButtonElement) resetBtn.disabled = false;
+  }
+}
+
+function bindInactiveForm(): void {
+  const form = document.getElementById('inactive-form');
+  if (form instanceof HTMLFormElement) {
+    form.addEventListener('submit', (ev) => {
+      void handleInactiveSubmit(ev as SubmitEvent);
+    });
+  }
+  const resetBtn = document.getElementById('inactive-reset-button');
+  if (resetBtn instanceof HTMLButtonElement) {
+    resetBtn.addEventListener('click', () => {
+      void handleInactiveReset();
+    });
   }
 }
 
@@ -276,6 +355,7 @@ function init(): void {
   applyI18nToDom(document);
   bindForm();
   bindThresholdForm();
+  bindInactiveForm();
   void loadAndRender();
   void loadAndRenderThresholds();
   logger.info('options loaded');

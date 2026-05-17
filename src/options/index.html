@@ -305,6 +305,45 @@
       <p id="thresholds-status" class="thresholds-status" role="status" aria-live="polite"></p>
     </section>
 
+    <section aria-labelledby="inactive-title">
+      <h2 id="inactive-title" data-i18n="inactive_section_title">Inactive threshold</h2>
+      <p class="hint" data-i18n="inactive_section_hint"></p>
+      <form id="inactive-form" class="thresholds-form" novalidate>
+        <label>
+          <span data-i18n="inactive_minutes_label">Inactive minutes</span>
+          <input
+            id="inactive-minutes"
+            type="number"
+            min="1"
+            max="1440"
+            step="1"
+            inputmode="numeric"
+            autocomplete="off"
+            required
+          />
+        </label>
+        <div class="thresholds-actions">
+          <button
+            type="submit"
+            id="inactive-save-button"
+            class="thresholds-save-button"
+            data-i18n="inactive_save_button"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            id="inactive-reset-button"
+            class="thresholds-reset-button"
+            data-i18n="inactive_reset_button"
+          >
+            Reset to default
+          </button>
+        </div>
+      </form>
+      <p id="inactive-status" class="thresholds-status" role="status" aria-live="polite"></p>
+    </section>
+
     <section aria-labelledby="whitelist-title">
       <h2 id="whitelist-title" data-i18n="whitelist_section_title">Whitelist</h2>
       <p class="hint" data-i18n="whitelist_section_hint"></p>

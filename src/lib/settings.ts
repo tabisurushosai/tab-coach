@@ -3,6 +3,8 @@ import { DEFAULT_SETTINGS, type Settings } from '@/types/storage';
 
 export const MIN_TAB_LIMIT = 1;
 export const MAX_TAB_LIMIT = 999;
+export const MIN_INACTIVE_MINUTES = 1;
+export const MAX_INACTIVE_MINUTES = 1440;
 
 export type ThresholdInput = {
   tabLimitYellow: number;
@@ -15,6 +17,12 @@ export type ThresholdValidationResult =
   | { ok: true; value: ThresholdInput }
   | { ok: false; reason: ThresholdValidationError };
 
+export type InactiveMinutesValidationError = 'inactive_invalid';
+
+export type InactiveMinutesValidationResult =
+  | { ok: true; value: number }
+  | { ok: false; reason: InactiveMinutesValidationError };
+
 function toFiniteInt(raw: unknown): number | null {
   const n = typeof raw === 'number' ? raw : Number(raw);
   if (!Number.isFinite(n)) return null;
@@ -23,6 +31,10 @@ function toFiniteInt(raw: unknown): number | null {
 
 function isInLimitRange(n: number): boolean {
   return n >= MIN_TAB_LIMIT && n <= MAX_TAB_LIMIT;
+}
+
+function isInInactiveRange(n: number): boolean {
+  return n >= MIN_INACTIVE_MINUTES && n <= MAX_INACTIVE_MINUTES;
 }
 
 export function validateThresholds(
@@ -43,6 +55,14 @@ export function validateThresholds(
   return { ok: true, value: { tabLimitYellow: yellow, tabLimitRed: red } };
 }
 
+export function validateInactiveMinutes(raw: unknown): InactiveMinutesValidationResult {
+  const n = toFiniteInt(raw);
+  if (n === null || !isInInactiveRange(n)) {
+    return { ok: false, reason: 'inactive_invalid' };
+  }
+  return { ok: true, value: n };
+}
+
 export async function loadSettings(): Promise<Settings> {
   return get('settings');
 }
@@ -60,4 +80,15 @@ export async function resetThresholds(): Promise<Settings> {
     tabLimitYellow: DEFAULT_SETTINGS.tabLimitYellow,
     tabLimitRed: DEFAULT_SETTINGS.tabLimitRed,
   });
+}
+
+export async function saveInactiveMinutes(value: number): Promise<Settings> {
+  return update('settings', (current) => ({
+    ...current,
+    inactiveMinutes: value,
+  }));
+}
+
+export async function resetInactiveMinutes(): Promise<Settings> {
+  return saveInactiveMinutes(DEFAULT_SETTINGS.inactiveMinutes);
 }

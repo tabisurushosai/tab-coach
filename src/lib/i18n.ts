@@ -26,7 +26,14 @@ export type MessageKey =
   | 'thresholds_saved_notice'
   | 'thresholds_error_yellow_invalid'
   | 'thresholds_error_red_invalid'
-  | 'thresholds_error_red_not_greater';
+  | 'thresholds_error_red_not_greater'
+  | 'inactive_section_title'
+  | 'inactive_section_hint'
+  | 'inactive_minutes_label'
+  | 'inactive_save_button'
+  | 'inactive_reset_button'
+  | 'inactive_saved_notice'
+  | 'inactive_error_invalid';
 
 export type Locale = 'ja' | 'en';
 

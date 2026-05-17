@@ -116,5 +116,33 @@
   "thresholds_error_red_not_greater": {
     "message": "赤の閾値は黄色の閾値より大きい必要があります。",
     "description": "赤閾値が黄色閾値以下のときのエラー文言。"
+  },
+  "inactive_section_title": {
+    "message": "未アクティブ判定",
+    "description": "options の未アクティブ閾値セクションの見出し。タブを未アクティブと判定するまでの分数を設定する。"
+  },
+  "inactive_section_hint": {
+    "message": "最後のアクセスからこの分数を超えたタブを「未アクティブ」とみなします。",
+    "description": "未アクティブ閾値セクションの説明文。設定値の解釈を示す。"
+  },
+  "inactive_minutes_label": {
+    "message": "未アクティブ判定分数",
+    "description": "未アクティブと判定する経過分数を指定する入力欄のラベル。"
+  },
+  "inactive_save_button": {
+    "message": "保存",
+    "description": "未アクティブ判定分数を保存するボタンのラベル。"
+  },
+  "inactive_reset_button": {
+    "message": "デフォルトに戻す",
+    "description": "未アクティブ判定分数をデフォルト (30 分) に戻すボタンのラベル。"
+  },
+  "inactive_saved_notice": {
+    "message": "保存しました。",
+    "description": "未アクティブ判定分数の保存に成功したときに表示するステータス文言。"
+  },
+  "inactive_error_invalid": {
+    "message": "未アクティブ判定分数は 1〜1440 の数値で入力してください。",
+    "description": "未アクティブ判定分数の入力が空または範囲外のときのエラー文言。"
   }
 }

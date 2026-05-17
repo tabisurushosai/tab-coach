@@ -116,5 +116,33 @@
   "thresholds_error_red_not_greater": {
     "message": "Red threshold must be greater than yellow threshold.",
     "description": "Error shown when the red threshold is not strictly greater than the yellow threshold."
+  },
+  "inactive_section_title": {
+    "message": "Inactive threshold",
+    "description": "Heading of the options inactive threshold section. Customizes how many minutes since last access mark a tab as inactive."
+  },
+  "inactive_section_hint": {
+    "message": "Tabs are considered inactive once this many minutes have passed since the last access.",
+    "description": "Description text for the inactive threshold section explaining how the value is applied."
+  },
+  "inactive_minutes_label": {
+    "message": "Inactive minutes",
+    "description": "Label for the input that controls how many minutes since last access mark a tab as inactive."
+  },
+  "inactive_save_button": {
+    "message": "Save",
+    "description": "Label for the button that saves the inactive minutes value."
+  },
+  "inactive_reset_button": {
+    "message": "Reset to default",
+    "description": "Label for the button that resets the inactive minutes value to the default (30)."
+  },
+  "inactive_saved_notice": {
+    "message": "Saved.",
+    "description": "Status message shown after the inactive minutes value is saved successfully."
+  },
+  "inactive_error_invalid": {
+    "message": "Inactive minutes must be a number between 1 and 1440.",
+    "description": "Error shown when the inactive minutes input is empty or out of range."
   }
 }
