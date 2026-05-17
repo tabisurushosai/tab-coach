@@ -37,6 +37,10 @@
   ],
   "commands": {
     "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+T",
+        "mac": "Command+Shift+T"
+      },
       "description": "__MSG_command_open_popup_description__"
     },
     "cleanup-tabs": {

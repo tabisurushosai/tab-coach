@@ -75,7 +75,7 @@
 - [x] T066: フォントサイズ調整 (options スライダー、CSS variable)
 - [x] T067: ハイコントラストモード
 - [x] T068: キーボードショートカット定義 (manifest commands)
-- [ ] T069: Ctrl+Shift+T で popup
+- [x] T069: Ctrl+Shift+T で popup
 - [ ] T070: Ctrl+Shift+R で整理実行
 
 ## Phase 4: テスト・品質 (T071-T080)
