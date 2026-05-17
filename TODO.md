@@ -13,7 +13,7 @@
 - [x] T010: .github/ISSUE_TEMPLATE/ + pull_request_template.md
 
 ## Phase 1: 基盤構築 (T011-T025)
-- [ ] T011: package.json (TS5.6+ + Vite5+ + @types/chrome + vitest + jsdom + eslint + prettier)
+- [x] T011: package.json (TS5.6+ + Vite5+ + @types/chrome + vitest + jsdom + eslint + prettier)
 - [ ] T012: tsconfig.json (strict, ES2022, paths @/*)
 - [ ] T013: vite.config.ts (entry: background, popup, options, content)
 - [ ] T014: manifest.json (Manifest V3, name __MSG__, permissions: activeTab + tabs + storage)
