@@ -6,7 +6,7 @@
 - [x] T003: TODO.md を確認 (100 行存在チェック、本タスクで [x])
 - [x] T004: LICENSES.md (MIT、依存ライブラリのライセンス雛形)
 - [x] T005: legal/PRIVACY_ja.md / PRIVACY_en.md / TERMS_ja.md / TERMS_en.md
-- [ ] T006: CHANGELOG.md (Keep a Changelog 準拠)
+- [x] T006: CHANGELOG.md (Keep a Changelog 準拠)
 - [ ] T007: .editorconfig / .prettierrc.json / .eslintrc.json
 - [ ] T008: docs/architecture.md (Mermaid 構成図)
 - [ ] T009: docs/release.md (リリース手順)
