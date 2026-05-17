@@ -1,4 +1,4 @@
-export type MessageKey = 'extension_name' | 'extension_description';
+export type MessageKey = 'extension_name' | 'extension_description' | 'cleanup_button';
 
 export type Locale = 'ja' | 'en';
 

@@ -175,6 +175,47 @@
         color: #6b7280;
         text-align: center;
       }
+      .cleanup-bar {
+        display: flex;
+        justify-content: flex-end;
+        padding: 6px 12px 8px;
+      }
+      .cleanup-button {
+        padding: 6px 12px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 6px;
+        background: #2563eb;
+        color: #fff;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .cleanup-button:hover,
+      .cleanup-button:focus-visible {
+        background: #1d4ed8;
+        outline: none;
+      }
+      .cleanup-button:disabled {
+        background: rgba(0, 0, 0, 0.08);
+        color: #9ca3af;
+        cursor: not-allowed;
+        border-color: transparent;
+      }
+      @media (prefers-color-scheme: dark) {
+        .cleanup-button {
+          background: #3b82f6;
+          border-color: rgba(255, 255, 255, 0.12);
+        }
+        .cleanup-button:hover,
+        .cleanup-button:focus-visible {
+          background: #2563eb;
+        }
+        .cleanup-button:disabled {
+          background: rgba(255, 255, 255, 0.08);
+          color: #6b7280;
+        }
+      }
     </style>
   </head>
   <body>
@@ -194,6 +235,12 @@
       </button>
       <button type="button" class="category-tab" role="tab" data-category="read" aria-selected="false">
         Read<span class="category-tab-count" data-count-for="read"></span>
+      </button>
+    </div>
+    <div class="cleanup-bar">
+      <button type="button" id="cleanup-button" class="cleanup-button" disabled>
+        <span data-i18n="cleanup_button">Cleanup</span>
+        <span id="cleanup-count"></span>
       </button>
     </div>
     <ul id="tab-list" class="tab-list" role="list"></ul>

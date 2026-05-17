@@ -99,3 +99,15 @@ export function filterDuplicateHostnames<T extends Pick<TabSnapshot, 'url'>>(
   }
   return result;
 }
+
+export function pickDuplicateClosable<T extends Pick<TabSnapshot, 'url' | 'lastAccessed'>>(
+  snapshots: readonly T[],
+): T[] {
+  const result: T[] = [];
+  for (const group of groupByHostname(snapshots).values()) {
+    if (group.length < 2) continue;
+    const sorted = [...group].sort((a, b) => b.lastAccessed - a.lastAccessed);
+    result.push(...sorted.slice(1));
+  }
+  return result;
+}

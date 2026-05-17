@@ -6,5 +6,9 @@
   "extension_description": {
     "message": "Visualize tab overload and tidy up with one click. Fully offline, ad-free, minimal permissions.",
     "description": "Short description of the extension (within 132 chars). Shown in the Chrome Web Store and browser extensions list."
+  },
+  "cleanup_button": {
+    "message": "Cleanup",
+    "description": "Label for the popup bulk cleanup button. Closes all tabs that match the current category filter."
   }
 }

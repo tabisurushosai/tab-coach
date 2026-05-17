@@ -3,6 +3,7 @@ import { logger } from '@/lib/logger';
 import {
   filterDuplicateHostnames,
   filterInactive,
+  pickDuplicateClosable,
   queryAllSnapshots,
 } from '@/lib/tabs';
 import { normalizeReadUrl } from '@/lib/reading';
@@ -73,6 +74,50 @@ async function activateTab(snapshot: TabSnapshot): Promise<void> {
   }
 }
 
+function pickCleanupTargets(
+  category: Category,
+  snapshots: readonly TabSnapshot[],
+  settings: Settings,
+  readCompleted: Record<string, number>,
+): TabSnapshot[] {
+  if (category === 'all') return [];
+  let candidates: TabSnapshot[];
+  if (category === 'inactive') {
+    candidates = filterInactive(snapshots, settings.inactiveMinutes);
+  } else if (category === 'duplicate') {
+    candidates = pickDuplicateClosable(snapshots);
+  } else {
+    candidates = snapshots.filter((s) => {
+      const key = normalizeReadUrl(s.url);
+      return key !== null && readCompleted[key] !== undefined;
+    });
+  }
+  return candidates.filter((s) => s.id >= 0 && !s.pinned);
+}
+
+async function runCleanup(): Promise<void> {
+  const targets = pickCleanupTargets(
+    state.category,
+    state.snapshots,
+    state.settings,
+    state.readCompleted,
+  );
+  if (targets.length === 0) return;
+  const ids = targets.map((t) => t.id);
+  const removedIds = new Set<number>(ids);
+  const button = document.getElementById('cleanup-button');
+  if (button instanceof HTMLButtonElement) button.disabled = true;
+  try {
+    await chrome.tabs.remove(ids);
+    state.snapshots = state.snapshots.filter((s) => !removedIds.has(s.id));
+  } catch (err) {
+    logger.error('cleanup failed', err);
+  }
+  updateCounts();
+  renderList();
+  updateCleanupButton();
+}
+
 async function closeTab(snapshot: TabSnapshot, li: HTMLLIElement): Promise<void> {
   if (snapshot.id < 0) return;
   try {
@@ -80,6 +125,7 @@ async function closeTab(snapshot: TabSnapshot, li: HTMLLIElement): Promise<void>
     state.snapshots = state.snapshots.filter((s) => s.id !== snapshot.id);
     li.remove();
     updateCounts();
+    updateCleanupButton();
     const list = document.getElementById('tab-list');
     if (list instanceof HTMLElement && list.childElementCount === 0) {
       renderEmpty(list);
@@ -182,6 +228,20 @@ function updateCounts(): void {
   }
 }
 
+function updateCleanupButton(): void {
+  const button = document.getElementById('cleanup-button');
+  if (!(button instanceof HTMLButtonElement)) return;
+  const targets = pickCleanupTargets(
+    state.category,
+    state.snapshots,
+    state.settings,
+    state.readCompleted,
+  );
+  button.disabled = targets.length === 0;
+  const countEl = document.getElementById('cleanup-count');
+  if (countEl) countEl.textContent = targets.length > 0 ? ` (${targets.length})` : '';
+}
+
 function selectCategory(category: Category): void {
   if (state.category === category) return;
   state.category = category;
@@ -191,6 +251,7 @@ function selectCategory(category: Category): void {
     btn.setAttribute('aria-selected', isMatch ? 'true' : 'false');
   });
   renderList();
+  updateCleanupButton();
 }
 
 function bindCategoryTabs(): void {
@@ -202,6 +263,14 @@ function bindCategoryTabs(): void {
         selectCategory(cat as Category);
       }
     });
+  });
+}
+
+function bindCleanupButton(): void {
+  const button = document.getElementById('cleanup-button');
+  if (!(button instanceof HTMLButtonElement)) return;
+  button.addEventListener('click', () => {
+    void runCleanup();
   });
 }
 
@@ -219,11 +288,13 @@ async function loadAndRender(): Promise<void> {
   }
   updateCounts();
   renderList();
+  updateCleanupButton();
 }
 
 function init(): void {
   applyI18nToDom(document);
   bindCategoryTabs();
+  bindCleanupButton();
   void loadAndRender();
   logger.info('popup loaded');
 }
