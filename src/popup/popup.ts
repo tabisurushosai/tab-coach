@@ -1,4 +1,4 @@
-import { applyI18nToDom } from '@/lib/i18n';
+import { applyI18nToDom, t } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
 import {
   filterDuplicateHostnames,
@@ -7,8 +7,10 @@ import {
   queryAllSnapshots,
 } from '@/lib/tabs';
 import { normalizeReadUrl } from '@/lib/reading';
-import { getMany } from '@/lib/storage';
-import type { Settings, TabSnapshot } from '@/types/storage';
+import { get, getMany, set } from '@/lib/storage';
+import type { Settings, TabSnapshot, UndoSnapshot } from '@/types/storage';
+
+const UNDO_WINDOW_MS = 30_000;
 
 const FALLBACK_FAVICON =
   'data:image/svg+xml;utf8,' +
@@ -95,6 +97,98 @@ function pickCleanupTargets(
   return candidates.filter((s) => s.id >= 0 && !s.pinned);
 }
 
+let undoTimerId: number | null = null;
+
+function clearUndoTimer(): void {
+  if (undoTimerId !== null) {
+    window.clearInterval(undoTimerId);
+    undoTimerId = null;
+  }
+}
+
+function hideUndoBar(): void {
+  clearUndoTimer();
+  const bar = document.getElementById('undo-bar');
+  if (bar instanceof HTMLElement) bar.dataset['visible'] = 'false';
+}
+
+function renderUndoBar(closedCount: number, expiresAt: number): void {
+  const bar = document.getElementById('undo-bar');
+  const messageEl = document.getElementById('undo-message-text');
+  const countdownEl = document.getElementById('undo-countdown');
+  const undoBtn = document.getElementById('undo-button');
+  if (
+    !(bar instanceof HTMLElement) ||
+    !(messageEl instanceof HTMLElement) ||
+    !(countdownEl instanceof HTMLElement) ||
+    !(undoBtn instanceof HTMLButtonElement)
+  ) {
+    return;
+  }
+  messageEl.textContent = t('undo_notice', [String(closedCount)]);
+  undoBtn.disabled = false;
+  bar.dataset['visible'] = 'true';
+
+  const tick = (): void => {
+    const remainingMs = expiresAt - Date.now();
+    if (remainingMs <= 0) {
+      hideUndoBar();
+      void clearExpiredUndoSnapshot();
+      return;
+    }
+    const seconds = Math.ceil(remainingMs / 1000);
+    countdownEl.textContent = ` (${seconds}s)`;
+  };
+  tick();
+  clearUndoTimer();
+  undoTimerId = window.setInterval(tick, 250);
+}
+
+async function clearExpiredUndoSnapshot(): Promise<void> {
+  try {
+    const current = await get('undoSnapshot');
+    if (current !== null && current.expiresAt <= Date.now()) {
+      await set('undoSnapshot', null);
+    }
+  } catch (err) {
+    logger.error('clearExpiredUndoSnapshot failed', err);
+  }
+}
+
+async function runUndo(): Promise<void> {
+  const undoBtn = document.getElementById('undo-button');
+  if (undoBtn instanceof HTMLButtonElement) undoBtn.disabled = true;
+  try {
+    const snapshot = await get('undoSnapshot');
+    if (snapshot === null || snapshot.expiresAt <= Date.now()) {
+      hideUndoBar();
+      await set('undoSnapshot', null);
+      return;
+    }
+    for (const tab of snapshot.tabs) {
+      if (!tab.url) continue;
+      const createInfo: chrome.tabs.CreateProperties = {
+        url: tab.url,
+        active: false,
+      };
+      if (typeof tab.windowId === 'number' && tab.windowId >= 0) {
+        createInfo.windowId = tab.windowId;
+      }
+      if (tab.pinned === true) createInfo.pinned = true;
+      try {
+        await chrome.tabs.create(createInfo);
+      } catch (err) {
+        logger.error('undo create failed', err, tab.url);
+      }
+    }
+    await set('undoSnapshot', null);
+  } catch (err) {
+    logger.error('runUndo failed', err);
+  }
+  hideUndoBar();
+  await loadAndRender();
+}
+
 async function runCleanup(): Promise<void> {
   const targets = pickCleanupTargets(
     state.category,
@@ -107,11 +201,33 @@ async function runCleanup(): Promise<void> {
   const removedIds = new Set<number>(ids);
   const button = document.getElementById('cleanup-button');
   if (button instanceof HTMLButtonElement) button.disabled = true;
+  const now = Date.now();
+  const undoSnapshot: UndoSnapshot = {
+    at: now,
+    tabs: targets.map((s) => ({ ...s })),
+    expiresAt: now + UNDO_WINDOW_MS,
+  };
+  try {
+    await set('undoSnapshot', undoSnapshot);
+  } catch (err) {
+    logger.error('save undoSnapshot failed', err);
+  }
+  let removed = false;
   try {
     await chrome.tabs.remove(ids);
     state.snapshots = state.snapshots.filter((s) => !removedIds.has(s.id));
+    removed = true;
   } catch (err) {
     logger.error('cleanup failed', err);
+  }
+  if (removed) {
+    renderUndoBar(targets.length, undoSnapshot.expiresAt);
+  } else {
+    try {
+      await set('undoSnapshot', null);
+    } catch (err) {
+      logger.error('rollback undoSnapshot failed', err);
+    }
   }
   updateCounts();
   renderList();
@@ -274,6 +390,28 @@ function bindCleanupButton(): void {
   });
 }
 
+function bindUndoButton(): void {
+  const undoBtn = document.getElementById('undo-button');
+  if (!(undoBtn instanceof HTMLButtonElement)) return;
+  undoBtn.addEventListener('click', () => {
+    void runUndo();
+  });
+}
+
+async function restoreUndoBarFromStorage(): Promise<void> {
+  try {
+    const snapshot = await get('undoSnapshot');
+    if (snapshot === null) return;
+    if (snapshot.expiresAt <= Date.now()) {
+      await set('undoSnapshot', null);
+      return;
+    }
+    renderUndoBar(snapshot.tabs.length, snapshot.expiresAt);
+  } catch (err) {
+    logger.error('restoreUndoBarFromStorage failed', err);
+  }
+}
+
 async function loadAndRender(): Promise<void> {
   try {
     const [snapshots, stored] = await Promise.all([
@@ -295,7 +433,9 @@ function init(): void {
   applyI18nToDom(document);
   bindCategoryTabs();
   bindCleanupButton();
+  bindUndoButton();
   void loadAndRender();
+  void restoreUndoBarFromStorage();
   logger.info('popup loaded');
 }
 

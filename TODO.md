@@ -45,7 +45,7 @@
 - [x] T038: background で read-completion 判定 (scrollPercent ≥ 90% + 滞在 ≥ 60s) → storage 保存
 - [x] T039: popup の分類タブ (未アクティブ/重複/読了)
 - [x] T040: ワンクリック「整理する」ボタン (該当タブ一括 chrome.tabs.remove)
-- [ ] T041: アンドゥ機能 (30秒以内 chrome.tabs.create で復元)
+- [x] T041: アンドゥ機能 (30秒以内 chrome.tabs.create で復元)
 - [ ] T042: スナップショット (整理直前の TabSnapshot[] を storage)
 - [ ] T043: ホワイトリスト UI (options で URL パターン入力、追加・削除)
 - [ ] T044: ホワイトリストにマッチするタブは整理対象外

@@ -10,5 +10,19 @@
   "cleanup_button": {
     "message": "Cleanup",
     "description": "Label for the popup bulk cleanup button. Closes all tabs that match the current category filter."
+  },
+  "undo_button": {
+    "message": "Undo",
+    "description": "Label for the undo button shown for 30 seconds after a cleanup. Restores the closed tabs via chrome.tabs.create."
+  },
+  "undo_notice": {
+    "message": "Closed $COUNT$ tabs",
+    "description": "Toast message shown right after a cleanup. $COUNT$ is the number of tabs that were closed.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
   }
 }

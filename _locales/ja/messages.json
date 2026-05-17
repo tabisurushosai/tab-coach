@@ -10,5 +10,19 @@
   "cleanup_button": {
     "message": "整理する",
     "description": "popup の一括整理ボタンのラベル。現在のカテゴリに該当するタブを一括で閉じる。"
+  },
+  "undo_button": {
+    "message": "元に戻す",
+    "description": "整理直後 30 秒間表示されるアンドゥボタンのラベル。閉じたタブを chrome.tabs.create で復元する。"
+  },
+  "undo_notice": {
+    "message": "$COUNT$ 件を閉じました",
+    "description": "整理直後に表示されるトースト文言。$COUNT$ には閉じたタブ件数が入る。",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
   }
 }

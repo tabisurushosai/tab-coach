@@ -216,6 +216,55 @@
           color: #6b7280;
         }
       }
+      .undo-bar {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin: 0 12px 8px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: #1f2937;
+        color: #f9fafb;
+        font-size: 12px;
+      }
+      .undo-bar[data-visible='true'] {
+        display: flex;
+      }
+      .undo-message {
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .undo-countdown {
+        margin-left: 4px;
+        color: #9ca3af;
+      }
+      .undo-button {
+        flex-shrink: 0;
+        padding: 4px 10px;
+        border: 0;
+        border-radius: 4px;
+        background: #60a5fa;
+        color: #0b1220;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .undo-button:hover,
+      .undo-button:focus-visible {
+        background: #3b82f6;
+        color: #fff;
+        outline: none;
+      }
+      .undo-button:disabled {
+        background: rgba(255, 255, 255, 0.08);
+        color: #6b7280;
+        cursor: not-allowed;
+      }
     </style>
   </head>
   <body>
@@ -242,6 +291,19 @@
         <span data-i18n="cleanup_button">Cleanup</span>
         <span id="cleanup-count"></span>
       </button>
+    </div>
+    <div
+      id="undo-bar"
+      class="undo-bar"
+      role="status"
+      aria-live="polite"
+      data-visible="false"
+    >
+      <span class="undo-message">
+        <span id="undo-message-text"></span>
+        <span id="undo-countdown" class="undo-countdown"></span>
+      </span>
+      <button type="button" id="undo-button" class="undo-button" data-i18n="undo_button">Undo</button>
     </div>
     <ul id="tab-list" class="tab-list" role="list"></ul>
     <script type="module" src="./popup.ts"></script>
