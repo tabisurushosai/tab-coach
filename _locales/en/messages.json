@@ -11,6 +11,16 @@
     "message": "Tab category filter",
     "description": "Aria-label of the container wrapping the popup category tabs (All / Inactive / Duplicate / Read)."
   },
+  "popup_tab_list_aria_label": {
+    "message": "Tab list ($COUNT$ items)",
+    "description": "Aria-label of the filtered tab list in the popup. Updated whenever the filter or search changes so screen readers announce the new count.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "12"
+      }
+    }
+  },
   "popup_category_all_label": {
     "message": "All",
     "description": "Label of the popup category tab \"All\". Shows every tab without filtering."
@@ -512,5 +522,29 @@
   "inactive_reset_button_aria_label": {
     "message": "Reset inactive minutes to default",
     "description": "Aria-label for the inactive-minutes reset button on the options page. Contains the visible label \"Reset to default\"."
+  },
+  "cleanup_button_aria_label": {
+    "message": "Cleanup matching tabs",
+    "description": "Aria-label of the popup cleanup button. Disambiguates the visible \"Cleanup\" label by stating which tabs are affected."
+  },
+  "archive_button_aria_label": {
+    "message": "Archive and close matching tabs",
+    "description": "Aria-label of the popup archive button. Disambiguates the visible \"Archive\" label by stating that it saves to storage and closes the tabs."
+  },
+  "undo_button_aria_label": {
+    "message": "Undo the latest cleanup",
+    "description": "Aria-label of the popup undo button shown for 30 seconds after a cleanup."
+  },
+  "archive_export_button_aria_label": {
+    "message": "Export the archive as JSON",
+    "description": "Aria-label of the options archive export button. Disambiguates the visible \"Export JSON\" label."
+  },
+  "archive_import_button_aria_label": {
+    "message": "Import an archive JSON file",
+    "description": "Aria-label of the options archive import button. Disambiguates the visible \"Import JSON\" label."
+  },
+  "grouping_run_button_aria_label": {
+    "message": "Group same-domain tabs now",
+    "description": "Aria-label of the options tab-grouping run button. Disambiguates the visible \"Group now\" label."
   }
 }

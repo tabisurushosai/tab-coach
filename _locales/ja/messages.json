@@ -11,6 +11,16 @@
     "message": "タブ分類フィルター",
     "description": "popup のカテゴリタブ群 (All / Inactive / Duplicate / Read) を包むコンテナの aria-label。"
   },
+  "popup_tab_list_aria_label": {
+    "message": "タブ一覧 ($COUNT$件)",
+    "description": "popup のフィルタ済タブ一覧の aria-label。フィルタや検索変更時に更新され、スクリーンリーダーが件数を読み上げる。",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "12"
+      }
+    }
+  },
   "popup_category_all_label": {
     "message": "全て",
     "description": "popup のカテゴリタブ「全て」のラベル。フィルタなしで全タブを表示する。"
@@ -528,5 +538,39 @@
   "inactive_reset_button_aria_label": {
     "message": "未アクティブ判定分数をデフォルトに戻す",
     "description": "options の未アクティブ判定分数リセットボタンの aria-label。視覚ラベル「デフォルトに戻す」を内包する。"
+  },
+  "cleanup_button_aria_label": {
+    "message": "該当タブを一括で整理",
+    "description": "popup の整理ボタンの aria-label。視覚ラベル「整理する」を補い、現在の絞り込みに該当するタブを一括で閉じることを明示する。"
+  },
+  "archive_button_aria_label": {
+    "message": "該当タブをアーカイブして閉じる",
+    "description": "popup のアーカイブボタンの aria-label。視覚ラベル「アーカイブ」を補い、storage 保存と close を 1 アクションで行うことを明示する。"
+  },
+  "undo_button_aria_label": {
+    "message": "直前の整理を元に戻す",
+    "description": "アンドゥボタンの aria-label。視覚ラベル「元に戻す」を補い、直前の整理対象を新規タブとして復元することを明示する。"
+  },
+  "archive_export_button_aria_label": {
+    "message": "アーカイブを JSON でエクスポート",
+    "description": "options のアーカイブエクスポートボタンの aria-label。視覚ラベル「JSON エクスポート」を内包する。"
+  },
+  "archive_import_button_aria_label": {
+    "message": "アーカイブ JSON をインポート",
+    "description": "options のアーカイブインポートボタンの aria-label。視覚ラベル「JSON インポート」を内包する。"
+  },
+  "grouping_run_button_aria_label": {
+    "message": "同ドメインのタブを今すぐグループ化",
+    "description": "options のグループ化実行ボタンの aria-label。視覚ラベル「今すぐグループ化」を補う。"
+  },
+  "popup_tab_list_aria_label": {
+    "message": "タブ一覧 ($COUNT$ 件)",
+    "description": "popup のタブ一覧 UL の aria-label。$COUNT$ には現在表示中のタブ件数が入る。フィルタや検索で再描画される度に最新件数で更新される。",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "12"
+      }
+    }
   }
 }

@@ -101,7 +101,14 @@ export type MessageKey =
   | 'thresholds_save_button_aria_label'
   | 'thresholds_reset_button_aria_label'
   | 'inactive_save_button_aria_label'
-  | 'inactive_reset_button_aria_label';
+  | 'inactive_reset_button_aria_label'
+  | 'cleanup_button_aria_label'
+  | 'archive_button_aria_label'
+  | 'undo_button_aria_label'
+  | 'archive_export_button_aria_label'
+  | 'archive_import_button_aria_label'
+  | 'grouping_run_button_aria_label'
+  | 'popup_tab_list_aria_label';
 
 export type Locale = 'ja' | 'en';
 

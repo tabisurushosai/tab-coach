@@ -437,6 +437,8 @@ function renderList(): void {
   );
   const filtered = applySearchFilter(byCategory, state.searchQuery);
 
+  list.setAttribute('aria-busy', 'true');
+  list.setAttribute('aria-label', t('popup_tab_list_aria_label', [String(filtered.length)]));
   list.replaceChildren();
   if (filtered.length === 0) {
     const empty =
@@ -444,6 +446,7 @@ function renderList(): void {
         ? t('search_no_match')
         : t('list_empty_placeholder');
     renderEmpty(list, empty);
+    list.setAttribute('aria-busy', 'false');
     return;
   }
   const frag = document.createDocumentFragment();
@@ -451,6 +454,7 @@ function renderList(): void {
     frag.appendChild(createTabItem(snap));
   }
   list.appendChild(frag);
+  list.setAttribute('aria-busy', 'false');
 }
 
 function updateCounts(): void {

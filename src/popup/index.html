@@ -403,11 +403,23 @@
       </button>
     </div>
     <div class="cleanup-bar">
-      <button type="button" id="archive-button" class="archive-button" disabled>
+      <button
+        type="button"
+        id="archive-button"
+        class="archive-button"
+        disabled
+        data-i18n-attr="aria-label:archive_button_aria_label"
+      >
         <span data-i18n="archive_button">Archive</span>
         <span id="archive-count"></span>
       </button>
-      <button type="button" id="cleanup-button" class="cleanup-button" disabled>
+      <button
+        type="button"
+        id="cleanup-button"
+        class="cleanup-button"
+        disabled
+        data-i18n-attr="aria-label:cleanup_button_aria_label"
+      >
         <span data-i18n="cleanup_button">Cleanup</span>
         <span id="cleanup-count"></span>
       </button>
@@ -423,9 +435,22 @@
         <span id="undo-message-text"></span>
         <span id="undo-countdown" class="undo-countdown"></span>
       </span>
-      <button type="button" id="undo-button" class="undo-button" data-i18n="undo_button">Undo</button>
+      <button
+        type="button"
+        id="undo-button"
+        class="undo-button"
+        data-i18n="undo_button"
+        data-i18n-attr="aria-label:undo_button_aria_label"
+      >Undo</button>
     </div>
-    <ul id="tab-list" class="tab-list" role="list"></ul>
+    <ul
+      id="tab-list"
+      class="tab-list"
+      role="list"
+      aria-live="polite"
+      aria-relevant="additions text"
+      aria-busy="false"
+    ></ul>
     <script type="module" src="./popup.ts"></script>
   </body>
 </html>
