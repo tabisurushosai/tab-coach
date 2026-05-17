@@ -11,11 +11,32 @@ const FALLBACK_FAVICON =
       '</svg>',
   );
 
+async function activateTab(snapshot: TabSnapshot): Promise<void> {
+  if (snapshot.id < 0) return;
+  try {
+    await chrome.tabs.update(snapshot.id, { active: true });
+    if (typeof snapshot.windowId === 'number' && snapshot.windowId >= 0) {
+      await chrome.windows.update(snapshot.windowId, { focused: true });
+    }
+    window.close();
+  } catch (err) {
+    logger.error('activateTab failed', err);
+  }
+}
+
 function createTabItem(snapshot: TabSnapshot): HTMLLIElement {
   const li = document.createElement('li');
   li.className = 'tab-item';
   li.setAttribute('role', 'listitem');
   li.dataset['tabId'] = String(snapshot.id);
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'tab-button';
+  button.title = snapshot.url;
+  button.addEventListener('click', () => {
+    void activateTab(snapshot);
+  });
 
   const img = document.createElement('img');
   img.className = 'tab-favicon';
@@ -33,10 +54,10 @@ function createTabItem(snapshot: TabSnapshot): HTMLLIElement {
   const title = document.createElement('span');
   title.className = 'tab-title';
   title.textContent = snapshot.title || snapshot.url;
-  title.title = snapshot.url;
 
-  li.appendChild(img);
-  li.appendChild(title);
+  button.appendChild(img);
+  button.appendChild(title);
+  li.appendChild(button);
   return li;
 }
 

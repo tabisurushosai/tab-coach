@@ -35,7 +35,7 @@
 - [x] T028: chrome.action.setBadgeText でタブ数表示
 - [x] T029: バッジ色 (灰/黄/赤、setBadgeBackgroundColor)
 - [x] T030: popup でタブ一覧表示 (UL + favicon img + title)
-- [ ] T031: popup タブクリックで chrome.tabs.update active=true
+- [x] T031: popup タブクリックで chrome.tabs.update active=true
 - [ ] T032: popup × ボタンで chrome.tabs.remove
 - [ ] T033: 未アクティブ時間計算 (Date.now() - lastAccessed)
 - [ ] T034: 30分以上未アクティブフィルタ

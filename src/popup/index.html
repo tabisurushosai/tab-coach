@@ -43,15 +43,29 @@
       .tab-item {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 6px 16px;
-        cursor: default;
       }
-      .tab-item:hover {
+      .tab-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 6px 16px;
+        margin: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+      .tab-button:hover,
+      .tab-button:focus-visible {
         background: rgba(0, 0, 0, 0.04);
+        outline: none;
       }
       @media (prefers-color-scheme: dark) {
-        .tab-item:hover {
+        .tab-button:hover,
+        .tab-button:focus-visible {
           background: rgba(255, 255, 255, 0.06);
         }
         .count {
