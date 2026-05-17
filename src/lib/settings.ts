@@ -20,6 +20,9 @@ export const MIN_TAB_LIMIT = 1;
 export const MAX_TAB_LIMIT = 999;
 export const MIN_INACTIVE_MINUTES = 1;
 export const MAX_INACTIVE_MINUTES = 1440;
+export const MIN_FONT_SCALE = 0.8;
+export const MAX_FONT_SCALE = 1.5;
+export const FONT_SCALE_STEP = 0.05;
 
 export type ThresholdInput = {
   tabLimitYellow: number;
@@ -38,6 +41,12 @@ export type InactiveMinutesValidationResult =
   | { ok: true; value: number }
   | { ok: false; reason: InactiveMinutesValidationError };
 
+export type FontScaleValidationError = 'font_scale_invalid';
+
+export type FontScaleValidationResult =
+  | { ok: true; value: number }
+  | { ok: false; reason: FontScaleValidationError };
+
 function toFiniteInt(raw: unknown): number | null {
   const n = typeof raw === 'number' ? raw : Number(raw);
   if (!Number.isFinite(n)) return null;
@@ -50,6 +59,18 @@ function isInLimitRange(n: number): boolean {
 
 function isInInactiveRange(n: number): boolean {
   return n >= MIN_INACTIVE_MINUTES && n <= MAX_INACTIVE_MINUTES;
+}
+
+function toFiniteNumber(raw: unknown): number | null {
+  const n = typeof raw === 'number' ? raw : Number(raw);
+  if (!Number.isFinite(n)) return null;
+  return n;
+}
+
+function quantizeFontScale(n: number): number {
+  const steps = Math.round((n - MIN_FONT_SCALE) / FONT_SCALE_STEP);
+  const quantized = MIN_FONT_SCALE + steps * FONT_SCALE_STEP;
+  return Math.round(quantized * 100) / 100;
 }
 
 export function validateThresholds(
@@ -106,4 +127,23 @@ export async function saveInactiveMinutes(value: number): Promise<Settings> {
 
 export async function resetInactiveMinutes(): Promise<Settings> {
   return saveInactiveMinutes(DEFAULT_SETTINGS.inactiveMinutes);
+}
+
+export function validateFontScale(raw: unknown): FontScaleValidationResult {
+  const n = toFiniteNumber(raw);
+  if (n === null || n < MIN_FONT_SCALE || n > MAX_FONT_SCALE) {
+    return { ok: false, reason: 'font_scale_invalid' };
+  }
+  return { ok: true, value: quantizeFontScale(n) };
+}
+
+export async function saveFontScale(value: number): Promise<Settings> {
+  return update('settings', (current) => ({
+    ...current,
+    fontScale: value,
+  }));
+}
+
+export async function resetFontScale(): Promise<Settings> {
+  return saveFontScale(DEFAULT_SETTINGS.fontScale);
 }

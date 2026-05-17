@@ -572,5 +572,51 @@
         "example": "12"
       }
     }
+  },
+  "fontscale_section_title": {
+    "message": "文字サイズ",
+    "description": "options の文字サイズ設定セクションの見出し。popup と options の表示文字サイズをスライダーで調整する。"
+  },
+  "fontscale_section_hint": {
+    "message": "popup と options の表示文字サイズを 80%〜150% の範囲で調整できます。",
+    "description": "文字サイズ設定セクションの説明文。可変範囲と適用対象を示す。"
+  },
+  "fontscale_slider_label": {
+    "message": "文字倍率",
+    "description": "文字サイズ調整スライダー (input type=range) のラベル。"
+  },
+  "fontscale_value_format": {
+    "message": "$PERCENT$%",
+    "description": "現在の文字倍率を % 表記で表示するフォーマット。$PERCENT$ には 80〜150 の整数が入る。",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "100"
+      }
+    }
+  },
+  "fontscale_reset_button": {
+    "message": "デフォルトに戻す",
+    "description": "文字サイズをデフォルト (100%) に戻すボタンのラベル。"
+  },
+  "fontscale_reset_button_aria_label": {
+    "message": "文字サイズをデフォルトに戻す",
+    "description": "文字サイズリセットボタンの aria-label。視覚ラベル「デフォルトに戻す」を補う。"
+  },
+  "fontscale_saved_notice": {
+    "message": "保存しました。",
+    "description": "文字サイズ保存成功時のステータス文言。"
+  },
+  "fontscale_save_error_notice": {
+    "message": "文字サイズの保存に失敗しました。",
+    "description": "文字サイズ保存失敗時のステータス文言。"
+  },
+  "fontscale_preview_label": {
+    "message": "プレビュー",
+    "description": "文字サイズのライブプレビュー欄のラベル。"
+  },
+  "fontscale_preview_text": {
+    "message": "Aa あ — タブ整理で時間を節約。",
+    "description": "文字サイズプレビューに表示するサンプル文。スライダー操作で即座に反映される。"
   }
 }

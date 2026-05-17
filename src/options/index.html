@@ -8,7 +8,7 @@
       :root {
         color-scheme: light dark;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        font-size: 14px;
+        font-size: calc(14px * var(--font-scale, 1));
       }
       body {
         max-width: 720px;
@@ -597,6 +597,100 @@
       html[data-theme='dark'] .darkmode-status.is-error {
         color: #fca5a5;
       }
+      .fontscale-section {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .fontscale-control {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .fontscale-slider {
+        flex: 1;
+        min-width: 200px;
+        accent-color: #2563eb;
+      }
+      .fontscale-slider:focus-visible {
+        outline: 2px solid #2563eb;
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+      .fontscale-value {
+        min-width: 48px;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        font-size: 13px;
+        color: #374151;
+      }
+      .fontscale-reset-button {
+        padding: 6px 12px;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        border-radius: 4px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .fontscale-reset-button:hover,
+      .fontscale-reset-button:focus-visible {
+        background: rgba(0, 0, 0, 0.04);
+        outline: none;
+      }
+      .fontscale-status {
+        min-height: 18px;
+        margin: 0;
+        font-size: 12px;
+        color: #15803d;
+      }
+      .fontscale-status.is-error {
+        color: #b91c1c;
+      }
+      .fontscale-preview {
+        margin-top: 4px;
+        padding: 10px 12px;
+        border: 1px dashed rgba(0, 0, 0, 0.16);
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.02);
+      }
+      .fontscale-preview-label {
+        display: block;
+        margin: 0 0 4px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #6b7280;
+      }
+      .fontscale-preview-text {
+        margin: 0;
+        font-size: 14px;
+      }
+      html[data-theme='dark'] .fontscale-value {
+        color: #d1d5db;
+      }
+      html[data-theme='dark'] .fontscale-reset-button {
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+      html[data-theme='dark'] .fontscale-reset-button:hover,
+      html[data-theme='dark'] .fontscale-reset-button:focus-visible {
+        background: rgba(255, 255, 255, 0.06);
+      }
+      html[data-theme='dark'] .fontscale-status {
+        color: #86efac;
+      }
+      html[data-theme='dark'] .fontscale-status.is-error {
+        color: #fca5a5;
+      }
+      html[data-theme='dark'] .fontscale-preview {
+        border-color: rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      html[data-theme='dark'] .fontscale-preview-label {
+        color: #9ca3af;
+      }
     </style>
   </head>
   <body>
@@ -630,6 +724,44 @@
         </li>
       </ul>
       <p id="darkmode-status" class="darkmode-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="fontscale-section" aria-labelledby="fontscale-title">
+      <h2 id="fontscale-title" data-i18n="fontscale_section_title">Font size</h2>
+      <p class="hint" data-i18n="fontscale_section_hint"></p>
+      <div class="fontscale-control">
+        <input
+          id="fontscale-slider"
+          class="fontscale-slider"
+          type="range"
+          min="0.8"
+          max="1.5"
+          step="0.05"
+          value="1"
+          data-i18n-attr="aria-label:fontscale_slider_label"
+        />
+        <span id="fontscale-value" class="fontscale-value" aria-live="polite"></span>
+        <button
+          type="button"
+          id="fontscale-reset-button"
+          class="fontscale-reset-button"
+          data-i18n="fontscale_reset_button"
+          data-i18n-attr="aria-label:fontscale_reset_button_aria_label"
+        >
+          Reset to default
+        </button>
+      </div>
+      <div class="fontscale-preview" aria-hidden="true">
+        <span class="fontscale-preview-label" data-i18n="fontscale_preview_label">Preview</span>
+        <p
+          id="fontscale-preview-text"
+          class="fontscale-preview-text"
+          data-i18n="fontscale_preview_text"
+        >
+          Aa — Save time by tidying your tabs.
+        </p>
+      </div>
+      <p id="fontscale-status" class="fontscale-status" role="status" aria-live="polite"></p>
     </section>
 
     <section aria-labelledby="thresholds-title">

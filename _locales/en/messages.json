@@ -546,5 +546,51 @@
   "grouping_run_button_aria_label": {
     "message": "Group same-domain tabs now",
     "description": "Aria-label of the options tab-grouping run button. Disambiguates the visible \"Group now\" label."
+  },
+  "fontscale_section_title": {
+    "message": "Font size",
+    "description": "Heading of the font-size section in the options page. Adjusts the display font size of popup and options via a slider."
+  },
+  "fontscale_section_hint": {
+    "message": "Adjust the display font size of popup and options between 80% and 150%.",
+    "description": "Helper text for the font size section explaining the supported range and what it affects."
+  },
+  "fontscale_slider_label": {
+    "message": "Font scale",
+    "description": "Label for the font-size adjustment slider (input type=range)."
+  },
+  "fontscale_value_format": {
+    "message": "$PERCENT$%",
+    "description": "Format for showing the current font scale as percent. $PERCENT$ is an integer between 80 and 150.",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "100"
+      }
+    }
+  },
+  "fontscale_reset_button": {
+    "message": "Reset to default",
+    "description": "Label for the button that resets the font size to the default (100%)."
+  },
+  "fontscale_reset_button_aria_label": {
+    "message": "Reset font size to default",
+    "description": "Aria-label for the font-size reset button. Disambiguates the visible \"Reset to default\" label."
+  },
+  "fontscale_saved_notice": {
+    "message": "Saved.",
+    "description": "Status text shown after the font size is successfully saved."
+  },
+  "fontscale_save_error_notice": {
+    "message": "Failed to save the font size.",
+    "description": "Status text shown when saving the font size fails."
+  },
+  "fontscale_preview_label": {
+    "message": "Preview",
+    "description": "Label for the live preview area that reflects the current font scale."
+  },
+  "fontscale_preview_text": {
+    "message": "Aa — Save time by tidying your tabs.",
+    "description": "Sample text shown in the font-size preview area. Updates immediately as the slider moves."
   }
 }

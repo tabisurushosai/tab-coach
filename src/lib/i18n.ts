@@ -108,7 +108,17 @@ export type MessageKey =
   | 'archive_export_button_aria_label'
   | 'archive_import_button_aria_label'
   | 'grouping_run_button_aria_label'
-  | 'popup_tab_list_aria_label';
+  | 'popup_tab_list_aria_label'
+  | 'fontscale_section_title'
+  | 'fontscale_section_hint'
+  | 'fontscale_slider_label'
+  | 'fontscale_value_format'
+  | 'fontscale_reset_button'
+  | 'fontscale_reset_button_aria_label'
+  | 'fontscale_saved_notice'
+  | 'fontscale_save_error_notice'
+  | 'fontscale_preview_label'
+  | 'fontscale_preview_text';
 
 export type Locale = 'ja' | 'en';
 

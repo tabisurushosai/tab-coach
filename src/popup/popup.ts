@@ -1,6 +1,6 @@
 import { applyI18nToDom, t } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
-import { applyTheme, installSystemThemeListener } from '@/lib/theme';
+import { applyFontScale, applyTheme, installSystemThemeListener } from '@/lib/theme';
 import { isDarkModeValue } from '@/lib/settings';
 import {
   filterDuplicateHostnames,
@@ -606,6 +606,7 @@ async function loadAndRender(): Promise<void> {
     state.readCompleted = stored.readCompleted;
     state.whitelist = stored.whitelist;
     applyTheme(stored.settings.darkMode);
+    applyFontScale(stored.settings.fontScale);
   } catch (err) {
     logger.error('popup load failed', err);
   }
@@ -625,16 +626,24 @@ function bindThemeListeners(): void {
     if (areaName !== 'local') return;
     const settingsChange = changes['settings'];
     if (!settingsChange) return;
-    const next = (settingsChange.newValue ?? null) as { darkMode?: unknown } | null;
+    const next = (settingsChange.newValue ?? null) as {
+      darkMode?: unknown;
+      fontScale?: unknown;
+    } | null;
     if (next && isDarkModeValue(next.darkMode)) {
       state.settings = { ...state.settings, darkMode: next.darkMode };
       applyTheme(next.darkMode);
+    }
+    if (next && typeof next.fontScale === 'number' && Number.isFinite(next.fontScale)) {
+      state.settings = { ...state.settings, fontScale: next.fontScale };
+      applyFontScale(next.fontScale);
     }
   });
 }
 
 function init(): void {
   applyTheme(state.settings.darkMode);
+  applyFontScale(state.settings.fontScale);
   applyI18nToDom(document);
   bindSearchInput();
   bindCategoryTabs();

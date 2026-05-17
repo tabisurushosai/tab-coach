@@ -30,6 +30,15 @@ export function applyTheme(mode: ThemeMode): ResolvedTheme {
   return resolved;
 }
 
+export function applyFontScale(scale: number): void {
+  if (typeof document === 'undefined' || !document.documentElement) return;
+  if (!Number.isFinite(scale) || scale <= 0) {
+    document.documentElement.style.removeProperty('--font-scale');
+    return;
+  }
+  document.documentElement.style.setProperty('--font-scale', String(scale));
+}
+
 export function getCurrentResolvedTheme(): ResolvedTheme {
   if (typeof document !== 'undefined' && document.documentElement) {
     const v = document.documentElement.dataset['theme'];

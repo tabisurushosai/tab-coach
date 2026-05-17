@@ -13,22 +13,29 @@ import { logger } from '@/lib/logger';
 import {
   isDarkModeValue,
   loadSettings,
+  resetFontScale,
   resetInactiveMinutes,
   resetThresholds,
   saveDarkMode,
+  saveFontScale,
   saveInactiveMinutes,
   saveThresholds,
+  validateFontScale,
   validateInactiveMinutes,
   validateThresholds,
+  MAX_FONT_SCALE,
+  MIN_FONT_SCALE,
   type DarkModeValue,
   type InactiveMinutesValidationError,
   type ThresholdValidationError,
 } from '@/lib/settings';
 import {
+  applyFontScale,
   applyTheme,
   getCurrentResolvedTheme,
   installSystemThemeListener,
 } from '@/lib/theme';
+import { DEFAULT_SETTINGS } from '@/types/storage';
 import {
   addWhitelistEntry,
   loadWhitelist,
@@ -301,6 +308,7 @@ async function loadAndRenderThresholds(): Promise<void> {
     applyThresholdValuesToInputs(settings);
     applyInactiveValueToInput(settings);
     applyDarkModeFromSettings(settings.darkMode);
+    applyFontScaleFromSettings(settings.fontScale);
   } catch (err) {
     logger.error('threshold load failed', err);
   }
@@ -960,9 +968,133 @@ function bindGroupingButton(): void {
   });
 }
 
+let currentFontScale: number = DEFAULT_SETTINGS.fontScale;
+let fontScaleSaveTimer: number | null = null;
+
+function clampFontScale(value: number): number {
+  if (value < MIN_FONT_SCALE) return MIN_FONT_SCALE;
+  if (value > MAX_FONT_SCALE) return MAX_FONT_SCALE;
+  return Math.round(value * 100) / 100;
+}
+
+function setFontScaleStatus(message: string, isError: boolean): void {
+  const el = document.getElementById('fontscale-status');
+  if (!(el instanceof HTMLElement)) return;
+  el.textContent = message;
+  el.classList.toggle('is-error', isError);
+}
+
+function setFontScaleValueLabel(value: number): void {
+  const el = document.getElementById('fontscale-value');
+  if (!(el instanceof HTMLElement)) return;
+  const percent = Math.round(value * 100);
+  el.textContent = t('fontscale_value_format', [String(percent)]);
+}
+
+function getFontScaleSlider(): HTMLInputElement | null {
+  const el = document.getElementById('fontscale-slider');
+  return el instanceof HTMLInputElement ? el : null;
+}
+
+function applyFontScaleFromSettings(value: number): void {
+  const clamped = clampFontScale(Number.isFinite(value) ? value : DEFAULT_SETTINGS.fontScale);
+  currentFontScale = clamped;
+  applyFontScale(clamped);
+  const slider = getFontScaleSlider();
+  if (slider) slider.value = String(clamped);
+  setFontScaleValueLabel(clamped);
+}
+
+function scheduleFontScaleSave(value: number): void {
+  if (fontScaleSaveTimer !== null) {
+    window.clearTimeout(fontScaleSaveTimer);
+  }
+  fontScaleSaveTimer = window.setTimeout(() => {
+    fontScaleSaveTimer = null;
+    void persistFontScale(value);
+  }, 250);
+}
+
+async function persistFontScale(value: number): Promise<void> {
+  const result = validateFontScale(value);
+  if (!result.ok) {
+    setFontScaleStatus(t('fontscale_save_error_notice'), true);
+    return;
+  }
+  try {
+    await saveFontScale(result.value);
+    setFontScaleStatus(t('fontscale_saved_notice'), false);
+  } catch (err) {
+    logger.error('font scale save failed', err);
+    setFontScaleStatus(t('fontscale_save_error_notice'), true);
+  }
+}
+
+function handleFontScaleInput(): void {
+  const slider = getFontScaleSlider();
+  if (!slider) return;
+  const raw = Number(slider.value);
+  if (!Number.isFinite(raw)) return;
+  const value = clampFontScale(raw);
+  currentFontScale = value;
+  applyFontScale(value);
+  setFontScaleValueLabel(value);
+  scheduleFontScaleSave(value);
+}
+
+async function handleFontScaleReset(): Promise<void> {
+  const btn = document.getElementById('fontscale-reset-button');
+  if (btn instanceof HTMLButtonElement) btn.disabled = true;
+  if (fontScaleSaveTimer !== null) {
+    window.clearTimeout(fontScaleSaveTimer);
+    fontScaleSaveTimer = null;
+  }
+  try {
+    const next = await resetFontScale();
+    applyFontScaleFromSettings(next.fontScale);
+    setFontScaleStatus(t('fontscale_saved_notice'), false);
+  } catch (err) {
+    logger.error('font scale reset failed', err);
+    setFontScaleStatus(t('fontscale_save_error_notice'), true);
+  } finally {
+    if (btn instanceof HTMLButtonElement) btn.disabled = false;
+  }
+}
+
+function bindFontScaleControls(): void {
+  const slider = getFontScaleSlider();
+  if (slider) {
+    slider.addEventListener('input', () => handleFontScaleInput());
+  }
+  const resetBtn = document.getElementById('fontscale-reset-button');
+  if (resetBtn instanceof HTMLButtonElement) {
+    resetBtn.addEventListener('click', () => {
+      void handleFontScaleReset();
+    });
+  }
+}
+
+function bindFontScaleStorageListener(): void {
+  if (typeof chrome === 'undefined' || !chrome.storage?.onChanged) return;
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== 'local') return;
+    const settingsChange = changes['settings'];
+    if (!settingsChange) return;
+    const next = (settingsChange.newValue ?? null) as { fontScale?: unknown } | null;
+    if (!next) return;
+    const raw = Number(next.fontScale);
+    if (!Number.isFinite(raw)) return;
+    const clamped = clampFontScale(raw);
+    if (Math.abs(clamped - currentFontScale) < 0.001) return;
+    applyFontScaleFromSettings(clamped);
+  });
+}
+
 function init(): void {
   applyTheme(currentDarkMode);
+  applyFontScaleFromSettings(currentFontScale);
   applyI18nToDom(document);
+  setFontScaleValueLabel(currentFontScale);
   bindForm();
   bindThresholdForm();
   bindInactiveForm();
@@ -975,6 +1107,8 @@ function init(): void {
   bindDarkModeRadios();
   bindDarkModeSystemListener();
   bindDarkModeStorageListener();
+  bindFontScaleControls();
+  bindFontScaleStorageListener();
   void loadAndRender();
   void loadAndRenderThresholds();
   void loadAndRenderArchive();
