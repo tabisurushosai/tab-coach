@@ -11,26 +11,79 @@
         font-size: 14px;
       }
       body {
-        width: 320px;
-        min-height: 120px;
+        width: 360px;
+        max-height: 480px;
         margin: 0;
-        padding: 16px;
+        padding: 12px 0;
         box-sizing: border-box;
+        overflow: hidden;
+      }
+      header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        padding: 0 16px 8px;
       }
       h1 {
-        margin: 0 0 8px;
-        font-size: 16px;
+        margin: 0;
+        font-size: 14px;
         font-weight: 600;
       }
-      p {
+      .count {
+        font-size: 12px;
+        color: #6b7280;
+      }
+      .tab-list {
+        list-style: none;
         margin: 0;
-        color: #666;
+        padding: 0;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .tab-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 16px;
+        cursor: default;
+      }
+      .tab-item:hover {
+        background: rgba(0, 0, 0, 0.04);
+      }
+      @media (prefers-color-scheme: dark) {
+        .tab-item:hover {
+          background: rgba(255, 255, 255, 0.06);
+        }
+        .count {
+          color: #9ca3af;
+        }
+      }
+      .tab-favicon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        object-fit: contain;
+      }
+      .tab-title {
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .empty {
+        padding: 16px;
+        color: #6b7280;
+        text-align: center;
       }
     </style>
   </head>
   <body>
-    <h1 id="title" data-i18n="extension_name">tab-coach</h1>
-    <p id="message">Hello World</p>
+    <header>
+      <h1 id="title" data-i18n="extension_name">tab-coach</h1>
+      <span id="count" class="count"></span>
+    </header>
+    <ul id="tab-list" class="tab-list" role="list"></ul>
     <script type="module" src="./popup.ts"></script>
   </body>
 </html>
