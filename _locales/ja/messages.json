@@ -7,6 +7,46 @@
     "message": "タブ過多を可視化し、ワンクリックで整理。完全オフライン・広告なし・最小権限。",
     "description": "拡張機能の短い説明文 (132字以内)。Chrome Web Store とブラウザ拡張一覧に表示される。"
   },
+  "popup_category_tabs_aria_label": {
+    "message": "タブ分類フィルター",
+    "description": "popup のカテゴリタブ群 (All / Inactive / Duplicate / Read) を包むコンテナの aria-label。"
+  },
+  "popup_category_all_label": {
+    "message": "全て",
+    "description": "popup のカテゴリタブ「全て」のラベル。フィルタなしで全タブを表示する。"
+  },
+  "popup_category_inactive_label": {
+    "message": "未アクティブ",
+    "description": "popup のカテゴリタブ「未アクティブ」のラベル。設定分数以上アクセスされていないタブを表示する。"
+  },
+  "popup_category_duplicate_label": {
+    "message": "重複",
+    "description": "popup のカテゴリタブ「重複」のラベル。同じドメインを開いているタブをまとめて表示する。"
+  },
+  "popup_category_read_label": {
+    "message": "読了",
+    "description": "popup のカテゴリタブ「読了」のラベル。スクロール 90% かつ滞在 60 秒以上で「読み終わった」と判定されたタブを表示する。"
+  },
+  "popup_close_tab_label": {
+    "message": "このタブを閉じる",
+    "description": "popup の各タブ行に表示される × ボタンの aria-label / title。chrome.tabs.remove で対象タブを 1 件だけ閉じる。"
+  },
+  "whitelist_list_aria_label": {
+    "message": "ホワイトリストエントリ一覧",
+    "description": "options のホワイトリスト一覧 (UL 要素) の aria-label。"
+  },
+  "archive_list_aria_label": {
+    "message": "アーカイブ済みタブ一覧",
+    "description": "options のアーカイブ一覧 (UL 要素) の aria-label。"
+  },
+  "report_summary_cleanups_label": {
+    "message": "整理回数",
+    "description": "月次レポートの「整理実行回数」カードのラベル。"
+  },
+  "report_summary_closed_label": {
+    "message": "閉じたタブ",
+    "description": "月次レポートの「閉じたタブ件数」カードのラベル。"
+  },
   "cleanup_button": {
     "message": "整理する",
     "description": "popup の一括整理ボタンのラベル。現在のカテゴリに該当するタブを一括で閉じる。"

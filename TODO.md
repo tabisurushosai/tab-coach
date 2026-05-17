@@ -62,7 +62,7 @@
 - [x] T055: タブグループ自動化 (chrome.tabGroups で同ドメインまとめ、Premium 想定)
 
 ## Phase 3: 国際化・アクセシビリティ (T056-T070)
-- [ ] T056: _locales/ja/messages.json 完全版 (全 UI 文字列)
+- [x] T056: _locales/ja/messages.json 完全版 (全 UI 文字列)
 - [ ] T057: _locales/en/messages.json 完全版
 - [ ] T058: popup の全文字列を chrome.i18n.getMessage に置換
 - [ ] T059: options の全文字列を i18n 化
