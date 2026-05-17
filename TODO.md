@@ -54,7 +54,7 @@
 - [x] T047: popup の検索ボックス (タイトル/URL filter)
 - [x] T048: アーカイブ機能 (close 代わりに storage 保存)
 - [x] T049: options アーカイブ一覧 (タイトル/URL/日時)
-- [ ] T050: アーカイブから復元 (chrome.tabs.create)
+- [x] T050: アーカイブから復元 (chrome.tabs.create)
 - [ ] T051: アーカイブのエクスポート (JSON ダウンロード)
 - [ ] T052: アーカイブのインポート (JSON アップロード)
 - [ ] T053: 月次レポート (整理回数 + 推定節約時間)

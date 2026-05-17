@@ -196,5 +196,13 @@
   "archive_open_link_label": {
     "message": "リンクを開く",
     "description": "アーカイブ一覧の各エントリにある外部リンク (URL を新規タブで開く) の aria-label。"
+  },
+  "archive_restore_button": {
+    "message": "復元",
+    "description": "アーカイブ一覧の各エントリにある復元ボタンのラベル。chrome.tabs.create で URL を新規タブとして開き、アーカイブから削除する。"
+  },
+  "archive_restore_label": {
+    "message": "復元してアーカイブから削除",
+    "description": "復元ボタンの aria-label。URL を新規タブで開いたうえでアーカイブ一覧から取り除く操作。"
   }
 }

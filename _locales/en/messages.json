@@ -196,5 +196,13 @@
   "archive_open_link_label": {
     "message": "Open link",
     "description": "Aria-label for the open-link button on each archive entry that opens the URL in a new tab."
+  },
+  "archive_restore_button": {
+    "message": "Restore",
+    "description": "Label for the restore button on each archive entry. Opens the URL as a new tab via chrome.tabs.create and removes the entry from the archive."
+  },
+  "archive_restore_label": {
+    "message": "Restore and remove from archive",
+    "description": "Aria-label for the restore button: opens the URL in a new tab and removes the entry from the archive list."
   }
 }

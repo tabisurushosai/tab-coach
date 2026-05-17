@@ -279,7 +279,14 @@
         font-size: 11px;
         color: #6b7280;
       }
-      .archive-open-button {
+      .archive-actions {
+        flex-shrink: 0;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .archive-open-button,
+      .archive-restore-button {
         flex-shrink: 0;
         padding: 4px 8px;
         border: 1px solid rgba(0, 0, 0, 0.16);
@@ -292,9 +299,15 @@
         cursor: pointer;
       }
       .archive-open-button:hover,
-      .archive-open-button:focus-visible {
+      .archive-open-button:focus-visible,
+      .archive-restore-button:hover,
+      .archive-restore-button:focus-visible {
         background: rgba(0, 0, 0, 0.04);
         outline: none;
+      }
+      .archive-restore-button:disabled {
+        opacity: 0.5;
+        cursor: progress;
       }
       .archive-empty {
         padding: 12px;
@@ -331,7 +344,8 @@
         }
         .whitelist-remove-button,
         .thresholds-reset-button,
-        .archive-open-button {
+        .archive-open-button,
+        .archive-restore-button {
           border-color: rgba(255, 255, 255, 0.16);
         }
         .whitelist-remove-button:hover,
@@ -339,7 +353,9 @@
         .thresholds-reset-button:hover,
         .thresholds-reset-button:focus-visible,
         .archive-open-button:hover,
-        .archive-open-button:focus-visible {
+        .archive-open-button:focus-visible,
+        .archive-restore-button:hover,
+        .archive-restore-button:focus-visible {
           background: rgba(255, 255, 255, 0.06);
         }
         .whitelist-error,

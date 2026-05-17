@@ -1,4 +1,4 @@
-import { loadArchive } from '@/lib/archive';
+import { loadArchive, removeArchivedTab } from '@/lib/archive';
 import { refreshBadge } from '@/lib/badge';
 import { applyI18nToDom, getUILocale, t, type MessageKey } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
@@ -409,6 +409,19 @@ function createArchiveItem(entry: ArchivedTab): HTMLLIElement {
   li.appendChild(body);
 
   if (isSafeUrl(entry.url)) {
+    const actions = document.createElement('div');
+    actions.className = 'archive-actions';
+
+    const restoreBtn = document.createElement('button');
+    restoreBtn.type = 'button';
+    restoreBtn.className = 'archive-restore-button';
+    restoreBtn.textContent = t('archive_restore_button');
+    restoreBtn.setAttribute('aria-label', `${t('archive_restore_label')}: ${entry.url}`);
+    restoreBtn.addEventListener('click', () => {
+      void handleRestore(entry, restoreBtn);
+    });
+    actions.appendChild(restoreBtn);
+
     const openLink = document.createElement('a');
     openLink.className = 'archive-open-button';
     openLink.href = entry.url;
@@ -416,10 +429,30 @@ function createArchiveItem(entry: ArchivedTab): HTMLLIElement {
     openLink.rel = 'noopener noreferrer';
     openLink.textContent = '↗';
     openLink.setAttribute('aria-label', `${t('archive_open_link_label')}: ${entry.url}`);
-    li.appendChild(openLink);
+    actions.appendChild(openLink);
+
+    li.appendChild(actions);
   }
 
   return li;
+}
+
+async function handleRestore(entry: ArchivedTab, button: HTMLButtonElement): Promise<void> {
+  if (!isSafeUrl(entry.url)) return;
+  button.disabled = true;
+  try {
+    if (typeof chrome === 'undefined' || !chrome.tabs?.create) {
+      logger.error('chrome.tabs.create unavailable');
+      button.disabled = false;
+      return;
+    }
+    await chrome.tabs.create({ url: entry.url, active: false });
+    const next = await removeArchivedTab(entry.archivedAt, entry.url);
+    renderArchive(next);
+  } catch (err) {
+    logger.error('archive restore failed', err);
+    button.disabled = false;
+  }
 }
 
 function renderArchiveEmpty(list: HTMLUListElement): void {

@@ -43,7 +43,9 @@ export type MessageKey =
   | 'archive_section_hint'
   | 'archive_empty'
   | 'archive_count_label'
-  | 'archive_open_link_label';
+  | 'archive_open_link_label'
+  | 'archive_restore_button'
+  | 'archive_restore_label';
 
 export type Locale = 'ja' | 'en';
 
