@@ -9,7 +9,7 @@
 - [x] T006: CHANGELOG.md (Keep a Changelog 準拠)
 - [x] T007: .editorconfig / .prettierrc.json / .eslintrc.json
 - [x] T008: docs/architecture.md (Mermaid 構成図)
-- [ ] T009: docs/release.md (リリース手順)
+- [x] T009: docs/release.md (リリース手順)
 - [ ] T010: .github/ISSUE_TEMPLATE/ + pull_request_template.md
 
 ## Phase 1: 基盤構築 (T011-T025)
