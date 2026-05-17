@@ -16,7 +16,17 @@ export type MessageKey =
   | 'whitelist_error_empty'
   | 'whitelist_error_duplicate'
   | 'whitelist_error_too_long'
-  | 'whitelist_error_limit';
+  | 'whitelist_error_limit'
+  | 'thresholds_section_title'
+  | 'thresholds_section_hint'
+  | 'thresholds_yellow_label'
+  | 'thresholds_red_label'
+  | 'thresholds_save_button'
+  | 'thresholds_reset_button'
+  | 'thresholds_saved_notice'
+  | 'thresholds_error_yellow_invalid'
+  | 'thresholds_error_red_invalid'
+  | 'thresholds_error_red_not_greater';
 
 export type Locale = 'ja' | 'en';
 

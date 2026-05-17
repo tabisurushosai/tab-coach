@@ -134,14 +134,94 @@
         text-align: center;
         font-size: 13px;
       }
+      .thresholds-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px 12px;
+        align-items: end;
+        margin-bottom: 8px;
+      }
+      .thresholds-form label {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 12px;
+        color: #374151;
+      }
+      .thresholds-form input {
+        padding: 6px 8px;
+        font: inherit;
+        font-size: 13px;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        border-radius: 4px;
+        background: transparent;
+        color: inherit;
+        box-sizing: border-box;
+      }
+      .thresholds-form input:focus {
+        outline: 2px solid #2563eb;
+        outline-offset: 1px;
+      }
+      .thresholds-actions {
+        grid-column: 1 / -1;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .thresholds-save-button {
+        padding: 7px 14px;
+        border: 0;
+        border-radius: 4px;
+        background: #2563eb;
+        color: #fff;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .thresholds-save-button:hover,
+      .thresholds-save-button:focus-visible {
+        background: #1d4ed8;
+        outline: none;
+      }
+      .thresholds-save-button:disabled {
+        background: #93c5fd;
+        cursor: progress;
+      }
+      .thresholds-reset-button {
+        padding: 6px 12px;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        border-radius: 4px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .thresholds-reset-button:hover,
+      .thresholds-reset-button:focus-visible {
+        background: rgba(0, 0, 0, 0.04);
+        outline: none;
+      }
+      .thresholds-status {
+        min-height: 18px;
+        margin: 0;
+        font-size: 12px;
+        color: #15803d;
+      }
+      .thresholds-status.is-error {
+        color: #b91c1c;
+      }
       @media (prefers-color-scheme: dark) {
         .hint,
         .whitelist-form label,
         .whitelist-item-meta,
-        .whitelist-empty {
+        .whitelist-empty,
+        .thresholds-form label {
           color: #9ca3af;
         }
-        .whitelist-form input {
+        .whitelist-form input,
+        .thresholds-form input {
           border-color: rgba(255, 255, 255, 0.16);
         }
         .whitelist-list {
@@ -150,21 +230,80 @@
         .whitelist-item {
           border-bottom-color: rgba(255, 255, 255, 0.08);
         }
-        .whitelist-remove-button {
+        .whitelist-remove-button,
+        .thresholds-reset-button {
           border-color: rgba(255, 255, 255, 0.16);
         }
         .whitelist-remove-button:hover,
-        .whitelist-remove-button:focus-visible {
+        .whitelist-remove-button:focus-visible,
+        .thresholds-reset-button:hover,
+        .thresholds-reset-button:focus-visible {
           background: rgba(255, 255, 255, 0.06);
         }
-        .whitelist-error {
+        .whitelist-error,
+        .thresholds-status.is-error {
           color: #fca5a5;
+        }
+        .thresholds-status {
+          color: #86efac;
         }
       }
     </style>
   </head>
   <body>
     <h1 id="title" data-i18n="extension_name">tab-coach</h1>
+
+    <section aria-labelledby="thresholds-title">
+      <h2 id="thresholds-title" data-i18n="thresholds_section_title">Badge thresholds</h2>
+      <p class="hint" data-i18n="thresholds_section_hint"></p>
+      <form id="thresholds-form" class="thresholds-form" novalidate>
+        <label>
+          <span data-i18n="thresholds_yellow_label">Yellow threshold</span>
+          <input
+            id="thresholds-yellow"
+            type="number"
+            min="1"
+            max="999"
+            step="1"
+            inputmode="numeric"
+            autocomplete="off"
+            required
+          />
+        </label>
+        <label>
+          <span data-i18n="thresholds_red_label">Red threshold</span>
+          <input
+            id="thresholds-red"
+            type="number"
+            min="1"
+            max="999"
+            step="1"
+            inputmode="numeric"
+            autocomplete="off"
+            required
+          />
+        </label>
+        <div class="thresholds-actions">
+          <button
+            type="submit"
+            id="thresholds-save-button"
+            class="thresholds-save-button"
+            data-i18n="thresholds_save_button"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            id="thresholds-reset-button"
+            class="thresholds-reset-button"
+            data-i18n="thresholds_reset_button"
+          >
+            Reset to defaults
+          </button>
+        </div>
+      </form>
+      <p id="thresholds-status" class="thresholds-status" role="status" aria-live="polite"></p>
+    </section>
 
     <section aria-labelledby="whitelist-title">
       <h2 id="whitelist-title" data-i18n="whitelist_section_title">Whitelist</h2>

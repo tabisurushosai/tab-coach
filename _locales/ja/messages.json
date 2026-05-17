@@ -76,5 +76,45 @@
   "whitelist_error_limit": {
     "message": "ホワイトリストの上限 (200 件) に達しました。",
     "description": "ホワイトリスト追加時、エントリ数上限到達時のエラー文言。"
+  },
+  "thresholds_section_title": {
+    "message": "バッジ閾値",
+    "description": "options のバッジ閾値設定セクションの見出し。バッジが黄色・赤に切り替わるタブ数をカスタマイズする。"
+  },
+  "thresholds_section_hint": {
+    "message": "ツールバーバッジ色の切替タブ数。黄色未満は灰、黄色以上は黄、赤以上は赤。",
+    "description": "閾値セクションの説明文。設定値の適用方法を示す。"
+  },
+  "thresholds_yellow_label": {
+    "message": "黄色の閾値",
+    "description": "バッジが黄色になるタブ数を指定する入力欄のラベル。"
+  },
+  "thresholds_red_label": {
+    "message": "赤の閾値",
+    "description": "バッジが赤になるタブ数を指定する入力欄のラベル。"
+  },
+  "thresholds_save_button": {
+    "message": "保存",
+    "description": "閾値を保存するボタンのラベル。"
+  },
+  "thresholds_reset_button": {
+    "message": "デフォルトに戻す",
+    "description": "閾値をデフォルト (10 / 20) に戻すボタンのラベル。"
+  },
+  "thresholds_saved_notice": {
+    "message": "保存しました。",
+    "description": "閾値の保存に成功したときに表示するステータス文言。"
+  },
+  "thresholds_error_yellow_invalid": {
+    "message": "黄色の閾値は 1〜999 の数値で入力してください。",
+    "description": "黄色閾値入力が空または範囲外のときのエラー文言。"
+  },
+  "thresholds_error_red_invalid": {
+    "message": "赤の閾値は 1〜999 の数値で入力してください。",
+    "description": "赤閾値入力が空または範囲外のときのエラー文言。"
+  },
+  "thresholds_error_red_not_greater": {
+    "message": "赤の閾値は黄色の閾値より大きい必要があります。",
+    "description": "赤閾値が黄色閾値以下のときのエラー文言。"
   }
 }

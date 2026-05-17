@@ -1,11 +1,25 @@
+import { refreshBadge } from '@/lib/badge';
 import { applyI18nToDom, getUILocale, t, type MessageKey } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
+import {
+  loadSettings,
+  resetThresholds,
+  saveThresholds,
+  validateThresholds,
+  type ThresholdValidationError,
+} from '@/lib/settings';
 import {
   addWhitelistEntry,
   loadWhitelist,
   removeWhitelistEntry,
 } from '@/lib/whitelist';
-import type { WhitelistEntry } from '@/types/storage';
+import type { Settings, WhitelistEntry } from '@/types/storage';
+
+const THRESHOLD_ERROR_KEY: Record<ThresholdValidationError, MessageKey> = {
+  yellow_invalid: 'thresholds_error_yellow_invalid',
+  red_invalid: 'thresholds_error_red_invalid',
+  red_not_greater: 'thresholds_error_red_not_greater',
+};
 
 const ERROR_MESSAGE_KEY: Record<string, MessageKey> = {
   empty: 'whitelist_error_empty',
@@ -161,10 +175,109 @@ function bindForm(): void {
   });
 }
 
+function getThresholdInputs(): {
+  yellow: HTMLInputElement | null;
+  red: HTMLInputElement | null;
+} {
+  const yellow = document.getElementById('thresholds-yellow');
+  const red = document.getElementById('thresholds-red');
+  return {
+    yellow: yellow instanceof HTMLInputElement ? yellow : null,
+    red: red instanceof HTMLInputElement ? red : null,
+  };
+}
+
+function setThresholdStatus(message: string, isError: boolean): void {
+  const el = document.getElementById('thresholds-status');
+  if (!(el instanceof HTMLElement)) return;
+  el.textContent = message;
+  el.classList.toggle('is-error', isError);
+}
+
+function applyThresholdValuesToInputs(settings: Settings): void {
+  const { yellow, red } = getThresholdInputs();
+  if (yellow) yellow.value = String(settings.tabLimitYellow);
+  if (red) red.value = String(settings.tabLimitRed);
+}
+
+async function refreshBadgeQuietly(): Promise<void> {
+  try {
+    await refreshBadge();
+  } catch (err) {
+    logger.error('refreshBadge after threshold change failed', err);
+  }
+}
+
+async function handleThresholdSubmit(event: SubmitEvent): Promise<void> {
+  event.preventDefault();
+  const { yellow, red } = getThresholdInputs();
+  if (!yellow || !red) return;
+  const saveBtn = document.getElementById('thresholds-save-button');
+
+  const result = validateThresholds(yellow.value, red.value);
+  if (!result.ok) {
+    setThresholdStatus(t(THRESHOLD_ERROR_KEY[result.reason]), true);
+    return;
+  }
+
+  if (saveBtn instanceof HTMLButtonElement) saveBtn.disabled = true;
+  try {
+    const next = await saveThresholds(result.value);
+    applyThresholdValuesToInputs(next);
+    setThresholdStatus(t('thresholds_saved_notice'), false);
+    await refreshBadgeQuietly();
+  } catch (err) {
+    logger.error('threshold save failed', err);
+  } finally {
+    if (saveBtn instanceof HTMLButtonElement) saveBtn.disabled = false;
+  }
+}
+
+async function handleThresholdReset(): Promise<void> {
+  const resetBtn = document.getElementById('thresholds-reset-button');
+  if (resetBtn instanceof HTMLButtonElement) resetBtn.disabled = true;
+  try {
+    const next = await resetThresholds();
+    applyThresholdValuesToInputs(next);
+    setThresholdStatus(t('thresholds_saved_notice'), false);
+    await refreshBadgeQuietly();
+  } catch (err) {
+    logger.error('threshold reset failed', err);
+  } finally {
+    if (resetBtn instanceof HTMLButtonElement) resetBtn.disabled = false;
+  }
+}
+
+function bindThresholdForm(): void {
+  const form = document.getElementById('thresholds-form');
+  if (form instanceof HTMLFormElement) {
+    form.addEventListener('submit', (ev) => {
+      void handleThresholdSubmit(ev as SubmitEvent);
+    });
+  }
+  const resetBtn = document.getElementById('thresholds-reset-button');
+  if (resetBtn instanceof HTMLButtonElement) {
+    resetBtn.addEventListener('click', () => {
+      void handleThresholdReset();
+    });
+  }
+}
+
+async function loadAndRenderThresholds(): Promise<void> {
+  try {
+    const settings = await loadSettings();
+    applyThresholdValuesToInputs(settings);
+  } catch (err) {
+    logger.error('threshold load failed', err);
+  }
+}
+
 function init(): void {
   applyI18nToDom(document);
   bindForm();
+  bindThresholdForm();
   void loadAndRender();
+  void loadAndRenderThresholds();
   logger.info('options loaded');
 }
 

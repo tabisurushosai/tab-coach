@@ -76,5 +76,45 @@
   "whitelist_error_limit": {
     "message": "Whitelist entry limit reached (200).",
     "description": "Error shown when the number of whitelist entries reaches the cap."
+  },
+  "thresholds_section_title": {
+    "message": "Badge thresholds",
+    "description": "Heading of the options thresholds section. Customizes the tab count at which the badge turns yellow / red."
+  },
+  "thresholds_section_hint": {
+    "message": "Tab count thresholds for the toolbar badge color. Gray below yellow, yellow at or above yellow, red at or above red.",
+    "description": "Description text for the thresholds section explaining how the values are applied."
+  },
+  "thresholds_yellow_label": {
+    "message": "Yellow threshold",
+    "description": "Label for the input that controls the tab count at which the badge turns yellow."
+  },
+  "thresholds_red_label": {
+    "message": "Red threshold",
+    "description": "Label for the input that controls the tab count at which the badge turns red."
+  },
+  "thresholds_save_button": {
+    "message": "Save",
+    "description": "Label for the button that saves the threshold values."
+  },
+  "thresholds_reset_button": {
+    "message": "Reset to defaults",
+    "description": "Label for the button that resets thresholds to default values (10 / 20)."
+  },
+  "thresholds_saved_notice": {
+    "message": "Saved.",
+    "description": "Status message shown after thresholds are saved successfully."
+  },
+  "thresholds_error_yellow_invalid": {
+    "message": "Yellow threshold must be a number between 1 and 999.",
+    "description": "Error shown when the yellow threshold input is empty or out of range."
+  },
+  "thresholds_error_red_invalid": {
+    "message": "Red threshold must be a number between 1 and 999.",
+    "description": "Error shown when the red threshold input is empty or out of range."
+  },
+  "thresholds_error_red_not_greater": {
+    "message": "Red threshold must be greater than yellow threshold.",
+    "description": "Error shown when the red threshold is not strictly greater than the yellow threshold."
   }
 }
