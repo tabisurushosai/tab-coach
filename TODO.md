@@ -69,7 +69,7 @@
 - [x] T060: manifest.json name/description を __MSG_*__ 形式
 - [x] T061: ダークモード自動 (prefers-color-scheme)
 - [x] T062: ダークモード手動切替 (options で固定可)
-- [ ] T063: ARIA: popup UL に role="list"、LI に role="listitem"
+- [x] T063: ARIA: popup UL に role="list"、LI に role="listitem"
 - [ ] T064: ARIA: ボタンに aria-label
 - [ ] T065: ARIA: aria-live="polite" (フィルタ済リスト)
 - [ ] T066: フォントサイズ調整 (options スライダー、CSS variable)
