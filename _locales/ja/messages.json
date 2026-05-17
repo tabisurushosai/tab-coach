@@ -185,6 +185,50 @@
     "message": "未アクティブ判定分数は 1〜1440 の数値で入力してください。",
     "description": "未アクティブ判定分数の入力が空または範囲外のときのエラー文言。"
   },
+  "popup_category_filter_label": {
+    "message": "タブカテゴリで絞り込み",
+    "description": "popup のカテゴリタブ群 (すべて/未アクティブ/重複/読了) を包む tablist の aria-label。"
+  },
+  "popup_category_all": {
+    "message": "すべて",
+    "description": "popup カテゴリタブのラベル。フィルタなしの全タブ表示。"
+  },
+  "popup_category_inactive": {
+    "message": "未アクティブ",
+    "description": "popup カテゴリタブのラベル。未アクティブ判定時間を超過したタブのみ表示。"
+  },
+  "popup_category_duplicate": {
+    "message": "重複",
+    "description": "popup カテゴリタブのラベル。同ドメイン重複タブのみ表示。"
+  },
+  "popup_category_read": {
+    "message": "読了",
+    "description": "popup カテゴリタブのラベル。読了判定 (スクロール 90% + 60秒滞在) を満たしたタブのみ表示。"
+  },
+  "tab_close_label": {
+    "message": "タブを閉じる",
+    "description": "popup タブ行の × ボタンの aria-label と title。クリックで該当タブを単独 close する。"
+  },
+  "list_empty_placeholder": {
+    "message": "—",
+    "description": "リストが空のときに表示するプレースホルダ記号。"
+  },
+  "whitelist_list_aria_label": {
+    "message": "ホワイトリスト一覧",
+    "description": "options のホワイトリストエントリ群を包む UL の aria-label。"
+  },
+  "archive_list_aria_label": {
+    "message": "アーカイブ一覧",
+    "description": "options のアーカイブエントリ群を包む UL の aria-label。"
+  },
+  "report_summary_cleanups_label": {
+    "message": "今月の整理回数",
+    "description": "月次レポートサマリーの「整理回数」カードのラベル。値は report_summary_cleanups (例: 3 回) で表示する。"
+  },
+  "report_summary_closed_label": {
+    "message": "今月の閉じたタブ",
+    "description": "月次レポートサマリーの「閉じたタブ件数」カードのラベル。値は report_summary_closed (例: 42 件) で表示する。"
+  },
   "search_placeholder": {
     "message": "タイトル / URL で検索",
     "description": "popup の検索ボックスのプレースホルダ。タブのタイトルと URL から部分一致で絞り込む。"
