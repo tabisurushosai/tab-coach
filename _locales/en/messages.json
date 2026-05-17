@@ -226,5 +226,51 @@
   "archive_export_error_notice": {
     "message": "Export failed.",
     "description": "Status message shown when the archive JSON download fails."
+  },
+  "archive_import_button": {
+    "message": "Import JSON",
+    "description": "Label for the button that uploads an archive JSON file and imports its entries."
+  },
+  "archive_import_success_notice": {
+    "message": "Imported $ADDED$ items ($SKIPPED$ duplicate skipped).",
+    "description": "Status message shown when archive JSON import succeeds. $ADDED$ is the number of new entries, $SKIPPED$ is the number skipped because they already exist in the archive.",
+    "placeholders": {
+      "added": {
+        "content": "$1",
+        "example": "12"
+      },
+      "skipped": {
+        "content": "$2",
+        "example": "0"
+      }
+    }
+  },
+  "archive_import_all_duplicate_notice": {
+    "message": "No new entries to import (all duplicates).",
+    "description": "Status message shown when every entry in the imported JSON already exists in the archive."
+  },
+  "archive_import_error_invalid_json": {
+    "message": "Could not parse the JSON file.",
+    "description": "Error shown when the selected file cannot be parsed as JSON."
+  },
+  "archive_import_error_invalid_shape": {
+    "message": "Archive JSON has an unexpected shape.",
+    "description": "Error shown when the JSON parses but does not match the expected schema."
+  },
+  "archive_import_error_unsupported_version": {
+    "message": "Unsupported archive version.",
+    "description": "Error shown when the JSON version field does not match the current export format."
+  },
+  "archive_import_error_no_entries": {
+    "message": "No valid archive entries were found.",
+    "description": "Error shown when the JSON is readable but contains no valid entries."
+  },
+  "archive_import_error_too_large": {
+    "message": "File is too large (5MB max).",
+    "description": "Error shown when the uploaded file exceeds 5MB."
+  },
+  "archive_import_error_read_failed": {
+    "message": "Failed to read the file.",
+    "description": "Error shown when the FileReader fails to read the uploaded file."
   }
 }

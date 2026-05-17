@@ -226,5 +226,51 @@
   "archive_export_error_notice": {
     "message": "エクスポートに失敗しました。",
     "description": "アーカイブの JSON ダウンロードに失敗したときのステータス文言。"
+  },
+  "archive_import_button": {
+    "message": "JSON インポート",
+    "description": "アーカイブ JSON をアップロードしてインポートするボタンのラベル。"
+  },
+  "archive_import_success_notice": {
+    "message": "$ADDED$ 件をインポートしました ($SKIPPED$ 件は重複でスキップ)。",
+    "description": "アーカイブ JSON インポート成功時のステータス文言。$ADDED$ は追加件数、$SKIPPED$ は既存アーカイブと重複してスキップした件数。",
+    "placeholders": {
+      "added": {
+        "content": "$1",
+        "example": "12"
+      },
+      "skipped": {
+        "content": "$2",
+        "example": "0"
+      }
+    }
+  },
+  "archive_import_all_duplicate_notice": {
+    "message": "インポートする新規エントリはありませんでした (すべて重複)。",
+    "description": "JSON 内の全エントリが既存アーカイブと重複していたときのステータス文言。"
+  },
+  "archive_import_error_invalid_json": {
+    "message": "JSON の解析に失敗しました。",
+    "description": "選択したファイルが JSON として解析できないときのエラー文言。"
+  },
+  "archive_import_error_invalid_shape": {
+    "message": "アーカイブ JSON の形式が正しくありません。",
+    "description": "JSON は解析できたが想定スキーマと一致しないときのエラー文言。"
+  },
+  "archive_import_error_unsupported_version": {
+    "message": "サポートされていないアーカイブバージョンです。",
+    "description": "JSON の version フィールドが現在のエクスポート形式と一致しないときのエラー文言。"
+  },
+  "archive_import_error_no_entries": {
+    "message": "有効なアーカイブエントリが見つかりませんでした。",
+    "description": "JSON は読めたが、有効な entries が 1 件も無いときのエラー文言。"
+  },
+  "archive_import_error_too_large": {
+    "message": "ファイルサイズが大きすぎます (5MB 以内)。",
+    "description": "アップロードファイルが 5MB を超えるときのエラー文言。"
+  },
+  "archive_import_error_read_failed": {
+    "message": "ファイルの読み込みに失敗しました。",
+    "description": "FileReader による読み込みに失敗したときのエラー文言。"
   }
 }

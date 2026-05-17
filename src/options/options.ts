@@ -1,8 +1,11 @@
 import {
   buildArchiveExportFilename,
+  importArchivedTabs,
   loadArchive,
+  parseArchiveImport,
   removeArchivedTab,
   serializeArchiveExport,
+  type ArchiveImportParseError,
 } from '@/lib/archive';
 import { refreshBadge } from '@/lib/badge';
 import { applyI18nToDom, getUILocale, t, type MessageKey } from '@/lib/i18n';
@@ -563,6 +566,86 @@ function bindArchiveExportButton(): void {
   });
 }
 
+const MAX_ARCHIVE_IMPORT_BYTES = 5 * 1024 * 1024;
+
+const ARCHIVE_IMPORT_ERROR_KEY: Record<ArchiveImportParseError, MessageKey> = {
+  invalid_json: 'archive_import_error_invalid_json',
+  invalid_shape: 'archive_import_error_invalid_shape',
+  unsupported_version: 'archive_import_error_unsupported_version',
+  no_entries: 'archive_import_error_no_entries',
+};
+
+function readFileAsText(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      if (typeof result === 'string') {
+        resolve(result);
+      } else {
+        reject(new Error('FileReader returned non-string result'));
+      }
+    };
+    reader.onerror = () => reject(reader.error ?? new Error('FileReader failed'));
+    reader.readAsText(file);
+  });
+}
+
+async function handleArchiveImportFile(file: File): Promise<void> {
+  if (file.size > MAX_ARCHIVE_IMPORT_BYTES) {
+    setArchiveStatus(t('archive_import_error_too_large'), true);
+    return;
+  }
+  let text: string;
+  try {
+    text = await readFileAsText(file);
+  } catch (err) {
+    logger.error('archive import read failed', err);
+    setArchiveStatus(t('archive_import_error_read_failed'), true);
+    return;
+  }
+  const parsed = parseArchiveImport(text);
+  if (!parsed.ok) {
+    setArchiveStatus(t(ARCHIVE_IMPORT_ERROR_KEY[parsed.reason]), true);
+    return;
+  }
+  try {
+    const result = await importArchivedTabs(parsed.payload.entries);
+    renderArchive(result.entries);
+    if (result.added === 0) {
+      setArchiveStatus(t('archive_import_all_duplicate_notice'), false);
+    } else {
+      setArchiveStatus(
+        t('archive_import_success_notice', [String(result.added), String(result.skipped)]),
+        false,
+      );
+    }
+  } catch (err) {
+    logger.error('archive import save failed', err);
+    setArchiveStatus(t('archive_import_error_read_failed'), true);
+  }
+}
+
+function bindArchiveImportButton(): void {
+  const btn = document.getElementById('archive-import-button');
+  const input = document.getElementById('archive-import-file');
+  if (!(btn instanceof HTMLButtonElement)) return;
+  if (!(input instanceof HTMLInputElement)) return;
+  btn.addEventListener('click', () => {
+    input.value = '';
+    input.click();
+  });
+  input.addEventListener('change', () => {
+    const file = input.files?.[0];
+    if (!file) return;
+    btn.disabled = true;
+    void handleArchiveImportFile(file).finally(() => {
+      btn.disabled = false;
+      input.value = '';
+    });
+  });
+}
+
 function init(): void {
   applyI18nToDom(document);
   bindForm();
@@ -570,6 +653,7 @@ function init(): void {
   bindInactiveForm();
   bindArchiveStorageListener();
   bindArchiveExportButton();
+  bindArchiveImportButton();
   void loadAndRender();
   void loadAndRenderThresholds();
   void loadAndRenderArchive();

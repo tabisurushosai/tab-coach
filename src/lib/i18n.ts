@@ -49,7 +49,16 @@ export type MessageKey =
   | 'archive_export_button'
   | 'archive_export_empty_notice'
   | 'archive_export_success_notice'
-  | 'archive_export_error_notice';
+  | 'archive_export_error_notice'
+  | 'archive_import_button'
+  | 'archive_import_success_notice'
+  | 'archive_import_all_duplicate_notice'
+  | 'archive_import_error_invalid_json'
+  | 'archive_import_error_invalid_shape'
+  | 'archive_import_error_unsupported_version'
+  | 'archive_import_error_no_entries'
+  | 'archive_import_error_too_large'
+  | 'archive_import_error_read_failed';
 
 export type Locale = 'ja' | 'en';
 
