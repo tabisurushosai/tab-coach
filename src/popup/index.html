@@ -247,6 +247,7 @@
       .cleanup-bar {
         display: flex;
         justify-content: flex-end;
+        gap: 6px;
         padding: 6px 12px 8px;
       }
       .cleanup-button {
@@ -271,6 +272,28 @@
         cursor: not-allowed;
         border-color: transparent;
       }
+      .archive-button {
+        padding: 6px 12px;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        border-radius: 6px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .archive-button:hover,
+      .archive-button:focus-visible {
+        background: rgba(0, 0, 0, 0.06);
+        outline: none;
+      }
+      .archive-button:disabled {
+        background: transparent;
+        color: #9ca3af;
+        cursor: not-allowed;
+        border-color: rgba(0, 0, 0, 0.08);
+      }
       @media (prefers-color-scheme: dark) {
         .cleanup-button {
           background: #3b82f6;
@@ -283,6 +306,17 @@
         .cleanup-button:disabled {
           background: rgba(255, 255, 255, 0.08);
           color: #6b7280;
+        }
+        .archive-button {
+          border-color: rgba(255, 255, 255, 0.16);
+        }
+        .archive-button:hover,
+        .archive-button:focus-visible {
+          background: rgba(255, 255, 255, 0.08);
+        }
+        .archive-button:disabled {
+          color: #6b7280;
+          border-color: rgba(255, 255, 255, 0.08);
         }
       }
       .undo-bar {
@@ -372,6 +406,10 @@
       </button>
     </div>
     <div class="cleanup-bar">
+      <button type="button" id="archive-button" class="archive-button" disabled>
+        <span data-i18n="archive_button">Archive</span>
+        <span id="archive-count"></span>
+      </button>
       <button type="button" id="cleanup-button" class="cleanup-button" disabled>
         <span data-i18n="cleanup_button">Cleanup</span>
         <span id="cleanup-count"></span>

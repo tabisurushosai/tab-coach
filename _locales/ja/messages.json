@@ -156,5 +156,19 @@
   "search_no_match": {
     "message": "一致するタブはありません。",
     "description": "検索条件に一致するタブがないときに popup のリストに表示する文言。"
+  },
+  "archive_button": {
+    "message": "アーカイブ",
+    "description": "popup の一括アーカイブボタンのラベル。該当タブを storage に保存してから閉じる。"
+  },
+  "archive_notice": {
+    "message": "$COUNT$ 件をアーカイブしました",
+    "description": "アーカイブ直後に表示するトースト文言。$COUNT$ にはアーカイブしたタブ件数が入る。",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
   }
 }

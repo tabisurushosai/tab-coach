@@ -156,5 +156,19 @@
   "search_no_match": {
     "message": "No tabs match the search.",
     "description": "Shown in the popup list when no tab matches the current search query."
+  },
+  "archive_button": {
+    "message": "Archive",
+    "description": "Label for the popup bulk archive button. Saves matching tabs to storage and then closes them."
+  },
+  "archive_notice": {
+    "message": "Archived $COUNT$ tabs",
+    "description": "Toast message shown right after an archive action. $COUNT$ is the number of tabs that were archived.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
   }
 }

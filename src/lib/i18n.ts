@@ -36,7 +36,9 @@ export type MessageKey =
   | 'inactive_error_invalid'
   | 'search_placeholder'
   | 'search_clear_label'
-  | 'search_no_match';
+  | 'search_no_match'
+  | 'archive_button'
+  | 'archive_notice';
 
 export type Locale = 'ja' | 'en';
 

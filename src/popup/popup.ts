@@ -16,6 +16,7 @@ import {
   saveUndoSnapshot,
 } from '@/lib/snapshot';
 import { matchesWhitelist } from '@/lib/whitelist';
+import { addArchivedTabs } from '@/lib/archive';
 import type { Settings, TabSnapshot, WhitelistEntry } from '@/types/storage';
 
 const FALLBACK_FAVICON =
@@ -149,7 +150,13 @@ function hideUndoBar(): void {
   if (bar instanceof HTMLElement) bar.dataset['visible'] = 'false';
 }
 
-function renderUndoBar(closedCount: number, expiresAt: number): void {
+type UndoBarMode = 'cleanup' | 'archive';
+
+function renderUndoBar(
+  closedCount: number,
+  expiresAt: number,
+  mode: UndoBarMode = 'cleanup',
+): void {
   const bar = document.getElementById('undo-bar');
   const messageEl = document.getElementById('undo-message-text');
   const countdownEl = document.getElementById('undo-countdown');
@@ -162,7 +169,8 @@ function renderUndoBar(closedCount: number, expiresAt: number): void {
   ) {
     return;
   }
-  messageEl.textContent = t('undo_notice', [String(closedCount)]);
+  const messageKey = mode === 'archive' ? 'archive_notice' : 'undo_notice';
+  messageEl.textContent = t(messageKey, [String(closedCount)]);
   undoBtn.disabled = false;
   bar.dataset['visible'] = 'true';
 
@@ -220,6 +228,59 @@ async function runUndo(): Promise<void> {
   }
   hideUndoBar();
   await loadAndRender();
+}
+
+async function runArchive(): Promise<void> {
+  const targets = applySearchFilter(
+    pickCleanupTargets(
+      state.category,
+      state.snapshots,
+      state.settings,
+      state.readCompleted,
+      state.whitelist,
+    ),
+    state.searchQuery,
+  );
+  if (targets.length === 0) return;
+  const ids = targets.map((t) => t.id);
+  const removedIds = new Set<number>(ids);
+  const archiveBtn = document.getElementById('archive-button');
+  const cleanupBtn = document.getElementById('cleanup-button');
+  if (archiveBtn instanceof HTMLButtonElement) archiveBtn.disabled = true;
+  if (cleanupBtn instanceof HTMLButtonElement) cleanupBtn.disabled = true;
+  const undoSnapshot = createUndoSnapshot(targets);
+  try {
+    await addArchivedTabs(targets);
+  } catch (err) {
+    logger.error('addArchivedTabs failed', err);
+    updateCleanupButton();
+    return;
+  }
+  try {
+    await saveUndoSnapshot(undoSnapshot);
+  } catch (err) {
+    logger.error('save undoSnapshot failed', err);
+  }
+  let removed = false;
+  try {
+    await chrome.tabs.remove(ids);
+    state.snapshots = state.snapshots.filter((s) => !removedIds.has(s.id));
+    removed = true;
+  } catch (err) {
+    logger.error('archive remove failed', err);
+  }
+  if (removed) {
+    renderUndoBar(targets.length, undoSnapshot.expiresAt, 'archive');
+  } else {
+    try {
+      await clearUndoSnapshot();
+    } catch (err) {
+      logger.error('rollback undoSnapshot failed', err);
+    }
+  }
+  updateCounts();
+  renderList();
+  updateCleanupButton();
 }
 
 async function runCleanup(): Promise<void> {
@@ -393,8 +454,8 @@ function updateCounts(): void {
 }
 
 function updateCleanupButton(): void {
-  const button = document.getElementById('cleanup-button');
-  if (!(button instanceof HTMLButtonElement)) return;
+  const cleanupBtn = document.getElementById('cleanup-button');
+  const archiveBtn = document.getElementById('archive-button');
   const targets = applySearchFilter(
     pickCleanupTargets(
       state.category,
@@ -405,9 +466,13 @@ function updateCleanupButton(): void {
     ),
     state.searchQuery,
   );
-  button.disabled = targets.length === 0;
+  const empty = targets.length === 0;
+  if (cleanupBtn instanceof HTMLButtonElement) cleanupBtn.disabled = empty;
+  if (archiveBtn instanceof HTMLButtonElement) archiveBtn.disabled = empty;
   const countEl = document.getElementById('cleanup-count');
   if (countEl) countEl.textContent = targets.length > 0 ? ` (${targets.length})` : '';
+  const archiveCountEl = document.getElementById('archive-count');
+  if (archiveCountEl) archiveCountEl.textContent = targets.length > 0 ? ` (${targets.length})` : '';
 }
 
 function selectCategory(category: Category): void {
@@ -475,6 +540,14 @@ function bindCleanupButton(): void {
   });
 }
 
+function bindArchiveButton(): void {
+  const button = document.getElementById('archive-button');
+  if (!(button instanceof HTMLButtonElement)) return;
+  button.addEventListener('click', () => {
+    void runArchive();
+  });
+}
+
 function bindUndoButton(): void {
   const undoBtn = document.getElementById('undo-button');
   if (!(undoBtn instanceof HTMLButtonElement)) return;
@@ -516,6 +589,7 @@ function init(): void {
   bindSearchInput();
   bindCategoryTabs();
   bindCleanupButton();
+  bindArchiveButton();
   bindUndoButton();
   void loadAndRender();
   void restoreUndoBarFromStorage();
