@@ -16,7 +16,7 @@
 - [x] T011: package.json (TS5.6+ + Vite5+ + @types/chrome + vitest + jsdom + eslint + prettier)
 - [x] T012: tsconfig.json (strict, ES2022, paths @/*)
 - [x] T013: vite.config.ts (entry: background, popup, options, content)
-- [ ] T014: manifest.json (Manifest V3, name __MSG__, permissions: activeTab + tabs + storage)
+- [x] T014: manifest.json (Manifest V3, name __MSG__, permissions: activeTab + tabs + storage)
 - [ ] T015: icons/16.png / 48.png / 128.png (暫定単色文字アイコン)
 - [ ] T016: _locales/ja/messages.json (extension_name, extension_description のみ)
 - [ ] T017: _locales/en/messages.json (同上)
