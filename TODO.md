@@ -65,7 +65,7 @@
 - [x] T056: _locales/ja/messages.json 完全版 (全 UI 文字列)
 - [x] T057: _locales/en/messages.json 完全版
 - [x] T058: popup の全文字列を chrome.i18n.getMessage に置換
-- [ ] T059: options の全文字列を i18n 化
+- [x] T059: options の全文字列を i18n 化
 - [ ] T060: manifest.json name/description を __MSG_*__ 形式
 - [ ] T061: ダークモード自動 (prefers-color-scheme)
 - [ ] T062: ダークモード手動切替 (options で固定可)
