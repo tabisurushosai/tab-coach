@@ -1,6 +1,7 @@
 import { logger } from '@/lib/logger';
 import { refreshBadge } from '@/lib/badge';
 import { isReadingProgressMessage } from '@/types/messages';
+import { isReadCompleted, markReadCompleted } from '@/lib/reading';
 
 async function updateBadgeAndLog(event: string, extra: Record<string, unknown>): Promise<void> {
   try {
@@ -42,6 +43,7 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 
 chrome.runtime.onMessage.addListener((message, sender) => {
   if (isReadingProgressMessage(message)) {
+    const completed = isReadCompleted(message.maxScrollPercent, message.dwellMs);
     logger.info('READING_PROGRESS', {
       tabId: sender.tab?.id ?? null,
       frameId: sender.frameId ?? null,
@@ -49,7 +51,17 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       maxScrollPercent: message.maxScrollPercent,
       dwellMs: message.dwellMs,
       reportedAt: message.reportedAt,
+      completed,
     });
+    if (completed) {
+      markReadCompleted(message.url, message.reportedAt)
+        .then((key) => {
+          if (key !== null) {
+            logger.info('READING_PROGRESS.markCompleted', { key });
+          }
+        })
+        .catch((err) => logger.error('markReadCompleted failed', err));
+    }
   }
   return false;
 });
