@@ -18,7 +18,7 @@
 - [x] T013: vite.config.ts (entry: background, popup, options, content)
 - [x] T014: manifest.json (Manifest V3, name __MSG__, permissions: activeTab + tabs + storage)
 - [x] T015: icons/16.png / 48.png / 128.png (暫定単色文字アイコン)
-- [ ] T016: _locales/ja/messages.json (extension_name, extension_description のみ)
+- [x] T016: _locales/ja/messages.json (extension_name, extension_description のみ)
 - [ ] T017: _locales/en/messages.json (同上)
 - [ ] T018: src/lib/storage.ts (型安全 chrome.storage.local ラッパー、get/set/remove/clear)
 - [ ] T019: src/lib/i18n.ts (chrome.i18n.getMessage ラッパー、型安全)

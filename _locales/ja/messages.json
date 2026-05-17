@@ -1,0 +1,10 @@
+{
+  "extension_name": {
+    "message": "tab-coach",
+    "description": "拡張機能の名称。Chrome Web Store の表示名やツールバーのツールチップに使用される。"
+  },
+  "extension_description": {
+    "message": "タブ過多を可視化し、ワンクリックで整理。完全オフライン・広告なし・最小権限。",
+    "description": "拡張機能の短い説明文 (132字以内)。Chrome Web Store とブラウザ拡張一覧に表示される。"
+  }
+}
