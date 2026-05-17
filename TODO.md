@@ -37,7 +37,7 @@
 - [x] T030: popup でタブ一覧表示 (UL + favicon img + title)
 - [x] T031: popup タブクリックで chrome.tabs.update active=true
 - [x] T032: popup × ボタンで chrome.tabs.remove
-- [ ] T033: 未アクティブ時間計算 (Date.now() - lastAccessed)
+- [x] T033: 未アクティブ時間計算 (Date.now() - lastAccessed)
 - [ ] T034: 30分以上未アクティブフィルタ
 - [ ] T035: 同ドメイン重複検出 (new URL(url).hostname 比較)
 - [ ] T036: content script で document.scrollingElement の scrollTop + window 滞在時間記録

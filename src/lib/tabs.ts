@@ -36,3 +36,12 @@ export async function countAllTabs(options: QueryAllOptions = {}): Promise<numbe
   const tabs = await queryAllTabs(options);
   return tabs.length;
 }
+
+export function inactiveMs(snapshot: Pick<TabSnapshot, 'lastAccessed'>, now: number = Date.now()): number {
+  const elapsed = now - snapshot.lastAccessed;
+  return elapsed > 0 ? elapsed : 0;
+}
+
+export function inactiveMinutes(snapshot: Pick<TabSnapshot, 'lastAccessed'>, now: number = Date.now()): number {
+  return Math.floor(inactiveMs(snapshot, now) / 60_000);
+}
