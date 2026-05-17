@@ -1,43 +1,40 @@
 import { logger } from '@/lib/logger';
-import { countAllTabs } from '@/lib/tabs';
+import { refreshBadge } from '@/lib/badge';
+
+async function updateBadgeAndLog(event: string, extra: Record<string, unknown>): Promise<void> {
+  try {
+    const total = await refreshBadge();
+    logger.info(event, { ...extra, total });
+  } catch (err) {
+    logger.error(`${event} refreshBadge failed`, err);
+  }
+}
 
 chrome.runtime.onInstalled.addListener((details) => {
   logger.info('onInstalled', {
     reason: details.reason,
     previousVersion: details.previousVersion ?? null,
   });
+  void updateBadgeAndLog('onInstalled.badge', {});
 });
 
 chrome.runtime.onStartup.addListener(() => {
   logger.info('onStartup');
+  void updateBadgeAndLog('onStartup.badge', {});
 });
 
 chrome.tabs.onCreated.addListener((tab) => {
-  countAllTabs()
-    .then((count) => {
-      logger.info('tabs.onCreated', {
-        tabId: tab.id ?? null,
-        windowId: tab.windowId ?? null,
-        url: tab.url ?? tab.pendingUrl ?? '',
-        total: count,
-      });
-    })
-    .catch((err) => {
-      logger.error('tabs.onCreated countAllTabs failed', err);
-    });
+  void updateBadgeAndLog('tabs.onCreated', {
+    tabId: tab.id ?? null,
+    windowId: tab.windowId ?? null,
+    url: tab.url ?? tab.pendingUrl ?? '',
+  });
 });
 
 chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
-  countAllTabs()
-    .then((count) => {
-      logger.info('tabs.onRemoved', {
-        tabId,
-        windowId: removeInfo.windowId,
-        isWindowClosing: removeInfo.isWindowClosing,
-        total: count,
-      });
-    })
-    .catch((err) => {
-      logger.error('tabs.onRemoved countAllTabs failed', err);
-    });
+  void updateBadgeAndLog('tabs.onRemoved', {
+    tabId,
+    windowId: removeInfo.windowId,
+    isWindowClosing: removeInfo.isWindowClosing,
+  });
 });
