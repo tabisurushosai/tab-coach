@@ -334,5 +334,47 @@
         "example": "15"
       }
     }
+  },
+  "grouping_section_title": {
+    "message": "タブグループ自動化",
+    "description": "options のタブグループ自動化セクションの見出し。同ドメインのタブを Chrome のタブグループにまとめる Premium 想定機能。"
+  },
+  "grouping_section_hint": {
+    "message": "同じドメインのタブ (ピン留め除外、未グループのもの) をウィンドウごとにまとめてグループ化します。",
+    "description": "タブグループ自動化セクションの説明文。対象範囲と動作を示す。"
+  },
+  "grouping_premium_label": {
+    "message": "Premium 想定機能",
+    "description": "タブグループ自動化機能に付けるバッジテキスト。将来の Premium プラン想定であることを示す。"
+  },
+  "grouping_run_button": {
+    "message": "今すぐグループ化",
+    "description": "全タブを同ドメインでまとめてグループ化するボタンのラベル。"
+  },
+  "grouping_success_notice": {
+    "message": "$GROUPS$ グループに $TABS$ 件のタブをまとめました。",
+    "description": "グループ化成功時のステータス文言。$GROUPS$ は作成グループ数、$TABS$ はまとめたタブ件数。",
+    "placeholders": {
+      "groups": {
+        "content": "$1",
+        "example": "3"
+      },
+      "tabs": {
+        "content": "$2",
+        "example": "8"
+      }
+    }
+  },
+  "grouping_no_candidates_notice": {
+    "message": "まとめられる重複ドメインのタブが見つかりませんでした。",
+    "description": "同ドメインの重複タブが 2 件以上見つからなかったときのステータス文言。"
+  },
+  "grouping_unavailable_notice": {
+    "message": "この環境ではタブグループ機能が利用できません。",
+    "description": "chrome.tabs.group API が利用できないときのエラー文言。"
+  },
+  "grouping_error_notice": {
+    "message": "グループ化に失敗しました。",
+    "description": "グループ化処理中に予期せぬエラーが発生したときのステータス文言。"
   }
 }

@@ -59,7 +59,7 @@
 - [x] T052: アーカイブのインポート (JSON アップロード)
 - [x] T053: 月次レポート (整理回数 + 推定節約時間)
 - [x] T054: レポートを options に表示 (Canvas 自前描画、Chart.js は使わない)
-- [ ] T055: タブグループ自動化 (chrome.tabGroups で同ドメインまとめ、Premium 想定)
+- [x] T055: タブグループ自動化 (chrome.tabGroups で同ドメインまとめ、Premium 想定)
 
 ## Phase 3: 国際化・アクセシビリティ (T056-T070)
 - [ ] T056: _locales/ja/messages.json 完全版 (全 UI 文字列)

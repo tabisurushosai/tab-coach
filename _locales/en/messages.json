@@ -334,5 +334,47 @@
         "example": "15"
       }
     }
+  },
+  "grouping_section_title": {
+    "message": "Tab grouping",
+    "description": "Heading of the options tab grouping section. Bundles tabs that share a hostname into Chrome tab groups; planned as a Premium feature."
+  },
+  "grouping_section_hint": {
+    "message": "Bundles tabs that share a hostname (excluding pinned and already-grouped) into one Chrome tab group per window.",
+    "description": "Description text for the tab grouping section explaining scope and behavior."
+  },
+  "grouping_premium_label": {
+    "message": "Premium preview",
+    "description": "Badge text attached to the tab grouping feature to indicate it is planned for a Premium tier."
+  },
+  "grouping_run_button": {
+    "message": "Group now",
+    "description": "Label for the button that triggers an immediate by-hostname grouping pass over all tabs."
+  },
+  "grouping_success_notice": {
+    "message": "Grouped $TABS$ tabs into $GROUPS$ groups.",
+    "description": "Status message shown after a successful grouping pass. $GROUPS$ is the number of created groups, $TABS$ is the total tabs grouped.",
+    "placeholders": {
+      "groups": {
+        "content": "$1",
+        "example": "3"
+      },
+      "tabs": {
+        "content": "$2",
+        "example": "8"
+      }
+    }
+  },
+  "grouping_no_candidates_notice": {
+    "message": "No duplicate-hostname tabs were found to group.",
+    "description": "Status shown when there are no hostnames with 2+ ungrouped tabs."
+  },
+  "grouping_unavailable_notice": {
+    "message": "Tab grouping is not available in this environment.",
+    "description": "Error shown when the chrome.tabs.group API is missing."
+  },
+  "grouping_error_notice": {
+    "message": "Failed to group tabs.",
+    "description": "Status shown when an unexpected error occurs during a grouping pass."
   }
 }

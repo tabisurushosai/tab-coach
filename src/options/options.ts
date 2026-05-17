@@ -32,6 +32,7 @@ import {
   loadCleanupHistory,
   type MonthlyReport,
 } from '@/lib/report';
+import { groupTabsByDomain, type GroupingError } from '@/lib/grouping';
 import type { ArchivedTab, Settings, WhitelistEntry } from '@/types/storage';
 
 const THRESHOLD_ERROR_KEY: Record<ThresholdValidationError, MessageKey> = {
@@ -836,6 +837,51 @@ function bindReportColorSchemeListener(): void {
   }
 }
 
+const GROUPING_ERROR_KEY: Record<GroupingError, MessageKey> = {
+  unavailable: 'grouping_unavailable_notice',
+  no_candidates: 'grouping_no_candidates_notice',
+};
+
+function setGroupingStatus(message: string, isError: boolean): void {
+  const el = document.getElementById('grouping-status');
+  if (!(el instanceof HTMLElement)) return;
+  el.textContent = message;
+  el.classList.toggle('is-error', isError);
+}
+
+async function handleGroupingRun(): Promise<void> {
+  const btn = document.getElementById('grouping-run-button');
+  if (btn instanceof HTMLButtonElement) btn.disabled = true;
+  setGroupingStatus('', false);
+  try {
+    const outcome = await groupTabsByDomain();
+    if (outcome.ok) {
+      setGroupingStatus(
+        t('grouping_success_notice', [
+          String(outcome.result.groupsCreated),
+          String(outcome.result.tabsGrouped),
+        ]),
+        false,
+      );
+    } else {
+      setGroupingStatus(t(GROUPING_ERROR_KEY[outcome.reason]), true);
+    }
+  } catch (err) {
+    logger.error('groupTabsByDomain failed', err);
+    setGroupingStatus(t('grouping_error_notice'), true);
+  } finally {
+    if (btn instanceof HTMLButtonElement) btn.disabled = false;
+  }
+}
+
+function bindGroupingButton(): void {
+  const btn = document.getElementById('grouping-run-button');
+  if (!(btn instanceof HTMLButtonElement)) return;
+  btn.addEventListener('click', () => {
+    void handleGroupingRun();
+  });
+}
+
 function init(): void {
   applyI18nToDom(document);
   bindForm();
@@ -846,6 +892,7 @@ function init(): void {
   bindArchiveImportButton();
   bindReportStorageListener();
   bindReportColorSchemeListener();
+  bindGroupingButton();
   void loadAndRender();
   void loadAndRenderThresholds();
   void loadAndRenderArchive();

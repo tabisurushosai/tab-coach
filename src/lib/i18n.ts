@@ -68,7 +68,15 @@ export type MessageKey =
   | 'report_chart_aria_label'
   | 'report_chart_no_data'
   | 'report_saved_time_zero'
-  | 'report_saved_time_format';
+  | 'report_saved_time_format'
+  | 'grouping_section_title'
+  | 'grouping_section_hint'
+  | 'grouping_premium_label'
+  | 'grouping_run_button'
+  | 'grouping_success_notice'
+  | 'grouping_no_candidates_notice'
+  | 'grouping_unavailable_notice'
+  | 'grouping_error_notice';
 
 export type Locale = 'ja' | 'en';
 

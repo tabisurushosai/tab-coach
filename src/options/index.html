@@ -413,6 +413,73 @@
       .report-chart-empty[data-visible='false'] {
         display: none;
       }
+      .grouping-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 24px 0 8px;
+        flex-wrap: wrap;
+      }
+      .grouping-header h2 {
+        margin: 0;
+      }
+      .grouping-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #fde68a;
+        color: #92400e;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      .grouping-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin: 0 0 8px;
+      }
+      .grouping-run-button {
+        padding: 7px 14px;
+        border: 0;
+        border-radius: 4px;
+        background: #2563eb;
+        color: #fff;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .grouping-run-button:hover,
+      .grouping-run-button:focus-visible {
+        background: #1d4ed8;
+        outline: none;
+      }
+      .grouping-run-button:disabled {
+        background: #93c5fd;
+        cursor: progress;
+      }
+      .grouping-status {
+        min-height: 18px;
+        margin: 0;
+        font-size: 12px;
+        color: #15803d;
+      }
+      .grouping-status.is-error {
+        color: #b91c1c;
+      }
+      @media (prefers-color-scheme: dark) {
+        .grouping-badge {
+          background: rgba(253, 230, 138, 0.18);
+          color: #fde68a;
+        }
+        .grouping-status {
+          color: #86efac;
+        }
+        .grouping-status.is-error {
+          color: #fca5a5;
+        }
+      }
       @media (prefers-color-scheme: dark) {
         .hint,
         .whitelist-form label,
@@ -663,6 +730,25 @@
         role="list"
         aria-label="Archived tabs"
       ></ul>
+    </section>
+
+    <section aria-labelledby="grouping-title">
+      <div class="grouping-header">
+        <h2 id="grouping-title" data-i18n="grouping_section_title">Tab grouping</h2>
+        <span class="grouping-badge" data-i18n="grouping_premium_label">Premium preview</span>
+      </div>
+      <p class="hint" data-i18n="grouping_section_hint"></p>
+      <div class="grouping-actions">
+        <button
+          type="button"
+          id="grouping-run-button"
+          class="grouping-run-button"
+          data-i18n="grouping_run_button"
+        >
+          Group now
+        </button>
+      </div>
+      <p id="grouping-status" class="grouping-status" role="status" aria-live="polite"></p>
     </section>
 
     <section aria-labelledby="report-title">
