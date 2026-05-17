@@ -17,6 +17,7 @@ import {
 } from '@/lib/snapshot';
 import { matchesWhitelist } from '@/lib/whitelist';
 import { addArchivedTabs } from '@/lib/archive';
+import { recordCleanup, type CleanupCategory } from '@/lib/report';
 import type { Settings, TabSnapshot, WhitelistEntry } from '@/types/storage';
 
 const FALLBACK_FAVICON =
@@ -29,6 +30,13 @@ const FALLBACK_FAVICON =
 
 type Category = 'all' | 'inactive' | 'duplicate' | 'read';
 const CATEGORIES: readonly Category[] = ['all', 'inactive', 'duplicate', 'read'];
+
+function categoryToCleanupCategory(category: Category): CleanupCategory {
+  if (category === 'inactive' || category === 'duplicate' || category === 'read') {
+    return category;
+  }
+  return 'manual';
+}
 
 type PopupState = {
   category: Category;
@@ -271,6 +279,11 @@ async function runArchive(): Promise<void> {
   }
   if (removed) {
     renderUndoBar(targets.length, undoSnapshot.expiresAt, 'archive');
+    try {
+      await recordCleanup(targets.length, 'manual');
+    } catch (err) {
+      logger.error('recordCleanup (archive) failed', err);
+    }
   } else {
     try {
       await clearUndoSnapshot();
@@ -315,6 +328,11 @@ async function runCleanup(): Promise<void> {
   }
   if (removed) {
     renderUndoBar(targets.length, undoSnapshot.expiresAt);
+    try {
+      await recordCleanup(targets.length, categoryToCleanupCategory(state.category));
+    } catch (err) {
+      logger.error('recordCleanup (cleanup) failed', err);
+    }
   } else {
     try {
       await clearUndoSnapshot();
