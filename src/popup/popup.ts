@@ -24,6 +24,25 @@ async function activateTab(snapshot: TabSnapshot): Promise<void> {
   }
 }
 
+async function closeTab(snapshot: TabSnapshot, li: HTMLLIElement): Promise<void> {
+  if (snapshot.id < 0) return;
+  try {
+    await chrome.tabs.remove(snapshot.id);
+    li.remove();
+    const countEl = document.getElementById('count');
+    if (countEl) {
+      const next = Math.max(0, Number(countEl.textContent ?? '0') - 1);
+      countEl.textContent = String(next);
+    }
+    const list = document.getElementById('tab-list');
+    if (list instanceof HTMLElement && list.childElementCount === 0) {
+      renderEmpty(list);
+    }
+  } catch (err) {
+    logger.error('closeTab failed', err);
+  }
+}
+
 function createTabItem(snapshot: TabSnapshot): HTMLLIElement {
   const li = document.createElement('li');
   li.className = 'tab-item';
@@ -57,7 +76,20 @@ function createTabItem(snapshot: TabSnapshot): HTMLLIElement {
 
   button.appendChild(img);
   button.appendChild(title);
+
+  const closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'tab-close';
+  closeBtn.setAttribute('aria-label', 'Close tab');
+  closeBtn.title = 'Close tab';
+  closeBtn.textContent = '×';
+  closeBtn.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    void closeTab(snapshot, li);
+  });
+
   li.appendChild(button);
+  li.appendChild(closeBtn);
   return li;
 }
 

@@ -48,8 +48,9 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        width: 100%;
-        padding: 6px 16px;
+        flex: 1;
+        min-width: 0;
+        padding: 6px 8px 6px 16px;
         margin: 0;
         border: 0;
         background: transparent;
@@ -63,10 +64,44 @@
         background: rgba(0, 0, 0, 0.04);
         outline: none;
       }
+      .tab-close {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+        padding: 0;
+        border: 0;
+        border-radius: 4px;
+        background: transparent;
+        color: #6b7280;
+        font: inherit;
+        font-size: 16px;
+        line-height: 1;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.1s;
+      }
+      .tab-item:hover .tab-close,
+      .tab-close:focus-visible {
+        opacity: 1;
+      }
+      .tab-close:hover,
+      .tab-close:focus-visible {
+        background: rgba(0, 0, 0, 0.08);
+        color: inherit;
+        outline: none;
+      }
       @media (prefers-color-scheme: dark) {
         .tab-button:hover,
         .tab-button:focus-visible {
           background: rgba(255, 255, 255, 0.06);
+        }
+        .tab-close {
+          color: #9ca3af;
+        }
+        .tab-close:hover,
+        .tab-close:focus-visible {
+          background: rgba(255, 255, 255, 0.1);
         }
         .count {
           color: #9ca3af;
