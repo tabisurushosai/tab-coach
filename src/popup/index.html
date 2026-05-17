@@ -33,6 +33,72 @@
         font-size: 12px;
         color: #6b7280;
       }
+      .search-bar {
+        position: relative;
+        padding: 0 12px 8px;
+      }
+      .search-input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 6px 28px 6px 10px;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        border-radius: 6px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        font-size: 12px;
+      }
+      .search-input:focus-visible {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+      }
+      .search-clear {
+        position: absolute;
+        right: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.08);
+        color: #4b5563;
+        font: inherit;
+        font-size: 12px;
+        line-height: 1;
+        cursor: pointer;
+        display: none;
+      }
+      .search-clear:hover,
+      .search-clear:focus-visible {
+        background: rgba(0, 0, 0, 0.16);
+        outline: none;
+      }
+      .search-bar[data-has-query='true'] .search-clear {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      @media (prefers-color-scheme: dark) {
+        .search-input {
+          border-color: rgba(255, 255, 255, 0.16);
+        }
+        .search-input:focus-visible {
+          border-color: #60a5fa;
+          box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.25);
+        }
+        .search-clear {
+          background: rgba(255, 255, 255, 0.1);
+          color: #d1d5db;
+        }
+        .search-clear:hover,
+        .search-clear:focus-visible {
+          background: rgba(255, 255, 255, 0.18);
+        }
+      }
       .category-tabs {
         display: flex;
         gap: 4px;
@@ -175,6 +241,9 @@
         color: #6b7280;
         text-align: center;
       }
+      .search-input::-webkit-search-cancel-button {
+        display: none;
+      }
       .cleanup-bar {
         display: flex;
         justify-content: flex-end;
@@ -272,6 +341,22 @@
       <h1 id="title" data-i18n="extension_name">tab-coach</h1>
       <span id="count" class="count"></span>
     </header>
+    <div id="search-bar" class="search-bar" data-has-query="false">
+      <input
+        type="search"
+        id="search-input"
+        class="search-input"
+        autocomplete="off"
+        spellcheck="false"
+        data-i18n-attr="placeholder:search_placeholder,aria-label:search_placeholder"
+      />
+      <button
+        type="button"
+        id="search-clear"
+        class="search-clear"
+        data-i18n-attr="aria-label:search_clear_label,title:search_clear_label"
+      >×</button>
+    </div>
     <div id="category-tabs" class="category-tabs" role="tablist" aria-label="Tab category filter">
       <button type="button" class="category-tab" role="tab" data-category="all" aria-selected="true">
         All<span class="category-tab-count" data-count-for="all"></span>

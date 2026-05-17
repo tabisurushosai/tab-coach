@@ -144,5 +144,17 @@
   "inactive_error_invalid": {
     "message": "未アクティブ判定分数は 1〜1440 の数値で入力してください。",
     "description": "未アクティブ判定分数の入力が空または範囲外のときのエラー文言。"
+  },
+  "search_placeholder": {
+    "message": "タイトル / URL で検索",
+    "description": "popup の検索ボックスのプレースホルダ。タブのタイトルと URL から部分一致で絞り込む。"
+  },
+  "search_clear_label": {
+    "message": "検索条件をクリア",
+    "description": "検索ボックスのクリアボタンの aria-label。"
+  },
+  "search_no_match": {
+    "message": "一致するタブはありません。",
+    "description": "検索条件に一致するタブがないときに popup のリストに表示する文言。"
   }
 }

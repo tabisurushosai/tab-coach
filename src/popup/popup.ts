@@ -35,6 +35,7 @@ type PopupState = {
   settings: Settings;
   readCompleted: Record<string, number>;
   whitelist: WhitelistEntry[];
+  searchQuery: string;
 };
 
 const state: PopupState = {
@@ -50,7 +51,28 @@ const state: PopupState = {
   },
   readCompleted: {},
   whitelist: [],
+  searchQuery: '',
 };
+
+function normalizeSearchQuery(raw: string): string {
+  return raw.trim().toLowerCase();
+}
+
+function snapshotMatchesQuery(snapshot: TabSnapshot, query: string): boolean {
+  if (query === '') return true;
+  const title = (snapshot.title || '').toLowerCase();
+  if (title.includes(query)) return true;
+  const url = (snapshot.url || '').toLowerCase();
+  return url.includes(query);
+}
+
+function applySearchFilter(
+  snapshots: readonly TabSnapshot[],
+  query: string,
+): TabSnapshot[] {
+  if (query === '') return [...snapshots];
+  return snapshots.filter((s) => snapshotMatchesQuery(s, query));
+}
 
 function filterByCategory(
   snapshots: readonly TabSnapshot[],
@@ -201,12 +223,15 @@ async function runUndo(): Promise<void> {
 }
 
 async function runCleanup(): Promise<void> {
-  const targets = pickCleanupTargets(
-    state.category,
-    state.snapshots,
-    state.settings,
-    state.readCompleted,
-    state.whitelist,
+  const targets = applySearchFilter(
+    pickCleanupTargets(
+      state.category,
+      state.snapshots,
+      state.settings,
+      state.readCompleted,
+      state.whitelist,
+    ),
+    state.searchQuery,
   );
   if (targets.length === 0) return;
   const ids = targets.map((t) => t.id);
@@ -308,11 +333,11 @@ function createTabItem(snapshot: TabSnapshot): HTMLLIElement {
   return li;
 }
 
-function renderEmpty(list: HTMLElement): void {
+function renderEmpty(list: HTMLElement, message = '—'): void {
   const li = document.createElement('li');
   li.className = 'empty';
   li.setAttribute('role', 'listitem');
-  li.textContent = '—';
+  li.textContent = message;
   list.appendChild(li);
 }
 
@@ -320,17 +345,19 @@ function renderList(): void {
   const list = document.getElementById('tab-list');
   if (!(list instanceof HTMLElement)) return;
 
-  const filtered = filterByCategory(
+  const byCategory = filterByCategory(
     state.snapshots,
     state.category,
     state.settings,
     state.readCompleted,
     state.whitelist,
   );
+  const filtered = applySearchFilter(byCategory, state.searchQuery);
 
   list.replaceChildren();
   if (filtered.length === 0) {
-    renderEmpty(list);
+    const empty = state.searchQuery !== '' && byCategory.length > 0 ? t('search_no_match') : '—';
+    renderEmpty(list, empty);
     return;
   }
   const frag = document.createDocumentFragment();
@@ -342,18 +369,25 @@ function renderList(): void {
 
 function updateCounts(): void {
   const totalEl = document.getElementById('count');
-  if (totalEl) totalEl.textContent = String(state.snapshots.length);
+  if (totalEl) {
+    const totalVisible =
+      state.searchQuery === ''
+        ? state.snapshots.length
+        : applySearchFilter(state.snapshots, state.searchQuery).length;
+    totalEl.textContent = String(totalVisible);
+  }
 
   for (const cat of CATEGORIES) {
     const span = document.querySelector<HTMLElement>(`[data-count-for="${cat}"]`);
     if (!span) continue;
-    const count = filterByCategory(
+    const byCategory = filterByCategory(
       state.snapshots,
       cat,
       state.settings,
       state.readCompleted,
       state.whitelist,
-    ).length;
+    );
+    const count = applySearchFilter(byCategory, state.searchQuery).length;
     span.textContent = count > 0 ? ` (${count})` : '';
   }
 }
@@ -361,12 +395,15 @@ function updateCounts(): void {
 function updateCleanupButton(): void {
   const button = document.getElementById('cleanup-button');
   if (!(button instanceof HTMLButtonElement)) return;
-  const targets = pickCleanupTargets(
-    state.category,
-    state.snapshots,
-    state.settings,
-    state.readCompleted,
-    state.whitelist,
+  const targets = applySearchFilter(
+    pickCleanupTargets(
+      state.category,
+      state.snapshots,
+      state.settings,
+      state.readCompleted,
+      state.whitelist,
+    ),
+    state.searchQuery,
   );
   button.disabled = targets.length === 0;
   const countEl = document.getElementById('cleanup-count');
@@ -395,6 +432,39 @@ function bindCategoryTabs(): void {
       }
     });
   });
+}
+
+function bindSearchInput(): void {
+  const input = document.getElementById('search-input');
+  const bar = document.getElementById('search-bar');
+  const clearBtn = document.getElementById('search-clear');
+  if (!(input instanceof HTMLInputElement)) return;
+  const updateClearVisibility = (raw: string): void => {
+    if (bar instanceof HTMLElement) {
+      bar.dataset['hasQuery'] = raw.length > 0 ? 'true' : 'false';
+    }
+  };
+  input.addEventListener('input', () => {
+    const normalized = normalizeSearchQuery(input.value);
+    updateClearVisibility(input.value);
+    if (normalized === state.searchQuery) return;
+    state.searchQuery = normalized;
+    updateCounts();
+    renderList();
+    updateCleanupButton();
+  });
+  if (clearBtn instanceof HTMLButtonElement) {
+    clearBtn.addEventListener('click', () => {
+      if (input.value === '' && state.searchQuery === '') return;
+      input.value = '';
+      updateClearVisibility('');
+      state.searchQuery = '';
+      updateCounts();
+      renderList();
+      updateCleanupButton();
+      input.focus();
+    });
+  }
 }
 
 function bindCleanupButton(): void {
@@ -443,6 +513,7 @@ async function loadAndRender(): Promise<void> {
 
 function init(): void {
   applyI18nToDom(document);
+  bindSearchInput();
   bindCategoryTabs();
   bindCleanupButton();
   bindUndoButton();

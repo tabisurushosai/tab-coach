@@ -144,5 +144,17 @@
   "inactive_error_invalid": {
     "message": "Inactive minutes must be a number between 1 and 1440.",
     "description": "Error shown when the inactive minutes input is empty or out of range."
+  },
+  "search_placeholder": {
+    "message": "Search title / URL",
+    "description": "Placeholder for the popup search box. Filters tabs by partial match against title and URL."
+  },
+  "search_clear_label": {
+    "message": "Clear search",
+    "description": "Aria-label of the search clear button."
+  },
+  "search_no_match": {
+    "message": "No tabs match the search.",
+    "description": "Shown in the popup list when no tab matches the current search query."
   }
 }

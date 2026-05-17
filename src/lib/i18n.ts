@@ -33,7 +33,10 @@ export type MessageKey =
   | 'inactive_save_button'
   | 'inactive_reset_button'
   | 'inactive_saved_notice'
-  | 'inactive_error_invalid';
+  | 'inactive_error_invalid'
+  | 'search_placeholder'
+  | 'search_clear_label'
+  | 'search_no_match';
 
 export type Locale = 'ja' | 'en';
 

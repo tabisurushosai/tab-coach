@@ -51,7 +51,7 @@
 - [x] T044: ホワイトリストにマッチするタブは整理対象外
 - [x] T045: カスタム閾値 (options でバッジ色境界 yellow/red 変更)
 - [x] T046: カスタム閾値 (未アクティブ判定分数変更)
-- [ ] T047: popup の検索ボックス (タイトル/URL filter)
+- [x] T047: popup の検索ボックス (タイトル/URL filter)
 - [ ] T048: アーカイブ機能 (close 代わりに storage 保存)
 - [ ] T049: options アーカイブ一覧 (タイトル/URL/日時)
 - [ ] T050: アーカイブから復元 (chrome.tabs.create)
