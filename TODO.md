@@ -71,7 +71,7 @@
 - [x] T062: ダークモード手動切替 (options で固定可)
 - [x] T063: ARIA: popup UL に role="list"、LI に role="listitem"
 - [x] T064: ARIA: ボタンに aria-label
-- [ ] T065: ARIA: aria-live="polite" (フィルタ済リスト)
+- [x] T065: ARIA: aria-live="polite" (フィルタ済リスト)
 - [ ] T066: フォントサイズ調整 (options スライダー、CSS variable)
 - [ ] T067: ハイコントラストモード
 - [ ] T068: キーボードショートカット定義 (manifest commands)
