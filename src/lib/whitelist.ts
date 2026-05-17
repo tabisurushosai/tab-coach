@@ -5,6 +5,41 @@ export const MAX_PATTERN_LENGTH = 256;
 export const MAX_NOTE_LENGTH = 200;
 export const MAX_ENTRIES = 200;
 
+const REGEX_SPECIALS = /[.+?^${}()|[\]\\]/g;
+
+export function globToRegExp(pattern: string): RegExp {
+  const escaped = pattern.replace(REGEX_SPECIALS, '\\$&').replace(/\*/g, '.*');
+  return new RegExp(`^${escaped}$`, 'i');
+}
+
+export function matchesPattern(url: string, pattern: string): boolean {
+  if (!url || !pattern) return false;
+  try {
+    return globToRegExp(pattern).test(url);
+  } catch {
+    return false;
+  }
+}
+
+export function matchesWhitelist(
+  url: string,
+  entries: readonly WhitelistEntry[],
+): boolean {
+  if (!url || entries.length === 0) return false;
+  for (const entry of entries) {
+    if (matchesPattern(url, entry.pattern)) return true;
+  }
+  return false;
+}
+
+export function filterOutWhitelisted<T extends { url: string }>(
+  items: readonly T[],
+  entries: readonly WhitelistEntry[],
+): T[] {
+  if (entries.length === 0) return [...items];
+  return items.filter((item) => !matchesWhitelist(item.url, entries));
+}
+
 export type AddEntryResult =
   | { ok: true; entries: WhitelistEntry[]; entry: WhitelistEntry }
   | { ok: false; reason: 'empty' | 'too_long' | 'duplicate' | 'limit_reached' };

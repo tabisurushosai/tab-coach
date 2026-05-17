@@ -15,7 +15,8 @@ import {
   loadUndoSnapshot,
   saveUndoSnapshot,
 } from '@/lib/snapshot';
-import type { Settings, TabSnapshot } from '@/types/storage';
+import { matchesWhitelist } from '@/lib/whitelist';
+import type { Settings, TabSnapshot, WhitelistEntry } from '@/types/storage';
 
 const FALLBACK_FAVICON =
   'data:image/svg+xml;utf8,' +
@@ -33,6 +34,7 @@ type PopupState = {
   snapshots: TabSnapshot[];
   settings: Settings;
   readCompleted: Record<string, number>;
+  whitelist: WhitelistEntry[];
 };
 
 const state: PopupState = {
@@ -47,6 +49,7 @@ const state: PopupState = {
     highContrast: false,
   },
   readCompleted: {},
+  whitelist: [],
 };
 
 function filterByCategory(
@@ -54,18 +57,22 @@ function filterByCategory(
   category: Category,
   settings: Settings,
   readCompleted: Record<string, number>,
+  whitelist: readonly WhitelistEntry[],
 ): TabSnapshot[] {
   if (category === 'all') return [...snapshots];
+  let candidates: TabSnapshot[];
   if (category === 'inactive') {
-    return filterInactive(snapshots, settings.inactiveMinutes);
+    candidates = filterInactive(snapshots, settings.inactiveMinutes);
+  } else if (category === 'duplicate') {
+    candidates = filterDuplicateHostnames(snapshots);
+  } else {
+    candidates = snapshots.filter((s) => {
+      const key = normalizeReadUrl(s.url);
+      return key !== null && readCompleted[key] !== undefined;
+    });
   }
-  if (category === 'duplicate') {
-    return filterDuplicateHostnames(snapshots);
-  }
-  return snapshots.filter((s) => {
-    const key = normalizeReadUrl(s.url);
-    return key !== null && readCompleted[key] !== undefined;
-  });
+  if (whitelist.length === 0) return candidates;
+  return candidates.filter((s) => !matchesWhitelist(s.url, whitelist));
 }
 
 async function activateTab(snapshot: TabSnapshot): Promise<void> {
@@ -86,6 +93,7 @@ function pickCleanupTargets(
   snapshots: readonly TabSnapshot[],
   settings: Settings,
   readCompleted: Record<string, number>,
+  whitelist: readonly WhitelistEntry[],
 ): TabSnapshot[] {
   if (category === 'all') return [];
   let candidates: TabSnapshot[];
@@ -99,7 +107,9 @@ function pickCleanupTargets(
       return key !== null && readCompleted[key] !== undefined;
     });
   }
-  return candidates.filter((s) => s.id >= 0 && !s.pinned);
+  return candidates.filter(
+    (s) => s.id >= 0 && !s.pinned && !matchesWhitelist(s.url, whitelist),
+  );
 }
 
 let undoTimerId: number | null = null;
@@ -196,6 +206,7 @@ async function runCleanup(): Promise<void> {
     state.snapshots,
     state.settings,
     state.readCompleted,
+    state.whitelist,
   );
   if (targets.length === 0) return;
   const ids = targets.map((t) => t.id);
@@ -314,6 +325,7 @@ function renderList(): void {
     state.category,
     state.settings,
     state.readCompleted,
+    state.whitelist,
   );
 
   list.replaceChildren();
@@ -335,7 +347,13 @@ function updateCounts(): void {
   for (const cat of CATEGORIES) {
     const span = document.querySelector<HTMLElement>(`[data-count-for="${cat}"]`);
     if (!span) continue;
-    const count = filterByCategory(state.snapshots, cat, state.settings, state.readCompleted).length;
+    const count = filterByCategory(
+      state.snapshots,
+      cat,
+      state.settings,
+      state.readCompleted,
+      state.whitelist,
+    ).length;
     span.textContent = count > 0 ? ` (${count})` : '';
   }
 }
@@ -348,6 +366,7 @@ function updateCleanupButton(): void {
     state.snapshots,
     state.settings,
     state.readCompleted,
+    state.whitelist,
   );
   button.disabled = targets.length === 0;
   const countEl = document.getElementById('cleanup-count');
@@ -408,11 +427,12 @@ async function loadAndRender(): Promise<void> {
   try {
     const [snapshots, stored] = await Promise.all([
       queryAllSnapshots(),
-      getMany(['settings', 'readCompleted'] as const),
+      getMany(['settings', 'readCompleted', 'whitelist'] as const),
     ]);
     state.snapshots = snapshots;
     state.settings = stored.settings;
     state.readCompleted = stored.readCompleted;
+    state.whitelist = stored.whitelist;
   } catch (err) {
     logger.error('popup load failed', err);
   }
