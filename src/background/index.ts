@@ -1,5 +1,6 @@
 import { logger } from '@/lib/logger';
 import { refreshBadge } from '@/lib/badge';
+import { isReadingProgressMessage } from '@/types/messages';
 
 async function updateBadgeAndLog(event: string, extra: Record<string, unknown>): Promise<void> {
   try {
@@ -37,4 +38,18 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
     windowId: removeInfo.windowId,
     isWindowClosing: removeInfo.isWindowClosing,
   });
+});
+
+chrome.runtime.onMessage.addListener((message, sender) => {
+  if (isReadingProgressMessage(message)) {
+    logger.info('READING_PROGRESS', {
+      tabId: sender.tab?.id ?? null,
+      frameId: sender.frameId ?? null,
+      url: message.url,
+      maxScrollPercent: message.maxScrollPercent,
+      dwellMs: message.dwellMs,
+      reportedAt: message.reportedAt,
+    });
+  }
+  return false;
 });
