@@ -58,7 +58,17 @@ export type MessageKey =
   | 'archive_import_error_unsupported_version'
   | 'archive_import_error_no_entries'
   | 'archive_import_error_too_large'
-  | 'archive_import_error_read_failed';
+  | 'archive_import_error_read_failed'
+  | 'report_section_title'
+  | 'report_section_hint'
+  | 'report_current_month_label'
+  | 'report_summary_cleanups'
+  | 'report_summary_closed'
+  | 'report_summary_saved_time'
+  | 'report_chart_aria_label'
+  | 'report_chart_no_data'
+  | 'report_saved_time_zero'
+  | 'report_saved_time_format';
 
 export type Locale = 'ja' | 'en';
 

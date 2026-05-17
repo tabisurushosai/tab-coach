@@ -272,5 +272,67 @@
   "archive_import_error_read_failed": {
     "message": "Failed to read the file.",
     "description": "Error shown when the FileReader fails to read the uploaded file."
+  },
+  "report_section_title": {
+    "message": "Monthly report",
+    "description": "Heading of the options monthly report section that shows cleanup counts and estimated saved time."
+  },
+  "report_section_hint": {
+    "message": "Aggregates cleanup and archive history into per-month counts and estimated saved time (15 seconds per closed tab).",
+    "description": "Description text for the monthly report section explaining the data source and the saved-time heuristic."
+  },
+  "report_current_month_label": {
+    "message": "This month",
+    "description": "Label that highlights the current month's totals."
+  },
+  "report_summary_cleanups": {
+    "message": "$COUNT$ cleanups",
+    "description": "Number of cleanup runs in the current month. $COUNT$ is the run count.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "report_summary_closed": {
+    "message": "$COUNT$ tabs",
+    "description": "Number of tabs closed in the current month. $COUNT$ is the total tab count.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "report_summary_saved_time": {
+    "message": "Estimated saved time",
+    "description": "Heading label for the estimated saved time figure."
+  },
+  "report_chart_aria_label": {
+    "message": "Closed tabs over the last 12 months",
+    "description": "Aria-label of the monthly bar chart drawn on a canvas."
+  },
+  "report_chart_no_data": {
+    "message": "No cleanup history yet.",
+    "description": "Message overlaid on the bar chart when there is no cleanup history at all."
+  },
+  "report_saved_time_zero": {
+    "message": "0 seconds",
+    "description": "Display when the estimated saved time is zero."
+  },
+  "report_saved_time_format": {
+    "message": "~$HOURS$h $MINUTES$m",
+    "description": "Formatted display for estimated saved time. $HOURS$ is hours, $MINUTES$ is minutes.",
+    "placeholders": {
+      "hours": {
+        "content": "$1",
+        "example": "2"
+      },
+      "minutes": {
+        "content": "$2",
+        "example": "15"
+      }
+    }
   }
 }

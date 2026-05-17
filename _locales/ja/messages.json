@@ -272,5 +272,67 @@
   "archive_import_error_read_failed": {
     "message": "ファイルの読み込みに失敗しました。",
     "description": "FileReader による読み込みに失敗したときのエラー文言。"
+  },
+  "report_section_title": {
+    "message": "月次レポート",
+    "description": "options の月次レポートセクションの見出し。整理の実行回数と推定節約時間を表示する。"
+  },
+  "report_section_hint": {
+    "message": "整理 / アーカイブの履歴から、月ごとの実行回数と推定節約時間 (1 タブあたり 15 秒) を集計します。",
+    "description": "月次レポートセクションの説明文。集計対象と節約時間の換算根拠を示す。"
+  },
+  "report_current_month_label": {
+    "message": "今月",
+    "description": "現在月の集計を強調表示するラベル。"
+  },
+  "report_summary_cleanups": {
+    "message": "$COUNT$ 回",
+    "description": "今月の整理実行回数の表示。$COUNT$ には実行回数が入る。",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "report_summary_closed": {
+    "message": "$COUNT$ 件",
+    "description": "今月閉じたタブの合計件数の表示。$COUNT$ には件数が入る。",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "report_summary_saved_time": {
+    "message": "節約時間",
+    "description": "推定節約時間の見出しラベル。"
+  },
+  "report_chart_aria_label": {
+    "message": "直近 12 ヶ月の閉じたタブ件数",
+    "description": "Canvas で描画する月次バーチャートの aria-label。"
+  },
+  "report_chart_no_data": {
+    "message": "まだ整理履歴がありません。",
+    "description": "整理履歴がまったく無いときにバーチャート上に重ねて表示するメッセージ。"
+  },
+  "report_saved_time_zero": {
+    "message": "0 秒",
+    "description": "節約時間が 0 のときの表示。"
+  },
+  "report_saved_time_format": {
+    "message": "約 $HOURS$ 時間 $MINUTES$ 分",
+    "description": "推定節約時間のフォーマット表示。$HOURS$ は時間、$MINUTES$ は分。",
+    "placeholders": {
+      "hours": {
+        "content": "$1",
+        "example": "2"
+      },
+      "minutes": {
+        "content": "$2",
+        "example": "15"
+      }
+    }
   }
 }

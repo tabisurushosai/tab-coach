@@ -26,6 +26,12 @@ import {
   loadWhitelist,
   removeWhitelistEntry,
 } from '@/lib/whitelist';
+import {
+  aggregateRecentMonths,
+  getCurrentMonthReport,
+  loadCleanupHistory,
+  type MonthlyReport,
+} from '@/lib/report';
 import type { ArchivedTab, Settings, WhitelistEntry } from '@/types/storage';
 
 const THRESHOLD_ERROR_KEY: Record<ThresholdValidationError, MessageKey> = {
@@ -646,6 +652,190 @@ function bindArchiveImportButton(): void {
   });
 }
 
+const REPORT_MONTHS = 12;
+
+function formatSavedTimeLabel(savedSeconds: number): string {
+  if (!Number.isFinite(savedSeconds) || savedSeconds <= 0) {
+    return t('report_saved_time_zero');
+  }
+  const totalMinutes = Math.floor(savedSeconds / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return t('report_saved_time_format', [String(hours), String(minutes)]);
+}
+
+function getMonthShortLabel(year: number, month: number): string {
+  const locale = getUILocale() === 'ja' ? 'ja-JP' : 'en-US';
+  try {
+    const d = new Date(year, month - 1, 1);
+    return new Intl.DateTimeFormat(locale, { month: 'short' }).format(d);
+  } catch {
+    return String(month);
+  }
+}
+
+function getChartColors(): {
+  axis: string;
+  grid: string;
+  text: string;
+  bar: string;
+  barCurrent: string;
+} {
+  const isDark =
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (isDark) {
+    return {
+      axis: 'rgba(255, 255, 255, 0.32)',
+      grid: 'rgba(255, 255, 255, 0.08)',
+      text: '#9ca3af',
+      bar: '#60a5fa',
+      barCurrent: '#3b82f6',
+    };
+  }
+  return {
+    axis: 'rgba(0, 0, 0, 0.32)',
+    grid: 'rgba(0, 0, 0, 0.06)',
+    text: '#6b7280',
+    bar: '#3b82f6',
+    barCurrent: '#1d4ed8',
+  };
+}
+
+function drawMonthlyChart(canvas: HTMLCanvasElement, reports: readonly MonthlyReport[]): void {
+  const dpr = Math.max(1, window.devicePixelRatio || 1);
+  const cssWidth = canvas.clientWidth || canvas.width;
+  const cssHeight = canvas.clientHeight || canvas.height;
+  if (cssWidth <= 0 || cssHeight <= 0) return;
+  canvas.width = Math.floor(cssWidth * dpr);
+  canvas.height = Math.floor(cssHeight * dpr);
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, cssWidth, cssHeight);
+
+  const colors = getChartColors();
+  const paddingLeft = 40;
+  const paddingRight = 12;
+  const paddingTop = 12;
+  const paddingBottom = 28;
+  const plotWidth = cssWidth - paddingLeft - paddingRight;
+  const plotHeight = cssHeight - paddingTop - paddingBottom;
+  if (plotWidth <= 0 || plotHeight <= 0) return;
+
+  const ordered = [...reports].reverse();
+  const counts = ordered.map((r) => r.closedTotal);
+  const maxRaw = counts.reduce((a, b) => Math.max(a, b), 0);
+  const maxValue = maxRaw <= 0 ? 1 : Math.max(5, Math.ceil(maxRaw / 5) * 5);
+  const gridSteps = 4;
+
+  ctx.strokeStyle = colors.grid;
+  ctx.lineWidth = 1;
+  ctx.fillStyle = colors.text;
+  ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  for (let i = 0; i <= gridSteps; i += 1) {
+    const value = Math.round((maxValue * i) / gridSteps);
+    const y = paddingTop + plotHeight - (plotHeight * i) / gridSteps;
+    ctx.beginPath();
+    ctx.moveTo(paddingLeft, y);
+    ctx.lineTo(paddingLeft + plotWidth, y);
+    ctx.stroke();
+    ctx.fillText(String(value), paddingLeft - 6, y);
+  }
+
+  ctx.strokeStyle = colors.axis;
+  ctx.beginPath();
+  ctx.moveTo(paddingLeft, paddingTop);
+  ctx.lineTo(paddingLeft, paddingTop + plotHeight);
+  ctx.lineTo(paddingLeft + plotWidth, paddingTop + plotHeight);
+  ctx.stroke();
+
+  if (ordered.length === 0) return;
+  const slotWidth = plotWidth / ordered.length;
+  const barWidth = Math.max(2, Math.min(28, slotWidth * 0.6));
+  const lastIndex = ordered.length - 1;
+
+  ctx.textAlign = 'center';
+  for (let i = 0; i < ordered.length; i += 1) {
+    const report = ordered[i];
+    if (!report) continue;
+    const slotX = paddingLeft + slotWidth * i + slotWidth / 2;
+    const value = report.closedTotal;
+    const barHeight = value > 0 ? (plotHeight * value) / maxValue : 0;
+    const barY = paddingTop + plotHeight - barHeight;
+    ctx.fillStyle = i === lastIndex ? colors.barCurrent : colors.bar;
+    ctx.fillRect(slotX - barWidth / 2, barY, barWidth, barHeight);
+
+    ctx.fillStyle = colors.text;
+    ctx.textBaseline = 'top';
+    ctx.fillText(getMonthShortLabel(report.year, report.month), slotX, paddingTop + plotHeight + 6);
+  }
+}
+
+function applyCurrentMonthSummary(report: MonthlyReport): void {
+  const cleanupsEl = document.getElementById('report-current-cleanups');
+  if (cleanupsEl instanceof HTMLElement) {
+    cleanupsEl.textContent = t('report_summary_cleanups', [String(report.cleanupCount)]);
+  }
+  const closedEl = document.getElementById('report-current-closed');
+  if (closedEl instanceof HTMLElement) {
+    closedEl.textContent = t('report_summary_closed', [String(report.closedTotal)]);
+  }
+  const savedEl = document.getElementById('report-current-saved-time');
+  if (savedEl instanceof HTMLElement) {
+    savedEl.textContent = formatSavedTimeLabel(report.savedSeconds);
+  }
+}
+
+function setChartEmptyVisible(visible: boolean): void {
+  const el = document.getElementById('report-chart-empty');
+  if (el instanceof HTMLElement) el.dataset['visible'] = visible ? 'true' : 'false';
+}
+
+function renderReport(): Promise<void> {
+  return loadCleanupHistory()
+    .then((history) => {
+      const now = Date.now();
+      const current = getCurrentMonthReport(history, now);
+      applyCurrentMonthSummary(current);
+      const recent = aggregateRecentMonths(history, REPORT_MONTHS, now);
+      const canvas = document.getElementById('report-chart');
+      if (canvas instanceof HTMLCanvasElement) {
+        drawMonthlyChart(canvas, recent);
+      }
+      const hasData = history.length > 0;
+      setChartEmptyVisible(!hasData);
+    })
+    .catch((err) => {
+      logger.error('report load failed', err);
+    });
+}
+
+function bindReportStorageListener(): void {
+  if (typeof chrome === 'undefined' || !chrome.storage?.onChanged) return;
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== 'local') return;
+    if (!Object.prototype.hasOwnProperty.call(changes, 'cleanupHistory')) return;
+    void renderReport();
+  });
+}
+
+function bindReportColorSchemeListener(): void {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  const listener = (): void => {
+    void renderReport();
+  };
+  if (typeof mq.addEventListener === 'function') {
+    mq.addEventListener('change', listener);
+  } else if (typeof mq.addListener === 'function') {
+    mq.addListener(listener);
+  }
+}
+
 function init(): void {
   applyI18nToDom(document);
   bindForm();
@@ -654,9 +844,12 @@ function init(): void {
   bindArchiveStorageListener();
   bindArchiveExportButton();
   bindArchiveImportButton();
+  bindReportStorageListener();
+  bindReportColorSchemeListener();
   void loadAndRender();
   void loadAndRenderThresholds();
   void loadAndRenderArchive();
+  void renderReport();
   logger.info('options loaded');
 }
 
