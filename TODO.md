@@ -4,7 +4,7 @@
 - [x] T001: gh repo create tabisurushosai/tab-coach --public --source=. --remote=origin --push (初回push)
 - [x] T002: SPEC.md を拡充 (型詳細・データフロー Mermaid 図追加)
 - [x] T003: TODO.md を確認 (100 行存在チェック、本タスクで [x])
-- [ ] T004: LICENSES.md (MIT、依存ライブラリのライセンス雛形)
+- [x] T004: LICENSES.md (MIT、依存ライブラリのライセンス雛形)
 - [ ] T005: legal/PRIVACY_ja.md / PRIVACY_en.md / TERMS_ja.md / TERMS_en.md
 - [ ] T006: CHANGELOG.md (Keep a Changelog 準拠)
 - [ ] T007: .editorconfig / .prettierrc.json / .eslintrc.json
