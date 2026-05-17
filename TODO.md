@@ -26,7 +26,7 @@
 - [x] T021: src/background/index.ts (空 service worker、onInstalled でログのみ)
 - [x] T022: src/popup/index.html + src/popup/popup.ts (Hello World 表示)
 - [x] T023: src/options/index.html + src/options/options.ts (Hello World 表示)
-- [ ] T024: build_zip.sh (release/tab-coach.zip 生成、dist/ + manifest.json + _locales + icons をパック)
+- [x] T024: build_zip.sh (release/tab-coach.zip 生成、dist/ + manifest.json + _locales + icons をパック)
 - [ ] T025: npm run build 成功 + bash build_zip.sh 成功確認
 
 ## Phase 2: コア機能 (T026-T055)
