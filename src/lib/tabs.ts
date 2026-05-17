@@ -45,3 +45,22 @@ export function inactiveMs(snapshot: Pick<TabSnapshot, 'lastAccessed'>, now: num
 export function inactiveMinutes(snapshot: Pick<TabSnapshot, 'lastAccessed'>, now: number = Date.now()): number {
   return Math.floor(inactiveMs(snapshot, now) / 60_000);
 }
+
+export const DEFAULT_INACTIVE_THRESHOLD_MINUTES = 30;
+
+export function isInactive<T extends Pick<TabSnapshot, 'lastAccessed'>>(
+  snapshot: T,
+  thresholdMinutes: number = DEFAULT_INACTIVE_THRESHOLD_MINUTES,
+  now: number = Date.now(),
+): boolean {
+  if (!Number.isFinite(thresholdMinutes) || thresholdMinutes < 0) return false;
+  return inactiveMinutes(snapshot, now) >= thresholdMinutes;
+}
+
+export function filterInactive<T extends Pick<TabSnapshot, 'lastAccessed'>>(
+  snapshots: readonly T[],
+  thresholdMinutes: number = DEFAULT_INACTIVE_THRESHOLD_MINUTES,
+  now: number = Date.now(),
+): T[] {
+  return snapshots.filter((s) => isInactive(s, thresholdMinutes, now));
+}
