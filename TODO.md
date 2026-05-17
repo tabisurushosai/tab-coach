@@ -76,7 +76,7 @@
 - [x] T067: ハイコントラストモード
 - [x] T068: キーボードショートカット定義 (manifest commands)
 - [x] T069: Ctrl+Shift+T で popup
-- [ ] T070: Ctrl+Shift+R で整理実行
+- [x] T070: Ctrl+Shift+R で整理実行
 
 ## Phase 4: テスト・品質 (T071-T080)
 - [ ] T071: vitest セットアップ (jsdom 環境、vitest.config.ts)
