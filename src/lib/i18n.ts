@@ -3,7 +3,20 @@ export type MessageKey =
   | 'extension_description'
   | 'cleanup_button'
   | 'undo_button'
-  | 'undo_notice';
+  | 'undo_notice'
+  | 'whitelist_section_title'
+  | 'whitelist_section_hint'
+  | 'whitelist_pattern_label'
+  | 'whitelist_pattern_placeholder'
+  | 'whitelist_note_label'
+  | 'whitelist_note_placeholder'
+  | 'whitelist_add_button'
+  | 'whitelist_remove_button'
+  | 'whitelist_empty'
+  | 'whitelist_error_empty'
+  | 'whitelist_error_duplicate'
+  | 'whitelist_error_too_long'
+  | 'whitelist_error_limit';
 
 export type Locale = 'ja' | 'en';
 

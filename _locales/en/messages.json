@@ -24,5 +24,57 @@
         "example": "5"
       }
     }
+  },
+  "whitelist_section_title": {
+    "message": "Whitelist",
+    "description": "Heading of the options whitelist section. Manages URL patterns excluded from cleanup."
+  },
+  "whitelist_section_hint": {
+    "message": "Add URL patterns to exclude from cleanup. Example: https://*.github.com/*",
+    "description": "Description text for the whitelist section, showing an example pattern."
+  },
+  "whitelist_pattern_label": {
+    "message": "URL pattern",
+    "description": "Label for the URL pattern input in the whitelist add form."
+  },
+  "whitelist_pattern_placeholder": {
+    "message": "https://*.example.com/*",
+    "description": "Placeholder example for the URL pattern input."
+  },
+  "whitelist_note_label": {
+    "message": "Note (optional)",
+    "description": "Label for the optional note input in the whitelist add form."
+  },
+  "whitelist_note_placeholder": {
+    "message": "purpose, reason, etc.",
+    "description": "Placeholder for the note input."
+  },
+  "whitelist_add_button": {
+    "message": "Add",
+    "description": "Label for the button that adds an entry to the whitelist."
+  },
+  "whitelist_remove_button": {
+    "message": "Remove",
+    "description": "Label for the remove button on a whitelist entry row."
+  },
+  "whitelist_empty": {
+    "message": "Whitelist is empty.",
+    "description": "Shown when there are no whitelist entries."
+  },
+  "whitelist_error_empty": {
+    "message": "Please enter a pattern.",
+    "description": "Error shown when adding an empty whitelist pattern."
+  },
+  "whitelist_error_duplicate": {
+    "message": "This pattern is already in the whitelist.",
+    "description": "Error shown when adding a duplicate whitelist pattern."
+  },
+  "whitelist_error_too_long": {
+    "message": "Pattern is too long (max 256 characters).",
+    "description": "Error shown when the pattern exceeds the maximum length."
+  },
+  "whitelist_error_limit": {
+    "message": "Whitelist entry limit reached (200).",
+    "description": "Error shown when the number of whitelist entries reaches the cap."
   }
 }

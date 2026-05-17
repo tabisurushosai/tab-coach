@@ -17,19 +17,199 @@
         box-sizing: border-box;
       }
       h1 {
-        margin: 0 0 12px;
+        margin: 0 0 16px;
         font-size: 20px;
         font-weight: 600;
       }
-      p {
+      h2 {
+        margin: 24px 0 8px;
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .hint {
+        margin: 0 0 12px;
+        color: #6b7280;
+        font-size: 12px;
+      }
+      .whitelist-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 8px;
+        align-items: end;
+        margin-bottom: 8px;
+      }
+      .whitelist-form label {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 12px;
+        color: #374151;
+      }
+      .whitelist-form input {
+        padding: 6px 8px;
+        font: inherit;
+        font-size: 13px;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        border-radius: 4px;
+        background: transparent;
+        color: inherit;
+        box-sizing: border-box;
+      }
+      .whitelist-form input:focus {
+        outline: 2px solid #2563eb;
+        outline-offset: 1px;
+      }
+      .whitelist-add-button {
+        padding: 7px 14px;
+        border: 0;
+        border-radius: 4px;
+        background: #2563eb;
+        color: #fff;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .whitelist-add-button:hover,
+      .whitelist-add-button:focus-visible {
+        background: #1d4ed8;
+        outline: none;
+      }
+      .whitelist-error {
+        min-height: 18px;
+        margin: 0 0 8px;
+        color: #b91c1c;
+        font-size: 12px;
+      }
+      .whitelist-list {
+        list-style: none;
         margin: 0;
-        color: #666;
+        padding: 0;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 4px;
+      }
+      .whitelist-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .whitelist-item:last-child {
+        border-bottom: 0;
+      }
+      .whitelist-item-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .whitelist-item-pattern {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 13px;
+        word-break: break-all;
+      }
+      .whitelist-item-meta {
+        margin-top: 2px;
+        font-size: 11px;
+        color: #6b7280;
+      }
+      .whitelist-remove-button {
+        flex-shrink: 0;
+        padding: 5px 10px;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        border-radius: 4px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .whitelist-remove-button:hover,
+      .whitelist-remove-button:focus-visible {
+        background: rgba(0, 0, 0, 0.04);
+        outline: none;
+      }
+      .whitelist-empty {
+        padding: 12px;
+        color: #6b7280;
+        text-align: center;
+        font-size: 13px;
+      }
+      @media (prefers-color-scheme: dark) {
+        .hint,
+        .whitelist-form label,
+        .whitelist-item-meta,
+        .whitelist-empty {
+          color: #9ca3af;
+        }
+        .whitelist-form input {
+          border-color: rgba(255, 255, 255, 0.16);
+        }
+        .whitelist-list {
+          border-color: rgba(255, 255, 255, 0.12);
+        }
+        .whitelist-item {
+          border-bottom-color: rgba(255, 255, 255, 0.08);
+        }
+        .whitelist-remove-button {
+          border-color: rgba(255, 255, 255, 0.16);
+        }
+        .whitelist-remove-button:hover,
+        .whitelist-remove-button:focus-visible {
+          background: rgba(255, 255, 255, 0.06);
+        }
+        .whitelist-error {
+          color: #fca5a5;
+        }
       }
     </style>
   </head>
   <body>
     <h1 id="title" data-i18n="extension_name">tab-coach</h1>
-    <p id="message">Hello World</p>
+
+    <section aria-labelledby="whitelist-title">
+      <h2 id="whitelist-title" data-i18n="whitelist_section_title">Whitelist</h2>
+      <p class="hint" data-i18n="whitelist_section_hint"></p>
+      <form id="whitelist-form" class="whitelist-form" novalidate>
+        <label>
+          <span data-i18n="whitelist_pattern_label">URL pattern</span>
+          <input
+            id="whitelist-pattern"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            maxlength="256"
+            required
+            data-i18n-attr="placeholder:whitelist_pattern_placeholder"
+          />
+        </label>
+        <label>
+          <span data-i18n="whitelist_note_label">Note (optional)</span>
+          <input
+            id="whitelist-note"
+            type="text"
+            autocomplete="off"
+            maxlength="200"
+            data-i18n-attr="placeholder:whitelist_note_placeholder"
+          />
+        </label>
+        <button
+          type="submit"
+          id="whitelist-add-button"
+          class="whitelist-add-button"
+          data-i18n="whitelist_add_button"
+        >
+          Add
+        </button>
+      </form>
+      <p id="whitelist-error" class="whitelist-error" role="alert" aria-live="polite"></p>
+      <ul
+        id="whitelist-list"
+        class="whitelist-list"
+        role="list"
+        aria-label="Whitelist entries"
+      ></ul>
+    </section>
+
     <script type="module" src="./options.ts"></script>
   </body>
 </html>

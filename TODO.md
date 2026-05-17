@@ -47,7 +47,7 @@
 - [x] T040: ワンクリック「整理する」ボタン (該当タブ一括 chrome.tabs.remove)
 - [x] T041: アンドゥ機能 (30秒以内 chrome.tabs.create で復元)
 - [x] T042: スナップショット (整理直前の TabSnapshot[] を storage)
-- [ ] T043: ホワイトリスト UI (options で URL パターン入力、追加・削除)
+- [x] T043: ホワイトリスト UI (options で URL パターン入力、追加・削除)
 - [ ] T044: ホワイトリストにマッチするタブは整理対象外
 - [ ] T045: カスタム閾値 (options でバッジ色境界 yellow/red 変更)
 - [ ] T046: カスタム閾値 (未アクティブ判定分数変更)

@@ -24,5 +24,57 @@
         "example": "5"
       }
     }
+  },
+  "whitelist_section_title": {
+    "message": "ホワイトリスト",
+    "description": "options のホワイトリスト設定セクションの見出し。整理対象から除外する URL パターンを管理する。"
+  },
+  "whitelist_section_hint": {
+    "message": "整理対象から除外する URL パターンを追加できます。例: https://*.github.com/*",
+    "description": "ホワイトリストセクションの説明文。パターン形式の例を提示する。"
+  },
+  "whitelist_pattern_label": {
+    "message": "URL パターン",
+    "description": "ホワイトリスト追加フォームの URL パターン入力欄のラベル。"
+  },
+  "whitelist_pattern_placeholder": {
+    "message": "https://*.example.com/*",
+    "description": "URL パターン入力欄のプレースホルダ例。"
+  },
+  "whitelist_note_label": {
+    "message": "メモ (任意)",
+    "description": "ホワイトリスト追加フォームのメモ入力欄のラベル。任意項目。"
+  },
+  "whitelist_note_placeholder": {
+    "message": "用途・理由など",
+    "description": "メモ入力欄のプレースホルダ。"
+  },
+  "whitelist_add_button": {
+    "message": "追加",
+    "description": "ホワイトリストにエントリを追加するボタンのラベル。"
+  },
+  "whitelist_remove_button": {
+    "message": "削除",
+    "description": "ホワイトリストエントリ行の削除ボタンのラベル。"
+  },
+  "whitelist_empty": {
+    "message": "ホワイトリストは空です。",
+    "description": "ホワイトリストが1件もないときに表示する文言。"
+  },
+  "whitelist_error_empty": {
+    "message": "パターンを入力してください。",
+    "description": "ホワイトリスト追加時、パターンが空のときのエラー文言。"
+  },
+  "whitelist_error_duplicate": {
+    "message": "同じパターンがすでに登録されています。",
+    "description": "ホワイトリスト追加時、同一パターンが既存のときのエラー文言。"
+  },
+  "whitelist_error_too_long": {
+    "message": "パターンが長すぎます (256 文字以内)。",
+    "description": "ホワイトリスト追加時、パターン長超過時のエラー文言。"
+  },
+  "whitelist_error_limit": {
+    "message": "ホワイトリストの上限 (200 件) に達しました。",
+    "description": "ホワイトリスト追加時、エントリ数上限到達時のエラー文言。"
   }
 }
