@@ -30,7 +30,7 @@
 - [x] T025: npm run build 成功 + bash build_zip.sh 成功確認
 
 ## Phase 2: コア機能 (T026-T055)
-- [ ] T026: chrome.tabs.query() で全タブ取得 (src/lib/tabs.ts)
+- [x] T026: chrome.tabs.query() で全タブ取得 (src/lib/tabs.ts)
 - [ ] T027: chrome.tabs.onCreated / onRemoved リスナー (background)
 - [ ] T028: chrome.action.setBadgeText でタブ数表示
 - [ ] T029: バッジ色 (灰/黄/赤、setBadgeBackgroundColor)
