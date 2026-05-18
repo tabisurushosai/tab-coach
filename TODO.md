@@ -110,6 +110,6 @@
 - [x] T095: docs/store_listing.md に Web UI 設定手順を完備
 - [x] T096: docs/privacy_tab.md (プライバシータブ設定: 3つチェック等)
 - [x] T097: 販売地域・審査送信の docs/release_final.md
-- [ ] T098: GitHub Release v1.0.0 作成 (gh release create)
+- [x] T098: GitHub Release v1.0.0 作成 (gh release create)
 - [ ] T099: SNS_ANNOUNCE.md (X 告知文 200字 + emoji)
 - [ ] T100: 秘書ダッシュボード登録 (~/Documents/secretary_v1_0.sh の projects に tab-coach 追加)
