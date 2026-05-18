@@ -100,7 +100,7 @@
 - [x] T087: assets/promo_small.png (440x280)
 - [x] T088: assets/promo_marquee.png (1400x560、任意)
 - [x] T089: docs/store_listing_ja.md / store_listing_en.md (説明文 132字 + 詳細)
-- [ ] T090: docs/store_listing.md にカテゴリ Productivity + タグ確定
+- [x] T090: docs/store_listing.md にカテゴリ Productivity + タグ確定
 
 ## Phase 6: リリース (T091-T100)
 - [ ] T091: build_zip.sh で release/tab-coach.zip 自動生成確認
