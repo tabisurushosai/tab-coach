@@ -95,7 +95,7 @@
 - [x] T082: legal/PRIVACY_en.md 充実
 - [x] T083: legal/TERMS_ja.md (利用規約、免責)
 - [x] T084: legal/TERMS_en.md
-- [ ] T085: LICENSES.md (依存ライブラリ全列挙、license-checker 等で生成)
+- [x] T085: LICENSES.md (依存ライブラリ全列挙、license-checker 等で生成)
 - [ ] T086: assets/screenshots/01_popup.png / 02_options.png / 03_badge_warning.png (1280x800)
 - [ ] T087: assets/promo_small.png (440x280)
 - [ ] T088: assets/promo_marquee.png (1400x560、任意)
