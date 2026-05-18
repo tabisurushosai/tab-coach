@@ -103,7 +103,7 @@
 - [x] T090: docs/store_listing.md にカテゴリ Productivity + タグ確定
 
 ## Phase 6: リリース (T091-T100)
-- [ ] T091: build_zip.sh で release/tab-coach.zip 自動生成確認
+- [x] T091: build_zip.sh で release/tab-coach.zip 自動生成確認
 - [ ] T092: package.json + manifest.json のバージョンを 1.0.0 に
 - [ ] T093: CHANGELOG.md に v1.0.0 リリース内容
 - [ ] T094: chrome_publish.sh tab-coach upload で Web Store アップロード (社長手動 or 秘書経由)
