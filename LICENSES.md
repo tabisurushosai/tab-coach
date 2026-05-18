@@ -1,5 +1,7 @@
 # Licenses
 
+本ドキュメントは tab-coach およびその開発に使用される全 OSS ライセンス情報を網羅する。
+
 ## tab-coach 本体
 
 MIT License
@@ -26,16 +28,12 @@ SOFTWARE.
 
 ## ランタイム依存
 
-本プロジェクトは Manifest V3 の Chrome 拡張で、すべての処理がユーザー端末内で完結する。
-バンドル後の `dist/` には外部 OSS のランタイム依存を一切含まない (production dependencies = 0)。
-したがって配布物に同梱される第三者著作物は存在しない。
+tab-coach は完全オフラインの Chrome 拡張であり、**ランタイム (production) 依存ゼロ**。
+配布される `dist/` 配下に第三者コードは含まれない (TypeScript ソースを Vite が単純にバンドルするのみ)。
 
-## 開発時依存 (devDependencies) ライセンス一覧
+## 開発依存 (devDependencies) ライセンスサマリ
 
-以下は `npm install` 時に取得される全 dev 依存 (推移的依存を含む) の SPDX ライセンス識別子。
-本ファイルは `npx license-checker --json` の出力を元に生成 (生成日: 2026-05-18)。
-
-### ライセンス内訳
+`license-checker` で集計した全 227 パッケージ (transitive 含む) のライセンス内訳:
 
 | ライセンス | 件数 |
 | --- | ---: |
@@ -45,14 +43,31 @@ SOFTWARE.
 | BSD-2-Clause | 8 |
 | BSD-3-Clause | 4 |
 | MIT-0 | 1 |
-| BlueOak-1.0.0 | 1 |
 | Python-2.0 | 1 |
+| BlueOak-1.0.0 | 1 |
 | (MIT OR CC0-1.0) | 1 |
-| **合計** | **227** |
 
-すべて OSI 認定または同等のパーミッシブライセンス。GPL/AGPL/コピーレフト系は 0 件。
+いずれもパーミッシブ系または相互互換ライセンスで、配布物に影響を与える copyleft (GPL/AGPL/LGPL 等) は含まれない。
 
-### パッケージ一覧 (227)
+## 直接 devDependencies (package.json)
+
+| パッケージ | ライセンス | 用途 |
+| --- | --- | --- |
+| typescript | Apache-2.0 | 型チェック・コンパイル |
+| vite | MIT | バンドラ |
+| @types/chrome | MIT | Chrome 拡張 API 型定義 |
+| @types/node | MIT | Node.js 型定義 |
+| vitest | MIT | テストランナー |
+| jsdom | MIT | テスト用 DOM 環境 |
+| eslint | MIT | リンタ |
+| @typescript-eslint/parser | MIT | TypeScript 用 ESLint パーサ |
+| @typescript-eslint/eslint-plugin | MIT | TypeScript 用 ESLint ルール |
+| eslint-config-prettier | MIT | Prettier 互換設定 |
+| prettier | MIT | フォーマッタ |
+
+## 全 devDependencies 一覧 (transitive 含む)
+
+`npx license-checker --json` で取得した全パッケージ:
 
 | パッケージ | バージョン | ライセンス |
 | --- | --- | --- |
@@ -206,8 +221,8 @@ SOFTWARE.
 | math-intrinsics | 1.1.0 | MIT |
 | mime-db | 1.52.0 | MIT |
 | mime-types | 2.1.35 | MIT |
-| minimatch | 10.2.5 | BlueOak-1.0.0 |
 | minimatch | 3.1.5 | ISC |
+| minimatch | 10.2.5 | BlueOak-1.0.0 |
 | ms | 2.1.3 | MIT |
 | nanoid | 3.3.12 | MIT |
 | natural-compare | 1.4.0 | MIT |
@@ -283,24 +298,22 @@ SOFTWARE.
 | xml-name-validator | 5.0.0 | Apache-2.0 |
 | xmlchars | 2.2.0 | MIT |
 | yocto-queue | 0.1.0 | MIT |
+
 ## アイコン・画像
 
-`icons/` および `assets/` 配下の画像は本プロジェクトオリジナル (CC0 相当)。
-フォント・絵文字素材は使用していない。
+`icons/` および `assets/` 配下の画像はすべて本プロジェクトオリジナル (作者: tabisurushosai, CC0 相当)。
 
 ## 第三者素材
 
-配布物 (.zip / dist/) には第三者の画像・フォント・アイコン・コード片を一切含まない。
+本プロジェクトでは第三者の画像・フォント・アイコン素材を一切使用していない。
 
-## 再生成
+## 再生成手順
 
-依存ライブラリを追加・更新した際は以下で本ファイルを再生成すること:
+依存ライセンス情報は以下のコマンドで再生成可能:
 
 ```bash
-npx license-checker --json > /tmp/licenses.json
-# その後 LICENSES.md の表を更新
+npx license-checker --summary               # ライセンスごとの件数
+npx license-checker --json > licenses.json  # 完全な JSON 出力
 ```
 
-## 報告
-
-ライセンス違反・帰属漏れを発見した場合は GitHub Issues (security ラベル) で報告してください。
+本ファイル最終更新: 2026-05-18 (T085 にて license-checker 完全版へ更新)
