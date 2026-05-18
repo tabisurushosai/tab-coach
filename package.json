@@ -1,6 +1,6 @@
 {
   "name": "tab-coach",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Visualize tab overload and one-click cleanup. Fully offline Chrome extension.",
   "license": "MIT",
