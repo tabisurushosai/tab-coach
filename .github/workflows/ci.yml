@@ -50,7 +50,7 @@ jobs:
           echo "Release zip size: $(stat -c%s release/tab-coach.zip 2>/dev/null || stat -f%z release/tab-coach.zip) bytes"
 
       - name: Upload release zip artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: tab-coach-${{ github.sha }}
           path: release/tab-coach.zip
