@@ -1,0 +1,63 @@
+# Dependabot configuration for tab-coach
+# - npm: devDependencies (TypeScript / Vite / vitest / ESLint / Prettier / @types/*)
+# - github-actions: actions/checkout, actions/setup-node, actions/upload-artifact in .github/workflows/ci.yml
+# Schedule: weekly (Mondays JST), grouped minor + patch to reduce PR noise.
+# Security: rebase-strategy=auto; major updates require manual review (allow only minor + patch in groups).
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    rebase-strategy: "auto"
+    groups:
+      dev-dependencies-minor-patch:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Manifest V3 / @types/chrome は破壊的変更が頻繁なので major は手動レビュー
+      - dependency-name: "@types/chrome"
+        update-types:
+          - "version-update:semver-major"
+      # Vite 5 → 6 は破壊的変更あり (Node 18 EOL 等) のため手動レビュー
+      - dependency-name: "vite"
+        update-types:
+          - "version-update:semver-major"
+      # ESLint 8 → 9 は flat config 移行必須のため手動レビュー
+      - dependency-name: "eslint"
+        update-types:
+          - "version-update:semver-major"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    rebase-strategy: "auto"
+    groups:
+      actions-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
