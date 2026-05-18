@@ -83,7 +83,7 @@
 - [x] T072: tests/storage.test.ts (chrome.storage モック)
 - [x] T073: tests/i18n.test.ts (chrome.i18n モック)
 - [x] T074: tests/tabs.test.ts (分類ロジック)
-- [ ] T075: tests/whitelist.test.ts (パターンマッチ)
+- [x] T075: tests/whitelist.test.ts (パターンマッチ)
 - [ ] T076: tests/archive.test.ts (保存・復元)
 - [ ] T077: tests/snapshot.test.ts (アンドゥ用)
 - [ ] T078: tests/performance.test.ts (100タブ整理1秒以内)
