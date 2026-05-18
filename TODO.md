@@ -110,6 +110,6 @@
 - [x] T095: docs/store_listing.md に Web UI 設定手順を完備
 - [x] T096: docs/privacy_tab.md (プライバシータブ設定: 3つチェック等)
 - [x] T097: 販売地域・審査送信の docs/release_final.md
-- [x] T098: GitHub Release v1.0.0 作成 (gh release create)
+- [x] T098: GitHub Release v1.0.0 作成 (gh release create) — tag v1.0.0 公開済 (https://github.com/tabisurushosai/tab-coach/releases/tag/v1.0.0)、asset: tab-coach.zip 47159 bytes (SHA-256: 25d4aacc9fa70a03f89b5d95a55006a0821655f661561b2c2ecadc9d1abc175e)、release/RELEASE_NOTES_v1.0.0.md (日英バイリンガル) を release body に反映
 - [ ] T099: SNS_ANNOUNCE.md (X 告知文 200字 + emoji)
 - [ ] T100: 秘書ダッシュボード登録 (~/Documents/secretary_v1_0.sh の projects に tab-coach 追加)
