@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Lint / Test / Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (tsc --noEmit + eslint)
+        run: npm run lint
+
+      - name: Test (vitest)
+        run: npm test
+
+      - name: Build (vite)
+        run: npm run build
+
+      - name: Verify dist/ artifacts
+        run: |
+          for f in dist/background/index.js dist/content/index.js dist/popup/index.html dist/options/index.html; do
+            test -f "$f" || (echo "::error::$f missing" && exit 1)
+          done
+          echo "Build artifacts OK"
+
+      - name: Build release zip
+        run: npm run zip
+
+      - name: Verify release zip
+        run: |
+          test -f release/tab-coach.zip || (echo "::error::release/tab-coach.zip missing" && exit 1)
+          echo "Release zip size: $(stat -c%s release/tab-coach.zip 2>/dev/null || stat -f%z release/tab-coach.zip) bytes"
+
+      - name: Upload release zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tab-coach-${{ github.sha }}
+          path: release/tab-coach.zip
+          retention-days: 14
