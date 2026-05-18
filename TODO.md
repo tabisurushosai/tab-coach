@@ -98,7 +98,7 @@
 - [x] T085: LICENSES.md (依存ライブラリ全列挙、license-checker 等で生成)
 - [x] T086: assets/screenshots/01_popup.png / 02_options.png / 03_badge_warning.png (1280x800)
 - [x] T087: assets/promo_small.png (440x280)
-- [ ] T088: assets/promo_marquee.png (1400x560、任意)
+- [x] T088: assets/promo_marquee.png (1400x560、任意)
 - [ ] T089: docs/store_listing_ja.md / store_listing_en.md (説明文 132字 + 詳細)
 - [ ] T090: docs/store_listing.md にカテゴリ Productivity + タグ確定
 
