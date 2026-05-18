@@ -143,7 +143,8 @@ export function t(key: MessageKey, substitutions?: string | readonly string[]): 
     return PLACEHOLDER_MISSING(key);
   }
   const subs = substitutions === undefined ? undefined : (substitutions as string | string[]);
-  const message = subs === undefined ? chrome.i18n.getMessage(key) : chrome.i18n.getMessage(key, subs);
+  const message =
+    subs === undefined ? chrome.i18n.getMessage(key) : chrome.i18n.getMessage(key, subs);
   return message === '' ? PLACEHOLDER_MISSING(key) : message;
 }
 

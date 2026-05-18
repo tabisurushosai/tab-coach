@@ -26,6 +26,7 @@ function isDevelopment(): boolean {
 
 const DEV = isDevelopment();
 
+/* eslint-disable no-console */
 export const logger = {
   debug: (...args: unknown[]): void => {
     if (DEV) console.debug(LOG_PREFIX, ...args);
@@ -44,5 +45,6 @@ export const logger = {
   },
   isDevelopment: (): boolean => DEV,
 } as const;
+/* eslint-enable no-console */
 
 export type Logger = typeof logger;

@@ -16,25 +16,28 @@ import {
 } from '@/lib/tabs';
 import type { TabSnapshot } from '@/types/storage';
 
-type TabWithAccess = chrome.tabs.Tab & { lastAccessed?: number };
+type TabWithAccess = chrome.tabs.Tab & { lastAccessed?: number | undefined };
+type TabOverrides = { [K in keyof TabWithAccess]?: TabWithAccess[K] | undefined };
 
-const makeTab = (overrides: Partial<TabWithAccess> = {}): TabWithAccess => ({
-  id: 1,
-  index: 0,
-  windowId: 10,
-  highlighted: false,
-  active: false,
-  pinned: false,
-  url: 'https://example.com/',
-  title: 'Example',
-  favIconUrl: 'https://example.com/favicon.ico',
-  incognito: false,
-  selected: false,
-  discarded: false,
-  autoDiscardable: true,
-  groupId: -1,
-  ...overrides,
-});
+const makeTab = (overrides: TabOverrides = {}): TabWithAccess => {
+  const base: TabWithAccess = {
+    id: 1,
+    index: 0,
+    windowId: 10,
+    highlighted: false,
+    active: false,
+    pinned: false,
+    url: 'https://example.com/',
+    title: 'Example',
+    favIconUrl: 'https://example.com/favicon.ico',
+    incognito: false,
+    selected: false,
+    discarded: false,
+    autoDiscardable: true,
+    groupId: -1,
+  };
+  return Object.assign(base, overrides);
+};
 
 const makeSnapshot = (overrides: Partial<TabSnapshot> = {}): TabSnapshot => ({
   id: 1,

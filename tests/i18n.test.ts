@@ -4,9 +4,7 @@ import { applyI18nToDom, getUILocale, t, type MessageKey } from '@/lib/i18n';
 describe('i18n wrapper', () => {
   describe('t', () => {
     it('returns the message from chrome.i18n.getMessage for a known key', () => {
-      vi.mocked(chrome.i18n.getMessage).mockImplementationOnce(
-        () => 'Tab Coach',
-      );
+      vi.mocked(chrome.i18n.getMessage).mockImplementationOnce(() => 'Tab Coach');
       expect(t('extension_name')).toBe('Tab Coach');
       expect(chrome.i18n.getMessage).toHaveBeenCalledWith('extension_name');
     });
@@ -17,10 +15,7 @@ describe('i18n wrapper', () => {
       );
       const result = t('popup_undo_countdown_format', '12');
       expect(result).toBe('formatted:12');
-      expect(chrome.i18n.getMessage).toHaveBeenCalledWith(
-        'popup_undo_countdown_format',
-        '12',
-      );
+      expect(chrome.i18n.getMessage).toHaveBeenCalledWith('popup_undo_countdown_format', '12');
     });
 
     it('passes an array of substitutions through to chrome.i18n.getMessage', () => {
@@ -29,10 +24,7 @@ describe('i18n wrapper', () => {
       );
       const result = t('report_saved_time_format', ['1', '23']);
       expect(result).toBe('joined:1|23');
-      expect(chrome.i18n.getMessage).toHaveBeenCalledWith(
-        'report_saved_time_format',
-        ['1', '23'],
-      );
+      expect(chrome.i18n.getMessage).toHaveBeenCalledWith('report_saved_time_format', ['1', '23']);
     });
 
     it('returns the missing-message placeholder when getMessage returns ""', () => {
@@ -66,8 +58,7 @@ describe('i18n wrapper', () => {
       try {
         expect(t('cleanup_button')).toBe('??cleanup_button??');
       } finally {
-        (chrome.i18n as unknown as { getMessage: unknown }).getMessage =
-          original;
+        (chrome.i18n as unknown as { getMessage: unknown }).getMessage = original;
       }
     });
   });
@@ -110,22 +101,18 @@ describe('i18n wrapper', () => {
 
     it('returns "en" when getUILanguage is not a function', () => {
       const original = chrome.i18n.getUILanguage;
-      (chrome.i18n as unknown as { getUILanguage: unknown }).getUILanguage =
-        undefined;
+      (chrome.i18n as unknown as { getUILanguage: unknown }).getUILanguage = undefined;
       try {
         expect(getUILocale()).toBe('en');
       } finally {
-        (chrome.i18n as unknown as { getUILanguage: unknown }).getUILanguage =
-          original;
+        (chrome.i18n as unknown as { getUILanguage: unknown }).getUILanguage = original;
       }
     });
   });
 
   describe('applyI18nToDom', () => {
     it('sets textContent on elements with data-i18n attributes', () => {
-      vi.mocked(chrome.i18n.getMessage).mockImplementation(
-        (key: string) => `MSG:${key}`,
-      );
+      vi.mocked(chrome.i18n.getMessage).mockImplementation((key: string) => `MSG:${key}`);
       const root = document.createElement('div');
       root.innerHTML = `
         <button data-i18n="cleanup_button">placeholder</button>
@@ -139,9 +126,7 @@ describe('i18n wrapper', () => {
     });
 
     it('ignores elements with an empty data-i18n value', () => {
-      vi.mocked(chrome.i18n.getMessage).mockImplementation(
-        (key: string) => `MSG:${key}`,
-      );
+      vi.mocked(chrome.i18n.getMessage).mockImplementation((key: string) => `MSG:${key}`);
       const root = document.createElement('div');
       const el = document.createElement('span');
       el.setAttribute('data-i18n', '');
@@ -152,9 +137,7 @@ describe('i18n wrapper', () => {
     });
 
     it('sets attributes specified by data-i18n-attr (single pair)', () => {
-      vi.mocked(chrome.i18n.getMessage).mockImplementation(
-        (key: string) => `MSG:${key}`,
-      );
+      vi.mocked(chrome.i18n.getMessage).mockImplementation((key: string) => `MSG:${key}`);
       const root = document.createElement('div');
       const btn = document.createElement('button');
       btn.setAttribute('data-i18n-attr', 'aria-label:cleanup_button_aria_label');
@@ -164,9 +147,7 @@ describe('i18n wrapper', () => {
     });
 
     it('sets multiple attributes specified by data-i18n-attr (comma separated)', () => {
-      vi.mocked(chrome.i18n.getMessage).mockImplementation(
-        (key: string) => `MSG:${key}`,
-      );
+      vi.mocked(chrome.i18n.getMessage).mockImplementation((key: string) => `MSG:${key}`);
       const root = document.createElement('div');
       const input = document.createElement('input');
       input.setAttribute(
@@ -176,15 +157,11 @@ describe('i18n wrapper', () => {
       root.appendChild(input);
       applyI18nToDom(root);
       expect(input.getAttribute('placeholder')).toBe('MSG:search_placeholder');
-      expect(input.getAttribute('aria-label')).toBe(
-        'MSG:popup_tab_list_aria_label',
-      );
+      expect(input.getAttribute('aria-label')).toBe('MSG:popup_tab_list_aria_label');
     });
 
     it('ignores malformed data-i18n-attr entries missing attr or key', () => {
-      vi.mocked(chrome.i18n.getMessage).mockImplementation(
-        (key: string) => `MSG:${key}`,
-      );
+      vi.mocked(chrome.i18n.getMessage).mockImplementation((key: string) => `MSG:${key}`);
       const root = document.createElement('div');
       const el = document.createElement('button');
       el.setAttribute('data-i18n-attr', 'broken, :empty_attr, only_key:');
@@ -194,9 +171,7 @@ describe('i18n wrapper', () => {
     });
 
     it('applies to document by default when no root is provided', () => {
-      vi.mocked(chrome.i18n.getMessage).mockImplementation(
-        (key: string) => `MSG:${key}`,
-      );
+      vi.mocked(chrome.i18n.getMessage).mockImplementation((key: string) => `MSG:${key}`);
       const el = document.createElement('span');
       el.setAttribute('data-i18n', 'undo_button');
       document.body.appendChild(el);

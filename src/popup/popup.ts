@@ -82,10 +82,7 @@ function snapshotMatchesQuery(snapshot: TabSnapshot, query: string): boolean {
   return url.includes(query);
 }
 
-function applySearchFilter(
-  snapshots: readonly TabSnapshot[],
-  query: string,
-): TabSnapshot[] {
+function applySearchFilter(snapshots: readonly TabSnapshot[], query: string): TabSnapshot[] {
   if (query === '') return [...snapshots];
   return snapshots.filter((s) => snapshotMatchesQuery(s, query));
 }
@@ -145,9 +142,7 @@ function pickCleanupTargets(
       return key !== null && readCompleted[key] !== undefined;
     });
   }
-  return candidates.filter(
-    (s) => s.id >= 0 && !s.pinned && !matchesWhitelist(s.url, whitelist),
-  );
+  return candidates.filter((s) => s.id >= 0 && !s.pinned && !matchesWhitelist(s.url, whitelist));
 }
 
 let undoTimerId: number | null = null;
@@ -379,7 +374,10 @@ function createTabItem(snapshot: TabSnapshot): HTMLLIElement {
   button.type = 'button';
   button.className = 'tab-button';
   button.title = snapshot.url;
-  button.setAttribute('aria-label', t('popup_activate_tab_label', [snapshot.title || snapshot.url]));
+  button.setAttribute(
+    'aria-label',
+    t('popup_activate_tab_label', [snapshot.title || snapshot.url]),
+  );
   button.addEventListener('click', () => {
     void activateTab(snapshot);
   });

@@ -2,7 +2,6 @@ import { defineConfig, type Plugin } from 'vite';
 import { resolve, join } from 'node:path';
 import {
   mkdirSync,
-  renameSync,
   rmSync,
   existsSync,
   readdirSync,

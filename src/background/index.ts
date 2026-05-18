@@ -86,9 +86,7 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 if (chrome.commands?.onCommand) {
   chrome.commands.onCommand.addListener((command) => {
     if (command !== CLEANUP_COMMAND) return;
-    runShortcutCleanup().catch((err) =>
-      logger.error('runShortcutCleanup failed', err),
-    );
+    runShortcutCleanup().catch((err) => logger.error('runShortcutCleanup failed', err));
   });
 }
 

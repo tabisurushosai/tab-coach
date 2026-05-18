@@ -467,7 +467,9 @@
         id="search-clear"
         class="search-clear"
         data-i18n-attr="aria-label:search_clear_label,title:search_clear_label"
-      >×</button>
+      >
+        ×
+      </button>
     </div>
     <div
       id="category-tabs"
@@ -475,17 +477,45 @@
       role="tablist"
       data-i18n-attr="aria-label:popup_category_tabs_aria_label"
     >
-      <button type="button" class="category-tab" role="tab" data-category="all" aria-selected="true">
-        <span data-i18n="popup_category_all_label">All</span><span class="category-tab-count" data-count-for="all"></span>
+      <button
+        type="button"
+        class="category-tab"
+        role="tab"
+        data-category="all"
+        aria-selected="true"
+      >
+        <span data-i18n="popup_category_all_label">All</span
+        ><span class="category-tab-count" data-count-for="all"></span>
       </button>
-      <button type="button" class="category-tab" role="tab" data-category="inactive" aria-selected="false">
-        <span data-i18n="popup_category_inactive_label">Inactive</span><span class="category-tab-count" data-count-for="inactive"></span>
+      <button
+        type="button"
+        class="category-tab"
+        role="tab"
+        data-category="inactive"
+        aria-selected="false"
+      >
+        <span data-i18n="popup_category_inactive_label">Inactive</span
+        ><span class="category-tab-count" data-count-for="inactive"></span>
       </button>
-      <button type="button" class="category-tab" role="tab" data-category="duplicate" aria-selected="false">
-        <span data-i18n="popup_category_duplicate_label">Duplicate</span><span class="category-tab-count" data-count-for="duplicate"></span>
+      <button
+        type="button"
+        class="category-tab"
+        role="tab"
+        data-category="duplicate"
+        aria-selected="false"
+      >
+        <span data-i18n="popup_category_duplicate_label">Duplicate</span
+        ><span class="category-tab-count" data-count-for="duplicate"></span>
       </button>
-      <button type="button" class="category-tab" role="tab" data-category="read" aria-selected="false">
-        <span data-i18n="popup_category_read_label">Read</span><span class="category-tab-count" data-count-for="read"></span>
+      <button
+        type="button"
+        class="category-tab"
+        role="tab"
+        data-category="read"
+        aria-selected="false"
+      >
+        <span data-i18n="popup_category_read_label">Read</span
+        ><span class="category-tab-count" data-count-for="read"></span>
       </button>
     </div>
     <div class="cleanup-bar">
@@ -510,13 +540,7 @@
         <span id="cleanup-count"></span>
       </button>
     </div>
-    <div
-      id="undo-bar"
-      class="undo-bar"
-      role="status"
-      aria-live="polite"
-      data-visible="false"
-    >
+    <div id="undo-bar" class="undo-bar" role="status" aria-live="polite" data-visible="false">
       <span class="undo-message">
         <span id="undo-message-text"></span>
         <span id="undo-countdown" class="undo-countdown"></span>
@@ -527,7 +551,9 @@
         class="undo-button"
         data-i18n="undo_button"
         data-i18n-attr="aria-label:undo_button_aria_label"
-      >Undo</button>
+      >
+        Undo
+      </button>
     </div>
     <ul
       id="tab-list"

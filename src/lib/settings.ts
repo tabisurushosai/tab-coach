@@ -73,10 +73,7 @@ function quantizeFontScale(n: number): number {
   return Math.round(quantized * 100) / 100;
 }
 
-export function validateThresholds(
-  yellowRaw: unknown,
-  redRaw: unknown,
-): ThresholdValidationResult {
+export function validateThresholds(yellowRaw: unknown, redRaw: unknown): ThresholdValidationResult {
   const yellow = toFiniteInt(yellowRaw);
   if (yellow === null || !isInLimitRange(yellow)) {
     return { ok: false, reason: 'yellow_invalid' };

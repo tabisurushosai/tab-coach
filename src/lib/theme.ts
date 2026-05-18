@@ -59,7 +59,9 @@ export function getCurrentResolvedTheme(): ResolvedTheme {
 
 export type ThemeUnlisten = () => void;
 
-export function installSystemThemeListener(onChange: (resolved: ResolvedTheme) => void): ThemeUnlisten {
+export function installSystemThemeListener(
+  onChange: (resolved: ResolvedTheme) => void,
+): ThemeUnlisten {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
     return () => {};
   }

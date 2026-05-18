@@ -17,10 +17,7 @@ export function createUndoSnapshot(
   };
 }
 
-export function isUndoSnapshotExpired(
-  snapshot: UndoSnapshot,
-  now: number = Date.now(),
-): boolean {
+export function isUndoSnapshotExpired(snapshot: UndoSnapshot, now: number = Date.now()): boolean {
   return snapshot.expiresAt <= now;
 }
 

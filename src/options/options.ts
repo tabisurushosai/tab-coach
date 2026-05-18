@@ -38,11 +38,7 @@ import {
   installSystemThemeListener,
 } from '@/lib/theme';
 import { DEFAULT_SETTINGS } from '@/types/storage';
-import {
-  addWhitelistEntry,
-  loadWhitelist,
-  removeWhitelistEntry,
-} from '@/lib/whitelist';
+import { addWhitelistEntry, loadWhitelist, removeWhitelistEntry } from '@/lib/whitelist';
 import {
   aggregateRecentMonths,
   getCurrentMonthReport,
@@ -212,7 +208,7 @@ function bindForm(): void {
   const form = document.getElementById('whitelist-form');
   if (!(form instanceof HTMLFormElement)) return;
   form.addEventListener('submit', (ev) => {
-    void handleAdd(ev as SubmitEvent);
+    void handleAdd(ev);
   });
 }
 
@@ -293,7 +289,7 @@ function bindThresholdForm(): void {
   const form = document.getElementById('thresholds-form');
   if (form instanceof HTMLFormElement) {
     form.addEventListener('submit', (ev) => {
-      void handleThresholdSubmit(ev as SubmitEvent);
+      void handleThresholdSubmit(ev);
     });
   }
   const resetBtn = document.getElementById('thresholds-reset-button');
@@ -376,7 +372,7 @@ function bindInactiveForm(): void {
   const form = document.getElementById('inactive-form');
   if (form instanceof HTMLFormElement) {
     form.addEventListener('submit', (ev) => {
-      void handleInactiveSubmit(ev as SubmitEvent);
+      void handleInactiveSubmit(ev);
     });
   }
   const resetBtn = document.getElementById('inactive-reset-button');
@@ -413,9 +409,8 @@ function createArchiveItem(entry: ArchivedTab): HTMLLIElement {
   favicon.className = 'archive-item-favicon';
   favicon.alt = '';
   favicon.referrerPolicy = 'no-referrer';
-  favicon.src = entry.favIconUrl && entry.favIconUrl.length > 0
-    ? entry.favIconUrl
-    : ARCHIVE_FALLBACK_FAVICON;
+  favicon.src =
+    entry.favIconUrl && entry.favIconUrl.length > 0 ? entry.favIconUrl : ARCHIVE_FALLBACK_FAVICON;
   favicon.addEventListener('error', () => {
     favicon.src = ARCHIVE_FALLBACK_FAVICON;
   });

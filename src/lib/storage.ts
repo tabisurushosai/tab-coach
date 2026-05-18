@@ -1,15 +1,11 @@
-import {
-  STORAGE_DEFAULTS,
-  type StorageKey,
-  type StorageSchema,
-} from '@/types/storage';
+import { STORAGE_DEFAULTS, type StorageKey, type StorageSchema } from '@/types/storage';
 
 const area = (): chrome.storage.LocalStorageArea => chrome.storage.local;
 
 export async function get<K extends StorageKey>(key: K): Promise<StorageSchema[K]> {
   const result = (await area().get(key)) as Partial<StorageSchema>;
   const value = result[key];
-  return value === undefined ? STORAGE_DEFAULTS[key] : (value as StorageSchema[K]);
+  return value === undefined ? STORAGE_DEFAULTS[key] : value;
 }
 
 export async function getMany<K extends StorageKey>(
@@ -19,26 +15,22 @@ export async function getMany<K extends StorageKey>(
   const out = {} as Pick<StorageSchema, K>;
   for (const k of keys) {
     const v = result[k];
-    out[k] = (v === undefined ? STORAGE_DEFAULTS[k] : v) as StorageSchema[K];
+    out[k] = v === undefined ? STORAGE_DEFAULTS[k] : v;
   }
   return out;
 }
 
 export async function getAll(): Promise<StorageSchema> {
   const result = (await area().get(null)) as Partial<StorageSchema>;
-  const out = {} as StorageSchema;
+  const out: Partial<StorageSchema> = {};
   (Object.keys(STORAGE_DEFAULTS) as StorageKey[]).forEach((k) => {
     const v = result[k];
-    (out[k] as StorageSchema[typeof k]) =
-      v === undefined ? STORAGE_DEFAULTS[k] : (v as StorageSchema[typeof k]);
+    Reflect.set(out, k, v === undefined ? STORAGE_DEFAULTS[k] : v);
   });
-  return out;
+  return out as StorageSchema;
 }
 
-export async function set<K extends StorageKey>(
-  key: K,
-  value: StorageSchema[K],
-): Promise<void> {
+export async function set<K extends StorageKey>(key: K, value: StorageSchema[K]): Promise<void> {
   await area().set({ [key]: value });
 }
 
@@ -57,7 +49,7 @@ export async function update<K extends StorageKey>(
 }
 
 export async function remove(key: StorageKey | StorageKey[]): Promise<void> {
-  await area().remove(key as string | string[]);
+  await area().remove(key);
 }
 
 export async function clear(): Promise<void> {
@@ -65,16 +57,14 @@ export async function clear(): Promise<void> {
 }
 
 export function onChanged(
-  listener: (
-    changes: { [K in StorageKey]?: chrome.storage.StorageChange },
-  ) => void,
+  listener: (changes: { [K in StorageKey]?: chrome.storage.StorageChange }) => void,
 ): () => void {
   const wrapped = (
     changes: { [key: string]: chrome.storage.StorageChange },
     areaName: chrome.storage.AreaName,
   ): void => {
     if (areaName !== 'local') return;
-    listener(changes as { [K in StorageKey]?: chrome.storage.StorageChange });
+    listener(changes);
   };
   chrome.storage.onChanged.addListener(wrapped);
   return () => chrome.storage.onChanged.removeListener(wrapped);

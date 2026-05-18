@@ -57,9 +57,9 @@ function sendProgress(force = false): void {
   lastReportedScrollPercent = message.maxScrollPercent;
   lastReportedDwellMs = message.dwellMs;
   try {
-    const promise = chrome.runtime.sendMessage(message);
-    if (promise && typeof promise.catch === 'function') {
-      promise.catch((err: unknown) => logger.debug('sendMessage failed', err));
+    const result: unknown = chrome.runtime.sendMessage(message);
+    if (result !== null && typeof result === 'object' && result instanceof Promise) {
+      result.catch((err: unknown) => logger.debug('sendMessage failed', err));
     }
   } catch (err) {
     logger.debug('sendMessage threw', err);

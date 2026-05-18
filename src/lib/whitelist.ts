@@ -21,10 +21,7 @@ export function matchesPattern(url: string, pattern: string): boolean {
   }
 }
 
-export function matchesWhitelist(
-  url: string,
-  entries: readonly WhitelistEntry[],
-): boolean {
+export function matchesWhitelist(url: string, entries: readonly WhitelistEntry[]): boolean {
   if (!url || entries.length === 0) return false;
   for (const entry of entries) {
     if (matchesPattern(url, entry.pattern)) return true;

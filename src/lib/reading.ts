@@ -4,10 +4,7 @@ export const READ_SCROLL_PERCENT_THRESHOLD = 90;
 export const READ_DWELL_MS_THRESHOLD = 60_000;
 
 export function isReadCompleted(maxScrollPercent: number, dwellMs: number): boolean {
-  return (
-    maxScrollPercent >= READ_SCROLL_PERCENT_THRESHOLD &&
-    dwellMs >= READ_DWELL_MS_THRESHOLD
-  );
+  return maxScrollPercent >= READ_SCROLL_PERCENT_THRESHOLD && dwellMs >= READ_DWELL_MS_THRESHOLD;
 }
 
 export function normalizeReadUrl(rawUrl: string): string | null {
@@ -21,7 +18,10 @@ export function normalizeReadUrl(rawUrl: string): string | null {
   }
 }
 
-export async function markReadCompleted(rawUrl: string, at: number = Date.now()): Promise<string | null> {
+export async function markReadCompleted(
+  rawUrl: string,
+  at: number = Date.now(),
+): Promise<string | null> {
   const key = normalizeReadUrl(rawUrl);
   if (key === null) return null;
   await update('readCompleted', (current) => ({ ...current, [key]: at }));

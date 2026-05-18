@@ -108,7 +108,7 @@ describe('archive', () => {
       const entries: ArchivedTab[] = [archived()];
       const json = serializeArchiveExport(entries, 1234);
       expect(json).toContain('\n');
-      const parsed = JSON.parse(json);
+      const parsed: unknown = JSON.parse(json);
       expect(parsed).toEqual({
         version: ARCHIVE_EXPORT_VERSION,
         exportedAt: 1234,

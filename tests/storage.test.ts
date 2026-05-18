@@ -64,9 +64,7 @@ describe('storage wrapper', () => {
     });
 
     it('returns stored values when present', async () => {
-      const entries: WhitelistEntry[] = [
-        { pattern: 'github.com', createdAt: 1 },
-      ];
+      const entries: WhitelistEntry[] = [{ pattern: 'github.com', createdAt: 1 }];
       await chrome.storage.local.set({ whitelist: entries });
       const result = await getMany(['whitelist', 'archive']);
       expect(result.whitelist).toEqual(entries);
@@ -85,9 +83,7 @@ describe('storage wrapper', () => {
         whitelist: [{ pattern: 'example.com', createdAt: 42 }],
       });
       const all = await getAll();
-      expect(all.whitelist).toEqual([
-        { pattern: 'example.com', createdAt: 42 },
-      ]);
+      expect(all.whitelist).toEqual([{ pattern: 'example.com', createdAt: 42 }]);
       expect(all.settings).toEqual(DEFAULT_SETTINGS);
       expect(all.archive).toEqual([]);
     });
@@ -107,6 +103,7 @@ describe('storage wrapper', () => {
 
     it('calls the underlying chrome.storage.local.set', async () => {
       await set('whitelist', [{ pattern: 'a.com', createdAt: 1 }]);
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(chrome.storage.local.set).toHaveBeenCalledWith({
         whitelist: [{ pattern: 'a.com', createdAt: 1 }],
       });
@@ -123,6 +120,7 @@ describe('storage wrapper', () => {
       const ar = await get('archive');
       expect(wl).toEqual([{ pattern: 'x.com', createdAt: 1 }]);
       expect(ar).toEqual([]);
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(chrome.storage.local.set).toHaveBeenCalledTimes(1);
     });
   });
@@ -180,6 +178,7 @@ describe('storage wrapper', () => {
     it('removes everything from storage', async () => {
       await set('whitelist', [{ pattern: 'x.com', createdAt: 1 }]);
       await clear();
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(chrome.storage.local.clear).toHaveBeenCalled();
       const result = await get('whitelist');
       expect(result).toEqual([]);
@@ -197,7 +196,7 @@ describe('storage wrapper', () => {
       const unsubscribe = onChanged(listener);
 
       expect(api.addListener).toHaveBeenCalledTimes(1);
-      const wrapped = api.addListener.mock.calls[0][0] as (
+      const wrapped = api.addListener.mock.calls[0]![0] as (
         changes: Record<string, chrome.storage.StorageChange>,
         area: chrome.storage.AreaName,
       ) => void;

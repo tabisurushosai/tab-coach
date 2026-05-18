@@ -1,14 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import {
-  MAX_CLEANUP_HISTORY,
-  loadCleanupHistory,
-  recordCleanup,
-} from '@/lib/report';
-import {
-  MAX_ARCHIVE_ENTRIES,
-  addArchivedTabs,
-  loadArchive,
-} from '@/lib/archive';
+import { MAX_CLEANUP_HISTORY, loadCleanupHistory, recordCleanup } from '@/lib/report';
+import { MAX_ARCHIVE_ENTRIES, addArchivedTabs, loadArchive } from '@/lib/archive';
 import {
   UNDO_WINDOW_MS,
   clearIfExpired,
