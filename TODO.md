@@ -80,7 +80,7 @@
 
 ## Phase 4: テスト・品質 (T071-T080)
 - [x] T071: vitest セットアップ (jsdom 環境、vitest.config.ts)
-- [ ] T072: tests/storage.test.ts (chrome.storage モック)
+- [x] T072: tests/storage.test.ts (chrome.storage モック)
 - [ ] T073: tests/i18n.test.ts (chrome.i18n モック)
 - [ ] T074: tests/tabs.test.ts (分類ロジック)
 - [ ] T075: tests/whitelist.test.ts (パターンマッチ)

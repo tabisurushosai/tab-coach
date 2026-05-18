@@ -49,6 +49,10 @@ const installChromeMock = (): void => {
   const chromeMock = {
     storage: {
       local: createStorageArea(),
+      onChanged: {
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+      },
     },
     i18n: {
       getMessage: vi.fn((key: string, substitutions?: string | string[]) => {
