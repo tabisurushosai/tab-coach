@@ -86,7 +86,7 @@
 - [x] T075: tests/whitelist.test.ts (パターンマッチ)
 - [x] T076: tests/archive.test.ts (保存・復元)
 - [x] T077: tests/snapshot.test.ts (アンドゥ用)
-- [ ] T078: tests/performance.test.ts (100タブ整理1秒以内)
+- [x] T078: tests/performance.test.ts (100タブ整理1秒以内)
 - [ ] T079: メモリリークチェック (service worker grow up 監視)
 - [ ] T080: ESLint + Prettier + tsc --noEmit 0 エラー
 
