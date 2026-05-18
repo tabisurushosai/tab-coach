@@ -87,7 +87,7 @@
 - [x] T076: tests/archive.test.ts (保存・復元)
 - [x] T077: tests/snapshot.test.ts (アンドゥ用)
 - [x] T078: tests/performance.test.ts (100タブ整理1秒以内)
-- [ ] T079: メモリリークチェック (service worker grow up 監視)
+- [x] T079: メモリリークチェック (service worker grow up 監視)
 - [ ] T080: ESLint + Prettier + tsc --noEmit 0 エラー
 
 ## Phase 5: 法務・公開準備 (T081-T090)
