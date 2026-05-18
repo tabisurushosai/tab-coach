@@ -109,7 +109,7 @@
 - [ ] T094: chrome_publish.sh tab-coach upload で Web Store アップロード (社長手動 or 秘書経由) [SKIP: 社長手動 or 秘書経由と明記された運用タスク。Chrome Web Store Developer Console の OAuth 認証・対象アカウントへのアップロードはエージェント権限外。release/tab-coach.zip (T091 で 47159 bytes 生成済) を社長または秘書が手動アップロードする]
 - [x] T095: docs/store_listing.md に Web UI 設定手順を完備
 - [x] T096: docs/privacy_tab.md (プライバシータブ設定: 3つチェック等)
-- [ ] T097: 販売地域・審査送信の docs/release_final.md
+- [x] T097: 販売地域・審査送信の docs/release_final.md
 - [ ] T098: GitHub Release v1.0.0 作成 (gh release create)
 - [ ] T099: SNS_ANNOUNCE.md (X 告知文 200字 + emoji)
 - [ ] T100: 秘書ダッシュボード登録 (~/Documents/secretary_v1_0.sh の projects に tab-coach 追加)
