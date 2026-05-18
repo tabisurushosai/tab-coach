@@ -112,4 +112,4 @@
 - [x] T097: 販売地域・審査送信の docs/release_final.md
 - [x] T098: GitHub Release v1.0.0 作成 (gh release create) — tag v1.0.0 公開済 (https://github.com/tabisurushosai/tab-coach/releases/tag/v1.0.0)、asset: tab-coach.zip 47159 bytes (SHA-256: 25d4aacc9fa70a03f89b5d95a55006a0821655f661561b2c2ecadc9d1abc175e)、release/RELEASE_NOTES_v1.0.0.md (日英バイリンガル) を release body に反映
 - [x] T099: SNS_ANNOUNCE.md (X 告知文 200字 + emoji) — メイン告知文 (約200字、🚀/🎯/✅/🔒)・短縮英語版 (140字)・ハッシュタグ 7 種・GitHub Release v1.0.0 リンク・投稿後フォローアップ手順・送信前チェックリスト 6 項目を SNS_ANNOUNCE.md に集約 (Chrome Web Store URL は審査通過後に追記)
-- [ ] T100: 秘書ダッシュボード登録 (~/Documents/secretary_v1_0.sh の projects に tab-coach 追加)
+- [ ] T100: 秘書ダッシュボード登録 (~/Documents/secretary_v1_0.sh の projects に tab-coach 追加) [SKIP: ~/Documents/secretary_v1_0.sh は tab-coach プロジェクトディレクトリ外であり、エージェントの「このディレクトリ外への書き込み禁止」原則に抵触するためエージェント権限外。社長または秘書が手動で secretary_v1_0.sh の projects 配列に "tab-coach" を追記する運用タスク (ファイル実在確認済: 12926 bytes, executable)]
