@@ -1,0 +1,108 @@
+name: Release
+
+# Tag push (v*) で release/tab-coach.zip を生成し、GitHub Release を自動作成する。
+# v1.0.1+ の運用想定:
+#   1. package.json と manifest.json の version を bump (例: 1.0.1)
+#   2. CHANGELOG.md に v1.0.1 セクションを追記
+#   3. (任意) release/RELEASE_NOTES_v1.0.1.md を作成
+#   4. git tag v1.0.1 && git push origin v1.0.1
+#   → 本 workflow が build/lint/test/zip を実行し、zip を asset として GitHub Release を作成
+#   → Chrome Web Store への upload は別途 chrome_publish.sh (T102) で実施
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish GitHub Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (tsc --noEmit + eslint)
+        run: npm run lint
+
+      - name: Test (vitest)
+        run: npm test
+
+      - name: Build (vite)
+        run: npm run build
+
+      - name: Build release zip
+        run: npm run zip
+
+      - name: Verify version consistency (tag == package.json == manifest.json == zip manifest)
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          MANIFEST_VERSION="$(node -p "require('./manifest.json').version")"
+          ZIP_MANIFEST_VERSION="$(unzip -p release/tab-coach.zip manifest.json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>console.log(JSON.parse(d).version))")"
+
+          echo "tag           : $TAG_VERSION"
+          echo "package.json  : $PKG_VERSION"
+          echo "manifest.json : $MANIFEST_VERSION"
+          echo "zip manifest  : $ZIP_MANIFEST_VERSION"
+
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::tag ($TAG_VERSION) != package.json ($PKG_VERSION)"
+            exit 1
+          fi
+          if [ "$TAG_VERSION" != "$MANIFEST_VERSION" ]; then
+            echo "::error::tag ($TAG_VERSION) != manifest.json ($MANIFEST_VERSION)"
+            exit 1
+          fi
+          if [ "$TAG_VERSION" != "$ZIP_MANIFEST_VERSION" ]; then
+            echo "::error::tag ($TAG_VERSION) != zip manifest ($ZIP_MANIFEST_VERSION)"
+            exit 1
+          fi
+
+      - name: Resolve release notes source
+        id: notes
+        run: |
+          NOTES_FILE="release/RELEASE_NOTES_${GITHUB_REF_NAME}.md"
+          if [ -f "$NOTES_FILE" ]; then
+            echo "file=$NOTES_FILE" >> "$GITHUB_OUTPUT"
+            echo "Using $NOTES_FILE"
+          else
+            echo "file=" >> "$GITHUB_OUTPUT"
+            echo "No $NOTES_FILE; falling back to --generate-notes"
+          fi
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NOTES_FILE: ${{ steps.notes.outputs.file }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "::notice::Release $GITHUB_REF_NAME already exists; uploading asset only (--clobber)"
+            gh release upload "$GITHUB_REF_NAME" release/tab-coach.zip --clobber
+          else
+            if [ -n "$NOTES_FILE" ]; then
+              gh release create "$GITHUB_REF_NAME" \
+                release/tab-coach.zip \
+                --title "$GITHUB_REF_NAME" \
+                --notes-file "$NOTES_FILE"
+            else
+              gh release create "$GITHUB_REF_NAME" \
+                release/tab-coach.zip \
+                --title "$GITHUB_REF_NAME" \
+                --generate-notes
+            fi
+          fi
