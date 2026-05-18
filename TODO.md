@@ -91,7 +91,7 @@
 - [x] T080: ESLint + Prettier + tsc --noEmit 0 エラー
 
 ## Phase 5: 法務・公開準備 (T081-T090)
-- [ ] T081: legal/PRIVACY_ja.md 充実 (収集データなし、外部送信なし明記)
+- [x] T081: legal/PRIVACY_ja.md 充実 (収集データなし、外部送信なし明記)
 - [ ] T082: legal/PRIVACY_en.md 充実
 - [ ] T083: legal/TERMS_ja.md (利用規約、免責)
 - [ ] T084: legal/TERMS_en.md
