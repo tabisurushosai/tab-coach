@@ -106,10 +106,14 @@
 - [x] T091: build_zip.sh で release/tab-coach.zip 自動生成確認
 - [x] T092: package.json + manifest.json のバージョンを 1.0.0 に
 - [x] T093: CHANGELOG.md に v1.0.0 リリース内容
-- [ ] T094: chrome_publish.sh tab-coach upload で Web Store アップロード (社長手動 or 秘書経由) [SKIP: 社長手動 or 秘書経由と明記された運用タスク。Chrome Web Store Developer Console の OAuth 認証・対象アカウントへのアップロードはエージェント権限外。release/tab-coach.zip (T091 で 47159 bytes 生成済) を社長または秘書が手動アップロードする]
+- [ ] T094: chrome_publish.sh tab-coach upload で Web Store アップロード (社長手動 or 秘書経由) [SKIP: 社長手動 or 秘書経由と明記された運用タスク。Chrome Web Store Developer Console の OAuth 認証・対象アカウントへのアップロードはエージェント権限外。release/tab-coach.zip (T091 で 47159 bytes 生成済) を社長または秘書が手動アップロードする。chrome_publish.sh は本コミットで作成済 (curl + jq + Chrome Web Store API v1.1、upload/publish/upload-and-publish/status の 4 サブコマンド、CWS_CLIENT_ID/CWS_CLIENT_SECRET/CWS_REFRESH_TOKEN/CWS_APP_ID を env 経由で受領、package.json と zip 内 manifest.json の version 一致検証付き) — v1.0.0 は item ID 未取得のため Console 手動アップロード必須、v1.0.1+ 更新時は本スクリプトで自動化可]
 - [x] T095: docs/store_listing.md に Web UI 設定手順を完備
 - [x] T096: docs/privacy_tab.md (プライバシータブ設定: 3つチェック等)
 - [x] T097: 販売地域・審査送信の docs/release_final.md
 - [x] T098: GitHub Release v1.0.0 作成 (gh release create) — tag v1.0.0 公開済 (https://github.com/tabisurushosai/tab-coach/releases/tag/v1.0.0)、asset: tab-coach.zip 47159 bytes (SHA-256: 25d4aacc9fa70a03f89b5d95a55006a0821655f661561b2c2ecadc9d1abc175e)、release/RELEASE_NOTES_v1.0.0.md (日英バイリンガル) を release body に反映
 - [x] T099: SNS_ANNOUNCE.md (X 告知文 200字 + emoji) — メイン告知文 (約200字、🚀/🎯/✅/🔒)・短縮英語版 (140字)・ハッシュタグ 7 種・GitHub Release v1.0.0 リンク・投稿後フォローアップ手順・送信前チェックリスト 6 項目を SNS_ANNOUNCE.md に集約 (Chrome Web Store URL は審査通過後に追記)
 - [ ] T100: 秘書ダッシュボード登録 (~/Documents/secretary_v1_0.sh の projects に tab-coach 追加) [SKIP: ~/Documents/secretary_v1_0.sh は tab-coach プロジェクトディレクトリ外であり、エージェントの「このディレクトリ外への書き込み禁止」原則に抵触するためエージェント権限外。社長または秘書が手動で secretary_v1_0.sh の projects 配列に "tab-coach" を追記する運用タスク (ファイル実在確認済: executable)。適用手順は docs/secretary_registration.md に SSOT 整備済 (対象行 37-40 の Before/After 差分・バックアップ付き sed 1 コマンド・~/.supervisor/secretary_state.json での適用後検証手順・T094 Chrome Web Store アップロード完了後の自動 upload 流入動作)]
+
+## Phase 7: ポストリリース運用 (T101-)
+- [x] T101: .github/workflows/ci.yml (GitHub Actions による lint + test + build + zip 自動検証パイプライン) — Node 20 / npm ci / npm run lint (tsc --noEmit + eslint) / npm test (vitest 210 tests) / npm run build (vite) / dist/ 4ファイル存在検証 (background/index.js, content/index.js, popup/index.html, options/index.html) / npm run zip / release/tab-coach.zip サイズ表示 / artifact upload (retention 14 days)、push to main + PR to main で発火、v1.0.1+ の回帰検出を自動化
+- [x] T102: chrome_publish.sh (Chrome Web Store API v1.1 publish helper、v1.0.1+ 更新用) — bash + curl + jq + unzip のみ、外部依存ゼロ。サブコマンド 4 種 (upload / publish / upload-and-publish / status)、OAuth2 refresh_token フロー (CWS_CLIENT_ID/CWS_CLIENT_SECRET/CWS_REFRESH_TOKEN/CWS_APP_ID は env 経由・コミット禁止)、release/tab-coach.zip 内 manifest.json と package.json の version 一致検証付き、publishTarget=default|trustedTesters 切替、set -euo pipefail で fail-fast、v1.0.0 は item ID 未取得のため Console 手動アップロード必須と冒頭コメントで明示、bash -n 構文 OK + usage 表示確認済、T094 SKIP note からも参照
