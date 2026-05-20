@@ -32,3 +32,4 @@ Manifest V3, TypeScript, Vite, chrome.storage.local, chrome.i18n
 
 ## ライセンス
 [MIT License](LICENSE) © 2026 tabisurushosai
+<!-- bga-connection-test: verified -->
