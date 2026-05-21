@@ -11,16 +11,6 @@
     "message": "タブ分類フィルター",
     "description": "popup のカテゴリタブ群 (All / Inactive / Duplicate / Read) を包むコンテナの aria-label。"
   },
-  "popup_tab_list_aria_label": {
-    "message": "タブ一覧 ($COUNT$件)",
-    "description": "popup のフィルタ済タブ一覧の aria-label。フィルタや検索変更時に更新され、スクリーンリーダーが件数を読み上げる。",
-    "placeholders": {
-      "count": {
-        "content": "$1",
-        "example": "12"
-      }
-    }
-  },
   "popup_category_all_label": {
     "message": "全て",
     "description": "popup のカテゴリタブ「全て」のラベル。フィルタなしで全タブを表示する。"
@@ -40,22 +30,6 @@
   "popup_close_tab_label": {
     "message": "このタブを閉じる",
     "description": "popup の各タブ行に表示される × ボタンの aria-label / title。chrome.tabs.remove で対象タブを 1 件だけ閉じる。"
-  },
-  "whitelist_list_aria_label": {
-    "message": "ホワイトリストエントリ一覧",
-    "description": "options のホワイトリスト一覧 (UL 要素) の aria-label。"
-  },
-  "archive_list_aria_label": {
-    "message": "アーカイブ済みタブ一覧",
-    "description": "options のアーカイブ一覧 (UL 要素) の aria-label。"
-  },
-  "report_summary_cleanups_label": {
-    "message": "整理回数",
-    "description": "月次レポートの「整理実行回数」カードのラベル。"
-  },
-  "report_summary_closed_label": {
-    "message": "閉じたタブ",
-    "description": "月次レポートの「閉じたタブ件数」カードのラベル。"
   },
   "cleanup_button": {
     "message": "整理する",
