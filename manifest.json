@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "default_locale": "ja",
   "minimum_chrome_version": "114",
-  "permissions": ["activeTab", "tabs", "storage"],
+  "permissions": ["tabs", "storage"],
   "background": {
     "service_worker": "background/index.js",
     "type": "module"

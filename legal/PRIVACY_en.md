@@ -22,11 +22,11 @@ The Extension strictly adheres to the following **three principles**:
 
 The Extension **does not collect any personal information**.
 
-Specifically, none of the following are collected, recorded, or transmitted:
+Specifically, neither the developer nor any third party collects or receives any of the following:
 
 - Name, email address, phone number, postal address, date of birth, or age
 - IP address, MAC address, device identifiers, or advertising IDs
-- Browsing history, search history, bookmarks, passwords, cookies, or form input
+- Chrome browsing history database, search history, bookmarks, passwords, cookies, or form input
 - Page bodies, screenshots, or DOM contents of tabs
 - Location data, payment information, contacts, or calendar entries
 - Analytics (e.g., Google Analytics), error tracking (e.g., Sentry), A/B testing, or heatmaps
@@ -58,11 +58,10 @@ The Extension requests only the **minimum required permissions**. It conforms to
 
 | Permission | Purpose | Necessity |
 |------------|---------|-----------|
-| `activeTab` | Read URL/title of the currently active tab (for cleanup decisions) | Required |
 | `tabs` | Query, update, and remove tabs (core feature) | Required |
 | `storage` | Persist the local data above | Required |
 
-Host permissions (e.g., `host_permissions: ["<all_urls>"]`) are **not** requested. The content script is injected only within the scope limited by the manifest, does not read page bodies, and measures only scroll position and dwell time.
+Host permissions (e.g., `host_permissions: ["<all_urls>"]`) are **not** requested. For read-completion detection, the content script is injected within the scope defined by `content_scripts.matches` in the manifest, but it does not read page bodies; it only handles scroll position, dwell time, and the page URL as the read-state cache key.
 
 ---
 
@@ -72,9 +71,9 @@ For the read-completion feature, a lightweight content script is injected at `do
 
 - Compute **scroll ratio (a number)** from `window.scrollY` and `document.scrollingElement.scrollHeight`
 - Measure page dwell time (in seconds)
-- Send only the above two numeric values to the background via `chrome.runtime.sendMessage`
+- Attach the page URL and reporting timestamp, then send the above values to the background via `chrome.runtime.sendMessage`
 
-Page bodies, form input, passwords, cookies, DOM structures, and similar information are **never** accessed. Only numeric values are sent; the URL is fetched by the background via `chrome.tabs.get`, so the content script itself does not send the URL.
+Page bodies, form input, passwords, cookies, DOM structures, and similar information are **never** accessed. The URL is used only as the read-state cache key, normalized with the hash removed, and stored in `chrome.storage.local`. It is never transmitted to an external server.
 
 ---
 

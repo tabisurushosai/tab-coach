@@ -17,13 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - なし
 
 ### Removed
-- なし
+- 未使用の `activeTab` 権限を削除し、Chrome Web Store 申請時の過剰権限リスクを低減。
 
 ### Fixed
 - なし
 
 ### Security
-- なし
+- content script が送信する URL/読了判定データについて、プライバシーポリシーと Chrome Web Store 申請用ドキュメントの説明を実装に合わせて明確化。
 
 ---
 

@@ -201,7 +201,7 @@ stateDiagram-v2
 ## 触ってはいけない
 - 外部 API 呼び出し一切なし (完全オフライン)
 - host_permissions なし
-- permissions は activeTab + tabs + storage のみ
+- permissions は tabs + storage のみ
 - chrome.storage.sync 禁止 (.local のみ)
 - 独自判断で技術スタック変更禁止
 
