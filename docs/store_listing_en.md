@@ -69,7 +69,6 @@ Privacy
 - Your data is never sold or shared with third parties.
 
 Required permissions
-- activeTab: to fetch the currently focused tab for inclusion in cleanup operations.
 - tabs: to enumerate tab title and URL so they can be categorized.
 - storage: to persist settings, archive entries, and history on your machine.
 

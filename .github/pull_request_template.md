@@ -16,7 +16,7 @@
 - [ ] Chrome に load unpacked で読み込み、動作確認済み
 
 ## SPEC.md との整合性
-- [ ] permissions は activeTab + tabs + storage のみ
+- [ ] permissions は tabs + storage のみ
 - [ ] host_permissions を追加していない
 - [ ] 外部 API 呼び出しを追加していない
 - [ ] chrome.storage.sync を使用していない

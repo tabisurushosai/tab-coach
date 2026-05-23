@@ -41,7 +41,7 @@ tab-coach は最新の 1.0.x 系列のみセキュリティ修正を提供しま
 tab-coach は以下の設計原則によりセキュリティリスクを最小化しています:
 
 - **完全オフライン**: 外部 API 呼び出し・ネットワーク通信を一切行いません (`manifest.json` に `host_permissions` なし)
-- **最小権限**: `activeTab` + `tabs` + `storage` のみ。`<all_urls>` 等の広域パーミッションは要求しません
+- **最小権限**: `tabs` + `storage` のみ。`host_permissions` や `scripting` は要求しません
 - **個人情報非収集**: タブのタイトル・URL は `chrome.storage.local` にのみ保存され、外部送信されません
 - **`chrome.storage.sync` 不使用**: クラウド同期によるデータ漏洩リスクを回避
 - **MV3 service worker**: 長時間メモリ常駐を避け、攻撃面を縮小
